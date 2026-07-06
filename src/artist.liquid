@@ -1,0 +1,53 @@
+---
+layout: layout.liquid
+title: "{{ artist.name }} — OriginGFX"
+pagination:
+  data: data.artists
+  size: 1
+  alias: artist
+permalink: "/artist/{{ artist.slug }}/"
+---
+
+<section class="section reveal">
+    <div class="container">
+        <a href="/artists" class="back-link">← Back to Artists</a>
+
+        <div class="artist-profile">
+            <div class="profile-header">
+                <div class="profile-avatar large"></div>
+                <div class="profile-info">
+                    <h1>{{ artist.name }}</h1>
+                    <p class="profile-role">{{ artist.role }}</p>
+                    <div class="profile-stats">
+                        <span>{{ artist.artworks }} Artworks</span>
+                    </div>
+                    <div class="profile-social">
+                        {% for platform in artist.social %}
+                            <a href="{{ platform[1] }}" target="_blank">{{ platform[0] | capitalize }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-bio">
+                <h3>About</h3>
+                <p>{{ artist.bio }}</p>
+            </div>
+
+            <div class="profile-artworks">
+                <h3>Portfolio</h3>
+                <div class="grid grid-3">
+                    {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug %}
+                    {% for artwork in artistArtworks %}
+                    <div class="card">
+                        <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
+                        <h3>{{ artwork.title }}</h3>
+                        <p>{{ artwork.year }}</p>
+                        <a href="/artwork/{{ artwork.slug }}" class="card-link">View Artwork →</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

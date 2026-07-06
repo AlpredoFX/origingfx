@@ -1,0 +1,178 @@
+{
+  "featured": {
+    "title": "Ethereal Kingdom",
+    "artist": "Alpredo FX",
+    "image": "assets/images/artworks/ethereal-kingdom.jpg",
+    "slug": "ethereal-kingdom"
+  },
+  "latestUploads": [
+    {
+      "title": "Fantasy Kingdom",
+      "artist": "Alpredo FX",
+      "image": "assets/images/artworks/fantasy-kingdom.jpg",
+      "slug": "fantasy-kingdom"
+    },
+    {
+      "title": "Forest Temple",
+      "artist": "Kenzo",
+      "image": "assets/images/artworks/forest-temple.jpg",
+      "slug": "forest-temple"
+    },
+    {
+      "title": "Sky Kingdom",
+      "artist": "JuihMC",
+      "image": "assets/images/artworks/sky-kingdom.jpg",
+      "slug": "sky-kingdom"
+    }
+  ],
+  "artists": [
+    {
+      "name": "Alpredo FX",
+      "role": "Cinematic Minecraft Artist",
+      "artworks": 28,
+      "slug": "alpredo-fx",
+      "bio": "Alpredo FX adalah cinematic artist yang fokus pada pembuatan visual epik di dunia Minecraft.",
+      "social": {
+        "instagram": "https://instagram.com/alpredofx",
+        "twitter": "https://twitter.com/alpredofx",
+        "discord": "alpredofx"
+      }
+    },
+    {
+      "name": "JuihMC",
+      "role": "Adventure Storytelling",
+      "artworks": 17,
+      "slug": "juihmc",
+      "bio": "JuihMC adalah storyteller yang menghadirkan petualangan melalui karya-karyanya.",
+      "social": {
+        "instagram": "https://instagram.com/juihmc"
+      }
+    },
+    {
+      "name": "Kenzo",
+      "role": "Environment Designer",
+      "artworks": 34,
+      "slug": "kenzo",
+      "bio": "Kenzo adalah environment designer yang menciptakan dunia-dunia detail dan atmosferik.",
+      "social": {
+        "instagram": "https://instagram.com/kenzo",
+        "discord": "kenzo"
+      }
+    }
+  ],
+  "artworks": [
+    {
+      "title": "Ethereal Kingdom",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "assets/images/artworks/ethereal-kingdom.jpg",
+      "category": "Fantasy",
+      "year": 2026,
+      "software": "Blender",
+      "description": "Sebuah karya yang menggambarkan kerajaan di atas awan dengan detail arsitektur megah. Terinspirasi dari kerajaan-kerajaan dalam mitologi Nordik dan fantasi epik.",
+      "slug": "ethereal-kingdom"
+    },
+    {
+      "title": "Fantasy Kingdom",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "assets/images/artworks/fantasy-kingdom.jpg",
+      "category": "Fantasy",
+      "year": 2026,
+      "software": "Blender",
+      "description": "Kerajaan fantasi dengan detail arsitektur yang memukau dan atmosfer magis.",
+      "slug": "fantasy-kingdom"
+    },
+    {
+      "title": "Forest Temple",
+      "artist": "Kenzo",
+      "artistSlug": "kenzo",
+      "image": "assets/images/artworks/forest-temple.jpg",
+      "category": "Medieval",
+      "year": 2026,
+      "software": "Blender",
+      "description": "Kuil kuno yang tersembunyi di dalam hutan lebat dengan detail arsitektur yang memukau.",
+      "slug": "forest-temple"
+    },
+    {
+      "title": "Sky Kingdom",
+      "artist": "JuihMC",
+      "artistSlug": "juihmc",
+      "image": "assets/images/artworks/sky-kingdom.jpg",
+      "category": "Fantasy",
+      "year": 2026,
+      "software": "Blender",
+      "description": "Kerajaan di atas langit dengan arsitektur megah dan awan yang dramatis.",
+      "slug": "sky-kingdom"
+    }
+  ],
+  "blog": [
+    {
+      "title": "Behind The Artwork: Ethereal Kingdom",
+      "date": "March 15, 2026",
+      "image": "assets/images/blog/ethereal-kingdom-process.jpg",
+      "excerpt": "Alpredo FX berbagi proses kreatif di balik pembuatan Ethereal Kingdom, dari konsep hingga render final.",
+      "slug": "behind-ethereal-kingdom"
+    }
+  ],
+  "services": [
+    {
+      "icon": "🏰",
+      "name": "Minecraft Art",
+      "description": "Karya seni digital bertema Minecraft dengan detail tinggi dan komposisi cinematic.",
+      "slug": "minecraft-art"
+    },
+    {
+      "icon": "🖼️",
+      "name": "Thumbnail",
+      "description": "Thumbnail profesional untuk YouTube, Stream, atau konten digital lainnya.",
+      "slug": "thumbnail"
+    },
+    {
+      "icon": "📜",
+      "name": "Poster",
+      "description": "Desain poster dengan komposisi artistik yang kuat untuk berbagai keperluan.",
+      "slug": "poster"
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Personal",
+      "badge": null,
+      "price": "$25",
+      "features": [
+        "Penggunaan pribadi",
+        "Non-komersial",
+        "Format HD",
+        "Tanpa watermark"
+      ],
+      "slug": "personal"
+    },
+    {
+      "name": "Commercial",
+      "badge": "Popular",
+      "price": "$75",
+      "features": [
+        "Penggunaan komersial",
+        "YouTube / Streaming",
+        "Format 4K",
+        "Tanpa watermark",
+        "Lisensi komersial"
+      ],
+      "slug": "commercial"
+    },
+    {
+      "name": "Exclusive",
+      "badge": null,
+      "price": "$200+",
+      "features": [
+        "Hak cipta penuh",
+        "Penggunaan unlimited",
+        "Format 8K",
+        "Termasuk source file",
+        "Konsultasi personal"
+      ],
+      "slug": "exclusive"
+    }
+  ]
+}

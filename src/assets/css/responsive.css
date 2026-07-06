@@ -1,0 +1,131 @@
+@media(max-width:768px){
+    .grid{
+        grid-template-columns:1fr
+    }
+
+    .nav{display:none}
+}
+
+@media (max-width:768px){
+
+    .artist-item{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .artist-info{
+        justify-content:space-between;
+        width:100%;
+        gap:20px;
+    }
+
+}
+
+/* ========================================
+   RESPONSIVE TAMBAHAN
+======================================== */
+
+@media(max-width:992px){
+    .grid-4{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .artists-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .services-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .pricing-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .contact-grid{
+        grid-template-columns:1fr;
+        gap:40px;
+    }
+}
+
+@media(max-width:768px){
+    .artwork-detail{
+        grid-template-columns:1fr;
+        gap:32px;
+    }
+
+    .artists-grid{
+        grid-template-columns:1fr;
+        max-width:400px;
+        margin:0 auto;
+    }
+
+    .services-grid{
+        grid-template-columns:1fr;
+        max-width:400px;
+        margin:0 auto;
+    }
+
+    .pricing-grid{
+        grid-template-columns:1fr;
+        max-width:400px;
+        margin:0 auto 40px;
+    }
+
+    .blog-grid{
+        grid-template-columns:1fr;
+        max-width:500px;
+        margin:0 auto;
+    }
+
+    .philosophy-grid{
+        grid-template-columns:1fr;
+    }
+
+    .profile-header{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .profile-stats{
+        justify-content:center;
+    }
+
+    .profile-social{
+        justify-content:center;
+    }
+
+    .grid-4{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .footer-links{
+        gap:12px;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+}
+
+@media(max-width:480px){
+    .grid-4{
+        grid-template-columns:1fr;
+    }
+
+    .filter-bar{
+        gap:8px;
+    }
+
+    .filter-btn{
+        padding:6px 14px;
+        font-size:0.8rem;
+    }
+
+    .artwork-actions{
+        flex-direction:column;
+    }
+
+    .artwork-social{
+        flex-wrap:wrap;
+    }
+}

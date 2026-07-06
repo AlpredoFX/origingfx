@@ -1,0 +1,136 @@
+{
+  "featured": {
+    "title": "Ethereal Kingdom",
+    "artist": "Alpredo FX",
+    "image": "assets/images/artworks/ethereal-kingdom.jpg",
+    "description": "Kerajaan di atas awan dengan detail arsitektur megah.",
+    "slug": "ethereal-kingdom"
+  },
+  "latestUploads": [
+    {
+      "title": "Fantasy Kingdom",
+      "artist": "Alpredo FX",
+      "image": "assets/images/artworks/fantasy-kingdom.jpg",
+      "slug": "fantasy-kingdom"
+    },
+    {
+      "title": "Forest Temple",
+      "artist": "Kenzo",
+      "image": "assets/images/artworks/forest-temple.jpg",
+      "slug": "forest-temple"
+    },
+    {
+      "title": "Sky Kingdom",
+      "artist": "JuihMC",
+      "image": "assets/images/artworks/sky-kingdom.jpg",
+      "slug": "sky-kingdom"
+    }
+  ],
+  "artists": [
+    {
+      "name": "Alpredo FX",
+      "role": "Cinematic Minecraft Artist",
+      "artworks": 28,
+      "slug": "alpredo-fx",
+      "social": {
+        "instagram": "https://instagram.com/alpredofx",
+        "twitter": "https://twitter.com/alpredofx",
+        "discord": "alpredofx"
+      }
+    },
+    {
+      "name": "JuihMC",
+      "role": "Adventure Storytelling",
+      "artworks": 17,
+      "slug": "juihmc",
+      "social": {
+        "instagram": "https://instagram.com/juihmc",
+        "twitter": "https://twitter.com/juihmc"
+      }
+    },
+    {
+      "name": "Kenzo",
+      "role": "Environment Designer",
+      "artworks": 34,
+      "slug": "kenzo",
+      "social": {
+        "instagram": "https://instagram.com/kenzo",
+        "discord": "kenzo"
+      }
+    }
+  ],
+  "artworks": [
+    {
+      "title": "Ethereal Kingdom",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "assets/images/artworks/ethereal-kingdom.jpg",
+      "category": "Fantasy",
+      "year": 2026,
+      "software": "Blender",
+      "description": "Sebuah karya yang menggambarkan kerajaan di atas awan dengan detail arsitektur megah. Terinspirasi dari kerajaan-kerajaan dalam mitologi Nordik dan fantasi epik.",
+      "slug": "ethereal-kingdom"
+    },
+    {
+      "title": "Fantasy Kingdom",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "assets/images/artworks/fantasy-kingdom.jpg",
+      "category": "Fantasy",
+      "year": 2026,
+      "software": "Blender",
+      "description": "Kerajaan fantasi dengan detail arsitektur yang memukau.",
+      "slug": "fantasy-kingdom"
+    }
+  ],
+  "blog": [
+    {
+      "title": "Behind The Artwork: Ethereal Kingdom",
+      "date": "March 15, 2026",
+      "image": "assets/images/blog/ethereal-kingdom-process.jpg",
+      "excerpt": "Alpredo FX berbagi proses kreatif di balik pembuatan Ethereal Kingdom.",
+      "slug": "behind-ethereal-kingdom"
+    }
+  ],
+  "services": [
+    {
+      "icon": "🏰",
+      "name": "Minecraft Art",
+      "description": "Karya seni digital bertema Minecraft dengan detail tinggi dan komposisi cinematic.",
+      "slug": "minecraft-art"
+    },
+    {
+      "icon": "🖼️",
+      "name": "Thumbnail",
+      "description": "Thumbnail profesional untuk YouTube, Stream, atau konten digital lainnya.",
+      "slug": "thumbnail"
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Personal",
+      "badge": null,
+      "price": "$25",
+      "features": [
+        "Penggunaan pribadi",
+        "Non-komersial",
+        "Format HD",
+        "Tanpa watermark"
+      ],
+      "slug": "personal"
+    },
+    {
+      "name": "Commercial",
+      "badge": "Popular",
+      "price": "$75",
+      "features": [
+        "Penggunaan komersial",
+        "YouTube / Streaming",
+        "Format 4K",
+        "Tanpa watermark",
+        "Lisensi komersial"
+      ],
+      "slug": "commercial"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+---
+layout: layout.liquid
+title: Explore — OriginGFX
+---
+
+<section class="page-hero reveal">
+    <div class="container center">
+        <h1>Explore Artworks</h1>
+        <p class="lead">Temukan karya terbaik dari para kreator Minecraft</p>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <div class="filter-bar">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Fantasy</button>
+            <button class="filter-btn">Survival</button>
+            <button class="filter-btn">Medieval</button>
+            <button class="filter-btn">Sci-fi</button>
+            <button class="filter-btn">Horror</button>
+        </div>
+
+        <div class="grid grid-4">
+            {% for artwork in data.artworks %}
+            <div class="card">
+                <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
+                <h3>{{ artwork.title }}</h3>
+                <p>by {{ artwork.artist }}</p>
+                <a href="/artwork/{{ artwork.slug }}" class="card-link">View Artwork →</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="pagination">
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">3</a>
+            <a href="#" class="page-btn">Next →</a>
+        </div>
+    </div>
+</section>

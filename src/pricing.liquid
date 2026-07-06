@@ -1,0 +1,37 @@
+---
+layout: layout.liquid
+title: Pricing — OriginGFX
+---
+
+<section class="page-hero reveal">
+    <div class="container center">
+        <h1>Pricing & License</h1>
+        <p class="lead">Pilih paket yang sesuai dengan kebutuhanmu</p>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <div class="pricing-grid">
+            {% for plan in data.pricing %}
+            <div class="pricing-card{% if plan.badge %} featured{% endif %}">
+                {% if plan.badge %}
+                <span class="pricing-badge">{{ plan.badge }}</span>
+                {% endif %}
+                <h3>{{ plan.name }}</h3>
+                <div class="pricing-price">{{ plan.price }}</div>
+                <ul class="pricing-features">
+                    {% for feature in plan.features %}
+                    <li>✓ {{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="#" class="btn">Choose Plan</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="pricing-note">
+            <p>Butuh paket custom? <a href="/contact">Hubungi kami</a> untuk penawaran khusus.</p>
+        </div>
+    </div>
+</section>

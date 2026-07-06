@@ -1,0 +1,29 @@
+---
+layout: layout.liquid
+title: Blog — OriginGFX
+---
+
+<section class="page-hero reveal">
+    <div class="container center">
+        <h1>Blog & Updates</h1>
+        <p class="lead">Cerita di balik artwork, tutorial, dan berita OriginGFX</p>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <div class="blog-grid">
+            {% for post in data.blog %}
+            <article class="blog-card">
+                <div class="blog-thumb" style="background-image: url('{{ post.image }}'); background-size: cover; background-position: center;"></div>
+                <div class="blog-content">
+                    <span class="blog-date">{{ post.date }}</span>
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.excerpt }}</p>
+                    <a href="#" class="blog-link">Read More →</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>

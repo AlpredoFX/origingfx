@@ -1,0 +1,74 @@
+---
+layout: layout.liquid
+title: OriginGFX — Digital Gallery for Minecraft Artists
+---
+
+<section class="hero reveal">
+    <div class="container center">
+        <h1>Digital Gallery for Minecraft Artists</h1>
+        <p class="lead">Gallery First. Store Second.</p>
+        <p class="hero-sub">Menampilkan karya terbaik dari para kreator Minecraft</p>
+        <a class="btn" href="/explore">Explore Gallery</a>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <div class="section-head">
+            <span>01</span>
+            <h2>Featured Showcase</h2>
+        </div>
+        <div class="featured-image">
+            <div class="featured-content">
+                <span class="featured-icon">✦</span>
+                <h3>{{ data.featured.title }}</h3>
+                <p>by {{ data.featured.artist }}</p>
+                <a href="/artwork/{{ data.featured.slug }}" class="featured-link">View Artwork →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <div class="section-head">
+            <span>02</span>
+            <h2>Latest Uploads</h2>
+            <a href="/explore" class="section-more">View all →</a>
+        </div>
+        <div class="grid">
+            {% for item in data.latestUploads %}
+            <div class="card">
+                <div class="thumb" style="background-image: url('{{ item.image }}'); background-size: cover; background-position: center;"></div>
+                <h3>{{ item.title }}</h3>
+                <p>by {{ item.artist }}</p>
+                <a href="/artwork/{{ item.slug }}" class="card-link">View Artwork →</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <div class="section-head">
+            <span>03</span>
+            <h2>Meet Our Artists</h2>
+            <a href="/artists" class="section-more">View all →</a>
+        </div>
+        <div class="artists-list">
+            {% for artist in data.artists %}
+            <article class="artist-item">
+                <div class="artist-meta">
+                    <h3>{{ artist.name }}</h3>
+                    <p>{{ artist.role }}</p>
+                </div>
+                <div class="artist-info">
+                    <span>{{ artist.artworks }} Artworks</span>
+                    <a href="/artist/{{ artist.slug }}">View Portfolio →</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>

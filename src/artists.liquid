@@ -1,0 +1,27 @@
+---
+layout: layout.liquid
+title: Artists — OriginGFX
+---
+
+<section class="page-hero reveal">
+    <div class="container center">
+        <h1>Meet Our Artists</h1>
+        <p class="lead">Kreator di balik setiap karya</p>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <div class="artists-grid">
+            {% for artist in data.artists %}
+            <article class="artist-card">
+                <div class="artist-avatar"></div>
+                <h3>{{ artist.name }}</h3>
+                <p>{{ artist.role }}</p>
+                <span class="artist-count">{{ artist.artworks }} Artworks</span>
+                <a href="/artist/{{ artist.slug }}" class="btn-small">View Portfolio</a>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>

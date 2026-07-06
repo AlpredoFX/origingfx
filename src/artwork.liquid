@@ -1,0 +1,117 @@
+---
+layout: layout.liquid
+title: "{{ artwork.title }} — OriginGFX"
+pagination:
+  data: data.artworks
+  size: 1
+  alias: artwork
+permalink: "/artwork/{{ artwork.slug }}/"
+---
+
+<section class="section reveal">
+    <div class="container">
+        <a href="/explore" class="back-link">← Back to Explore</a>
+
+        <div class="artwork-detail">
+            <div class="artwork-image">
+                <div class="artwork-placeholder" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
+            </div>
+
+            <div class="artwork-info">
+                <span class="artwork-tag">{{ artwork.category }}</span>
+                <h1>{{ artwork.title }}</h1>
+                <p class="artwork-artist">by <a href="/artist/{{ artwork.artistSlug }}">{{ artwork.artist }}</a></p>
+
+                <div class="artwork-meta">
+                    <span>📅 {{ artwork.year }}</span>
+                    <span>🖌️ {{ artwork.software }}</span>
+                    <span>🏷️ {{ artwork.category }}</span>
+                </div>
+
+                <div class="artwork-description">
+                    <p>{{ artwork.description }}</p>
+                ---
+layout: layout.liquid
+title: "{{ artwork.title }} — OriginGFX"
+pagination:
+  data: data.artworks
+  size: 1
+  alias: artwork
+permalink: "/artwork/{{ artwork.slug }}/"
+---
+
+<section class="section reveal">
+    <div class="container">
+        <a href="/explore" class="back-link">← Back to Explore</a>
+
+        <div class="artwork-detail">
+            <div class="artwork-image">
+                <div class="artwork-placeholder" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
+            </div>
+
+            <div class="artwork-info">
+                <span class="artwork-tag">{{ artwork.category }}</span>
+                <h1>{{ artwork.title }}</h1>
+                <p class="artwork-artist">by <a href="/artist/{{ artwork.artistSlug }}">{{ artwork.artist }}</a></p>
+
+                <div class="artwork-meta">
+                    <span>📅 {{ artwork.year }}</span>
+                    <span>🖌️ {{ artwork.software }}</span>
+                    <span>🏷️ {{ artwork.category }}</span>
+                </div>
+
+                <div class="artwork-description">
+                    <p>{{ artwork.description }}</p>
+                </div>
+
+                <div class="artwork-actions">
+                    <a href="#" class="btn">Commission Artist</a>
+                    <a href="#" class="btn btn-outline">Save Artwork</a>
+                </div>
+
+                <div class="artwork-social">
+                    <span>Share:</span>
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Pinterest</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="related-artworks">
+            <h3>Related Artworks</h3>
+            <div class="grid grid-3">
+                {% assign allArtworks = data.artworks %}
+                {% assign related = "" | split: "" %}
+                {% for a in allArtworks %}
+                    {% if a.artistSlug == artwork.artistSlug and a.slug != artwork.slug %}
+                        {% assign related = related | push: a %}
+                    {% endif %}
+                {% endfor %}
+                {% assign relatedCount = related | size %}
+                {% if relatedCount == 0 %}
+                    {% assign fallback = allArtworks | reverse %}
+                    {% for a in fallback limit: 3 %}
+                        {% if a.slug != artwork.slug %}
+                        <div class="card">
+                            <div class="thumb" style="background-image: url('{{ a.image }}'); background-size: cover; background-position: center;"></div>
+                            <h3>{{ a.title }}</h3>
+                            <p>by {{ a.artist }}</p>
+                            <a href="/artwork/{{ a.slug }}" class="card-link">View Artwork →</a>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% for a in related limit: 3 %}
+                    <div class="card">
+                        <div class="thumb" style="background-image: url('{{ a.image }}'); background-size: cover; background-position: center;"></div>
+                        <h3>{{ a.title }}</h3>
+                        <p>by {{ a.artist }}</p>
+                        <a href="/artwork/{{ a.slug }}" class="card-link">View Artwork →</a>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>

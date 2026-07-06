@@ -1,0 +1,26 @@
+---
+layout: layout.liquid
+title: Services — OriginGFX
+---
+
+<section class="page-hero reveal">
+    <div class="container center">
+        <h1>Commission & Services</h1>
+        <p class="lead">Wujudkan visi kreatifmu bersama artist OriginGFX</p>
+    </div>
+</section>
+
+<section class="section reveal">
+    <div class="container">
+        <div class="services-grid">
+            {% for service in data.services %}
+            <div class="service-card">
+                <span class="service-icon">{{ service.icon }}</span>
+                <h3>{{ service.name }}</h3>
+                <p>{{ service.description }}</p>
+                <a href="/pricing" class="service-link">View Pricing →</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
