@@ -6,7 +6,6 @@ pagination:
   size: 8
   alias: paginatedArtworks
   reverse: true
-  before: "{{ data.artworks | reverse }}"
 permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber | plus: 1 }}/{% endif %}"
 ---
 
@@ -21,16 +20,16 @@ permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNu
     <div class="container">
         <div class="filter-bar">
             <button class="filter-btn active">All</button>
-            <button class="filter-btn">Fantasy</button>
-            <button class="filter-btn">Survival</button>
-            <button class="filter-btn">Medieval</button>
-            <button class="filter-btn">Sci-fi</button>
+            <button class="filter-btn">Manip</button>
+            <button class="filter-btn">Abstract</button>
+            <button class="filter-btn">Art</button>
+            <button class="filter-btn">Scene</button>
             <button class="filter-btn">Horror</button>
         </div>
 
         <div class="grid grid-4">
             {% for artwork in paginatedArtworks %}
-            <div class="card">
+            <div class="card" data-category="{{ artwork.category }}">
                 <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
                 <h3>{{ artwork.title }}</h3>
                 <p>by {{ artwork.artist }}</p>
@@ -41,12 +40,14 @@ permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNu
 
         <!-- ====== PAGINATION ====== -->
         <div class="pagination">
+            <!-- Previous -->
             {% if pagination.href.previous %}
                 <a href="{{ pagination.href.previous }}" class="page-btn">← Previous</a>
             {% else %}
                 <span class="page-btn disabled">← Previous</span>
             {% endif %}
 
+            <!-- Nomor Halaman -->
             {% for pageUrl in pagination.hrefs %}
                 {% if pageUrl == pagination.href.current %}
                     <span class="page-btn active">{{ forloop.index }}</span>
@@ -55,10 +56,11 @@ permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNu
                 {% endif %}
             {% endfor %}
 
+            <!-- Next -->
             {% if pagination.href.next %}
                 <a href="{{ pagination.href.next }}" class="page-btn">Next →</a>
             {% else %}
-                <span class="page-btn disabled">Next →</span>
+                <span class="page-btn disabled">lanjut njing →</span>
             {% endif %}
         </div>
         <!-- ====== END PAGINATION ====== -->

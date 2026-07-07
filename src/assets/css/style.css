@@ -511,6 +511,7 @@ nav a.active{
     font-size: 0.9rem;
     transition: all 0.2s;
     background: transparent;
+    cursor: pointer;
 }
 
 .page-btn:hover {

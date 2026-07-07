@@ -53,16 +53,15 @@ document.querySelectorAll('.filter-btn').forEach((btn) => {
 });
 
 // ========================================
-// PAGINATION (Explore Page)
+// PAGINATION (Jangan dipakai — menghalangi navigasi)
 // ========================================
-
-document.querySelectorAll('.page-btn').forEach((btn) => {
-    btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelectorAll('.page-btn').forEach((b) => b.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
+// document.querySelectorAll('.page-btn').forEach((btn) => {
+//     btn.addEventListener('click', function (e) {
+//         e.preventDefault();
+//         document.querySelectorAll('.page-btn').forEach((b) => b.classList.remove('active'));
+//         this.classList.add('active');
+//     });
+// });
 
 // ========================================
 // ACTIVE NAV LINK
