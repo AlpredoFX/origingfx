@@ -492,26 +492,43 @@ nav a.active{
    PAGINATION
 ======================================== */
 
-.pagination{
-    display:flex;
-    justify-content:center;
-    gap:8px;
-    margin-top:50px;
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 50px;
+    flex-wrap: wrap;
 }
 
-.page-btn{
-    padding:8px 16px;
-    border:1px solid var(--border);
-    border-radius:6px;
-    text-decoration:none;
-    color:var(--text);
-    transition:0.2s;
+.page-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    background: transparent;
 }
 
-.page-btn:hover,
-.page-btn.active{
-    background:var(--text);
-    color:#fff;
+.page-btn:hover {
+    background: var(--text);
+    color: #fff;
+    border-color: var(--text);
+}
+
+.page-btn.active {
+    background: var(--text);
+    color: #fff;
+    border-color: var(--text);
+    pointer-events: none;
+}
+
+.page-btn.disabled {
+    opacity: 0.4;
+    pointer-events: none;
 }
 
 /* ========================================
@@ -534,17 +551,40 @@ nav a.active{
    ARTWORK DETAIL
 ======================================== */
 
-.artwork-detail{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:60px;
-    margin-bottom:80px;
+.artwork-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 60px;
+    margin-bottom: 80px;
 }
 
-.artwork-placeholder{
-    aspect-ratio:4/3;
-    background:#ddd;
-    border-radius:12px;
+.artwork-detail .artwork-image {
+    flex: 1 1 45%;
+    min-width: 300px;
+}
+
+.artwork-detail .artwork-info {
+    flex: 1 1 40%;
+    min-width: 280px;
+}
+
+.artwork-placeholder {
+    width: 100%;
+    min-height: 350px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.artwork-placeholder img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 600px; /* Biar gak kelewat besar */
+    object-fit: contain;
 }
 
 .artwork-tag{
@@ -633,6 +673,13 @@ nav a.active{
     margin-bottom:30px;
 }
 
+.software-badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-right: 4px;
+}
 /* ========================================
    ARTISTS GRID
 ======================================== */

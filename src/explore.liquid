@@ -1,6 +1,13 @@
 ---
 layout: layout.liquid
 title: Explore — OriginGFX
+pagination:
+  data: data.artworks
+  size: 8
+  alias: paginatedArtworks
+  reverse: true
+  before: "{{ data.artworks | reverse }}"
+permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber | plus: 1 }}/{% endif %}"
 ---
 
 <section class="page-hero reveal">
@@ -22,7 +29,7 @@ title: Explore — OriginGFX
         </div>
 
         <div class="grid grid-4">
-            {% for artwork in data.artworks %}
+            {% for artwork in paginatedArtworks %}
             <div class="card">
                 <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
                 <h3>{{ artwork.title }}</h3>
@@ -32,11 +39,29 @@ title: Explore — OriginGFX
             {% endfor %}
         </div>
 
+        <!-- ====== PAGINATION ====== -->
         <div class="pagination">
-            <a href="#" class="page-btn active">1</a>
-            <a href="#" class="page-btn">2</a>
-            <a href="#" class="page-btn">3</a>
-            <a href="#" class="page-btn">Next →</a>
+            {% if pagination.href.previous %}
+                <a href="{{ pagination.href.previous }}" class="page-btn">← Previous</a>
+            {% else %}
+                <span class="page-btn disabled">← Previous</span>
+            {% endif %}
+
+            {% for pageUrl in pagination.hrefs %}
+                {% if pageUrl == pagination.href.current %}
+                    <span class="page-btn active">{{ forloop.index }}</span>
+                {% else %}
+                    <a href="{{ pageUrl }}" class="page-btn">{{ forloop.index }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.href.next %}
+                <a href="{{ pagination.href.next }}" class="page-btn">Next →</a>
+            {% else %}
+                <span class="page-btn disabled">Next →</span>
+            {% endif %}
         </div>
+        <!-- ====== END PAGINATION ====== -->
+
     </div>
 </section>

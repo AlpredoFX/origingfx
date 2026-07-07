@@ -14,16 +14,17 @@ permalink: "/artist/{{ artist.slug }}/"
 
         <div class="artist-profile">
             <div class="profile-header">
-                <div class="profile-avatar large"></div>
+                <img src="{{ artist.avatar }}" alt="{{ artist.name }}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
                 <div class="profile-info">
-                    <h1>{{ artist.name }}</h1>
-                    <p class="profile-role">{{ artist.role }}</p>
+                <h1>{{ artist.name }}</h1>
+                <p class="profile-role">{{ artist.role }}</p>
                     <div class="profile-stats">
-                        <span>{{ artist.artworks }} Artworks</span>
+                        {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
+                        <span>{{ artistArtworks }} Artworks</span>
                     </div>
                     <div class="profile-social">
                         {% for platform in artist.social %}
-                            <a href="{{ platform[1] }}" target="_blank">{{ platform[0] | capitalize }}</a>
+                        <a href="{{ platform[1] }}" target="_blank">{{ platform[0] | capitalize }}</a>
                         {% endfor %}
                     </div>
                 </div>

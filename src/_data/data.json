@@ -1,15 +1,15 @@
 {
   "featured": {
-    "title": "Ethereal Kingdom",
+    "title": "geza mungkin",
     "artist": "Alpredo FX",
-    "image": "assets/images/artworks/alpredo fx/000619048.jpg.webp",
+    "image": "/assets/images/artworks/alpredo fx/1000633555.webp",
     "slug": "ethereal-kingdom"
   },
   "latestUploads": [
     {
       "title": "Fantasy Kingdom",
       "artist": "Alpredo FX",
-      "image": "assets/images/artworks/fantasy-kingdom.jpg",
+      "image": "/assets/images/artworks/1000619048.webp",
       "slug": "fantasy-kingdom"
     },
     {
@@ -28,49 +28,83 @@
   "artists": [
     {
       "name": "Alpredo FX",
+      "avatar": "/assets/images/artists/alpredofx.png",
       "role": "Cinematic Minecraft Artist",
-      "artworks": 28,
       "slug": "alpredo-fx",
       "bio": "Alpredo FX adalah cinematic artist yang fokus pada pembuatan visual epik di dunia Minecraft.",
       "social": {
-        "instagram": "https://instagram.com/alpredofx",
+        "instagram": "https://www.instagram.com/alpredofx/",
         "twitter": "https://twitter.com/alpredofx",
         "discord": "alpredofx"
       }
     },
+
+
     {
-      "name": "JuihMC",
+      "name": "Aemiro",
+      "avatar": "/assets/images/artists/aemiro.png",
       "role": "Adventure Storytelling",
-      "artworks": 17,
-      "slug": "juihmc",
-      "bio": "JuihMC adalah storyteller yang menghadirkan petualangan melalui karya-karyanya.",
+      "slug": "aemiro",
+      "bio": "Aemiro adalah storyteller yang menghadirkan petualangan melalui karya-karyanya.",
       "social": {
-        "instagram": "https://instagram.com/juihmc"
+        "instagram": "https://instagram.com/aemiro",
+        "discord": "aemiro",
+        "twitter": "https://twitter.com/aemiro"
       }
     },
+
+
     {
-      "name": "Kenzo",
+      "name": "ACXD",
+      "avatar": "/assets/images/artists/kevin.jpeg",
       "role": "Environment Designer",
-      "artworks": 34,
-      "slug": "kenzo",
-      "bio": "Kenzo adalah environment designer yang menciptakan dunia-dunia detail dan atmosferik.",
+      "slug": "acxd",
+      "bio": "ACXD adalah environment designer yang menciptakan dunia-dunia detail dan atmosferik.",
       "social": {
-        "instagram": "https://instagram.com/kenzo",
-        "discord": "kenzo"
+        "instagram": "https://www.instagram.com/ac_xd.fx?igsh=ZnI0OXh6NXdvNml0",
+        "discord": "ACXD"
+      }
+    },
+
+
+    {
+      "name": "Steven",
+      "avatar": "/assets/images/artists/kenzo.png",
+      "role": "Architectural Artist",
+      "slug": "steven",
+      "bio": "Steven adalah architectural artist yang fokus pada desain bangunan dan struktur megah.",
+      "social": {
+        "instagram": "https://instagram.com/steven",
+        "discord": "steven"
+      }
+    },
+
+
+    {
+      "name": "JuihMC",
+      "avatar": "/assets/images/artists/juihmc.png",
+      "role": "Fantasy World Builder",
+      "slug": "juihmc",
+      "bio": "JuihMC adalah fantasy world builder yang menciptakan dunia fantasi yang imajinatif.",
+      "social": {
+        "instagram": "https://instagram.com/juihmc",
+        "discord": "juihmc"
       }
     }
   ],
   "artworks": [
     {
+      "_comment": "karya punya alpredo fx",
       "title": "Ethereal Kingdom",
       "artist": "Alpredo FX",
       "artistSlug": "alpredo-fx",
-      "image": "assets/images/artworks/ethereal-kingdom.jpg",
+      "image": "/assets/images/artworks/alpredo fx/1000633555.webp",
       "category": "Fantasy",
       "year": 2026,
       "software": "Blender",
       "description": "Sebuah karya yang menggambarkan kerajaan di atas awan dengan detail arsitektur megah. Terinspirasi dari kerajaan-kerajaan dalam mitologi Nordik dan fantasi epik.",
-      "slug": "ethereal-kingdom"
+      "slug": "ethereal-kingdom",
+      "created": "2026-07-07"
     },
     {
       "title": "Fantasy Kingdom",
@@ -81,20 +115,64 @@
       "year": 2026,
       "software": "Blender",
       "description": "Kerajaan fantasi dengan detail arsitektur yang memukau dan atmosfer magis.",
-      "slug": "fantasy-kingdom"
+      "slug": "fantasy-kingdom",
+      "created": "2026-07-07"
     },
     {
-      "title": "Forest Temple",
-      "artist": "Kenzo",
-      "artistSlug": "kenzo",
-      "image": "assets/images/artworks/forest-temple.jpg",
-      "category": "Medieval",
+      "title": "Mystic Forest",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "assets/images/artworks/mystic-forest.jpg",
+      "category": "Adventure",
       "year": 2026,
       "software": "Blender",
-      "description": "Kuil kuno yang tersembunyi di dalam hutan lebat dengan detail arsitektur yang memukau.",
-      "slug": "forest-temple"
+      "description": "Hutan mistis dengan cahaya yang menembus pepohonan, menciptakan suasana petualangan yang menegangkan.",
+      "slug": "mystic-forest",
+      "created": "2026-07-07"
+    },
+
+    
+    {
+      "_comment": "karya punya ACXD",
+      "title": "My Way of Life",
+      "artist": "ACXD",
+      "artistSlug": "acxd",
+      "image": "/assets/images/artworks/ACXD/Render 1.webp",
+      "category": "Abstract",
+      "year": 2026,
+      "software": ["Cinema 4D", "ibisPaint X"],
+      "description": "You Are My Way of Life. The Only Way I Know.",
+      "slug": "my-way-of-life",
+      "created": "2026-06-14"
     },
     {
+      "title": "MONEY",
+      "artist": "ACXD",
+      "artistSlug": "acxd",
+      "image": "/assets/images/artworks/ACXD/2.webp",
+      "category": "Abstract",
+      "year": 2026,
+      "software": ["Cinema 4D", "ibisPaint X"],
+      "description": "Money talks, money talks Dirty cash, I want you, and dirty cash, I need you, oh Money talks, money talks",
+      "slug": "money",
+      "created": "2026-04-10"
+    },
+    {
+      "title": "Carpe Diem",
+      "artist": "ACXD",
+      "artistSlug": "acxd",
+      "image": "/assets/images/artworks/ACXD/3.webp",
+      "category": "Abstract",
+      "year": 2026,
+      "software": ["Cinema 4D", "ibisPaint X"],
+      "description": "Change your thoughts and you change your world",
+      "slug": "carpe-diem",
+      "created": "2026-01-01"
+    },
+
+
+    {
+      "_comment": "karya punya juihmc",
       "title": "Sky Kingdom",
       "artist": "JuihMC",
       "artistSlug": "juihmc",
@@ -103,7 +181,47 @@
       "year": 2026,
       "software": "Blender",
       "description": "Kerajaan di atas langit dengan arsitektur megah dan awan yang dramatis.",
-      "slug": "sky-kingdom"
+      "slug": "sky-kingdom",
+      "created": "2026-07-07"
+    },
+    {
+      "title": "Crystal Cavern",
+      "artist": "JuihMC",
+      "artistSlug": "juihmc",
+      "image": "assets/images/artworks/crystal-cavern.jpg",
+      "category": "Adventure",
+      "year": 2026,
+      "software": "Blender",
+      "description": "Gua kristal yang memancarkan cahaya magis, menciptakan suasana petualangan yang menakjubkan.",
+      "slug": "crystal-cavern",
+      "created": "2026-07-07"
+    },
+
+
+    {
+      "_comment": "karya punya aemiro",
+      "title": "Mystic Ruins",
+      "artist": "Aemiro",
+      "artistSlug": "aemiro",
+      "image": "assets/images/artworks/mystic-ruins.jpg",
+      "category": "Adventure",
+      "year": 2026,
+      "software": "Blender",
+      "description": "Reruntuhan mistis yang menyimpan rahasia kuno dan atmosfer petualangan.",
+      "slug": "mystic-ruins",
+      "created": "2026-07-07"
+    },
+    {
+      "title": "Ancient Citadel",
+      "artist": "Aemiro",
+      "artistSlug": "aemiro",
+      "image": "assets/images/artworks/ancient-citadel.jpg",
+      "category": "Medieval",
+      "year": 2026,
+      "software": "Blender",
+      "description": "Benteng kuno dengan arsitektur megah yang mencerminkan kejayaan masa lalu.",
+      "slug": "ancient-citadel",
+      "created": "2026-07-07"
     }
   ],
   "blog": [

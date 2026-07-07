@@ -18,7 +18,7 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             <span>01</span>
             <h2>Featured Showcase</h2>
         </div>
-        <div class="featured-image">
+        <div class="featured-image" style="background-image: url('{{ data.featured.image }}'); background-size: cover; background-position: center;">
             <div class="featured-content">
                 <span class="featured-icon">✦</span>
                 <h3>{{ data.featured.title }}</h3>
@@ -37,7 +37,10 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             <a href="/explore" class="section-more">View all →</a>
         </div>
         <div class="grid">
-            {% for item in data.latestUploads %}
+            {% assign sortedArtworks = data.artworks | sort: "year" | reverse %}
+            {% assign latestArtworks = sortedArtworks | slice: 0, 3 %}
+            {% for item in latestArtworks %}
+            {% assign sortedArtworks = data.artworks | sort: "created" | reverse %}
             <div class="card">
                 <div class="thumb" style="background-image: url('{{ item.image }}'); background-size: cover; background-position: center;"></div>
                 <h3>{{ item.title }}</h3>
@@ -56,19 +59,25 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             <h2>Meet Our Artists</h2>
             <a href="/artists" class="section-more">View all →</a>
         </div>
+
+        <!-- ====== ARTIST LIST (3 ARTIST) ====== -->
         <div class="artists-list">
-            {% for artist in data.artists %}
+            {% assign featuredArtists = data.artists | slice: 0, 3 %}
+            {% for artist in featuredArtists %}
             <article class="artist-item">
                 <div class="artist-meta">
                     <h3>{{ artist.name }}</h3>
                     <p>{{ artist.role }}</p>
                 </div>
                 <div class="artist-info">
-                    <span>{{ artist.artworks }} Artworks</span>
+                    {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
+                    <span>{{ artistArtworks }} Artworks</span>
                     <a href="/artist/{{ artist.slug }}">View Portfolio →</a>
                 </div>
             </article>
             {% endfor %}
         </div>
+        <!-- ====== END ARTIST LIST ====== -->
+
     </div>
 </section>

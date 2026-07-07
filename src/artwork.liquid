@@ -14,39 +14,9 @@ permalink: "/artwork/{{ artwork.slug }}/"
 
         <div class="artwork-detail">
             <div class="artwork-image">
-                <div class="artwork-placeholder" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
-            </div>
-
-            <div class="artwork-info">
-                <span class="artwork-tag">{{ artwork.category }}</span>
-                <h1>{{ artwork.title }}</h1>
-                <p class="artwork-artist">by <a href="/artist/{{ artwork.artistSlug }}">{{ artwork.artist }}</a></p>
-
-                <div class="artwork-meta">
-                    <span>📅 {{ artwork.year }}</span>
-                    <span>🖌️ {{ artwork.software }}</span>
-                    <span>🏷️ {{ artwork.category }}</span>
+                <div class="artwork-placeholder">
+                    <img src="{{ artwork.image }}" alt="{{ artwork.title }}">
                 </div>
-
-                <div class="artwork-description">
-                    <p>{{ artwork.description }}</p>
-                ---
-layout: layout.liquid
-title: "{{ artwork.title }} — OriginGFX"
-pagination:
-  data: data.artworks
-  size: 1
-  alias: artwork
-permalink: "/artwork/{{ artwork.slug }}/"
----
-
-<section class="section reveal">
-    <div class="container">
-        <a href="/explore" class="back-link">← Back to Explore</a>
-
-        <div class="artwork-detail">
-            <div class="artwork-image">
-                <div class="artwork-placeholder" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
             </div>
 
             <div class="artwork-info">
@@ -56,7 +26,11 @@ permalink: "/artwork/{{ artwork.slug }}/"
 
                 <div class="artwork-meta">
                     <span>📅 {{ artwork.year }}</span>
-                    <span>🖌️ {{ artwork.software }}</span>
+                    <span>🖌️ 
+                        {% for s in artwork.software %}
+                            <span class="software-badge">{{ s }}</span>
+                        {% endfor %}
+                    </span>
                     <span>🏷️ {{ artwork.category }}</span>
                 </div>
 
