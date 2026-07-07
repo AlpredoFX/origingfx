@@ -14,7 +14,7 @@ permalink: "/artist/{{ artist.slug }}/"
 
         <div class="artist-profile">
             <div class="profile-header">
-                <img src="{{ artist.avatar }}" alt="{{ artist.name }}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                <img src="{{ artist.avatar | url }}" alt="{{ artist.name }}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
                 <div class="profile-info">
                 <h1>{{ artist.name }}</h1>
                 <p class="profile-role">{{ artist.role }}</p>
