@@ -841,65 +841,293 @@ nav a.active{
 }
 
 /* ========================================
-   ABOUT FULL
+   ABOUT — PREMIUM & ELEGAN
 ======================================== */
 
-.about-full{
-    max-width:720px;
+.about-full {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.about-full h2{
-    font-size:1.6rem;
-    margin-bottom:16px;
+/* ====== JUDUL SECTION ====== */
+.about-full h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-top: 60px;
+    margin-bottom: 24px;
+    position: relative;
 }
 
-.about-full p{
-    line-height:1.8;
-    color:var(--muted);
-    margin-bottom:16px;
+.about-full h2::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: var(--text);
+    margin-top: 12px;
+    transition: width 0.4s ease;
 }
 
-.about-story{
-    margin-bottom:60px;
+.about-full h2:hover::after {
+    width: 80px;
 }
 
-.about-philosophy{
-    margin-bottom:60px;
+/* ====== STORY ====== */
+.about-story p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text);
+    margin-bottom: 18px;
+    opacity: 0.85;
 }
 
-.philosophy-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:32px;
-    margin-top:24px;
+.about-story p:first-of-type {
+    font-size: 1.15rem;
+    opacity: 1;
 }
 
-.philosophy-item{
-    padding:24px;
-    border:1px solid var(--border);
-    border-radius:12px;
+.about-story strong {
+    color: var(--text);
+    font-weight: 600;
 }
 
-.philosophy-item span{
-    font-size:2rem;
-    display:block;
-    margin-bottom:8px;
+/* ====== FILOSOFI GRID ====== */
+.philosophy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin: 32px 0 20px;
 }
 
-.philosophy-item h3{
-    font-size:1.1rem;
-    margin-bottom:4px;
+.philosophy-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 28px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.philosophy-item p{
-    color:var(--muted);
-    font-size:0.9rem;
-    line-height:1.6;
+.philosophy-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--text);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
 }
 
-.about-vision{
-    border-top:1px solid var(--border);
-    padding-top:40px;
+.philosophy-item:hover {
+    transform: translateY(-6px);
+    border-color: var(--text);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+.philosophy-item:hover::before {
+    transform: scaleX(1);
+}
+
+.philosophy-item span {
+    font-size: 2.4rem;
+    display: block;
+    margin-bottom: 12px;
+    line-height: 1;
+}
+
+.philosophy-item h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+
+.philosophy-item p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin: 0;
+}
+
+/* ====== VISI ====== */
+.about-vision {
+    margin-top: 20px;
+}
+
+.about-vision p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text);
+    margin-bottom: 18px;
+    opacity: 0.85;
+}
+
+/* ====== PENUTUP ====== */
+.about-closing {
+    border-top: 1px solid var(--border);
+    padding-top: 48px;
+    margin-top: 48px;
+}
+
+.about-closing h2 {
+    margin-top: 0;
+}
+
+.about-closing p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text);
+    margin-bottom: 18px;
+    opacity: 0.85;
+}
+
+.about-closing p em {
+    font-style: italic;
+    color: var(--text);
+    opacity: 0.7;
+}
+
+.about-closing strong {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* ====== TANDA TANGAN ====== */
+.about-signature {
+    margin-top: 40px;
+    padding: 32px 40px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.about-signature:hover {
+    border-color: var(--text);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.signature-text {
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.signature-role {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+/* ====== RESPONSIF ====== */
+@media (max-width: 768px) {
+    .about-full {
+        padding: 0 16px;
+    }
+
+    .about-full h2 {
+        font-size: 1.6rem;
+        margin-top: 40px;
+    }
+
+    .philosophy-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .philosophy-item {
+        padding: 24px 20px;
+    }
+
+    .about-story p,
+    .about-vision p,
+    .about-closing p {
+        font-size: 0.98rem;
+        line-height: 1.8;
+    }
+
+    .about-signature {
+        padding: 24px 20px;
+    }
+
+    .signature-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-full h2 {
+        font-size: 1.3rem;
+    }
+
+    .philosophy-item span {
+        font-size: 2rem;
+    }
+
+    .about-signature {
+        padding: 20px 16px;
+    }
+
+    .signature-text {
+        font-size: 0.95rem;
+    }
+}
+
+/* ========================================
+   ABOUT — TANDA TANGAN
+======================================== */
+
+.about-closing {
+    border-top: 1px solid var(--border);
+    padding-top: 40px;
+    margin-top: 40px;
+}
+
+.about-signature {
+    margin-top: 32px;
+    padding: 24px 32px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.signature-text {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.signature-role {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 400;
+}
+
+/* ========================================
+   ABOUT — LINK NAMA
+======================================== */
+
+.about-link {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 2px solid var(--border);
+    transition: all 0.3s ease;
+    padding-bottom: 2px;
+}
+
+.about-link:hover {
+    border-bottom-color: var(--text);
+    color: var(--text);
 }
 
 /* ========================================

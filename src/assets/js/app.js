@@ -64,6 +64,32 @@ document.querySelectorAll('.filter-btn').forEach((btn) => {
 // });
 
 // ========================================
+// CARD ARTWORK — Seluruh Card Bisa Diklik
+// ========================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.grid-4 .card, .grid .card, .grid-3 .card');
+    
+    cards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Jika yang diklik adalah link atau tombol, biarkan berfungsi normal
+            if (e.target.closest('a') || e.target.closest('button')) {
+                return;
+            }
+            
+            // Cari link "View Artwork" di dalam card
+            const link = this.querySelector('a.card-link');
+            if (link) {
+                window.location.href = link.href;
+            }
+        });
+        
+        // Tambahkan cursor pointer agar terlihat bisa diklik
+        card.style.cursor = 'pointer';
+    });
+});
+
+// ========================================
 // ACTIVE NAV LINK
 // ========================================
 
