@@ -15,12 +15,14 @@ title: Artists — OriginGFX
         <div class="artists-grid">
             {% for artist in data.artists %}
             <article class="artist-card">
-                <img src="{{ artist.avatar | url }}" alt="{{ artist.name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 16px; display: block;">
+                <!-- 👇 AVATAR PAKAI TAG <img> + FILTER url -->
+                <img src="{{ artist.avatar | url }}" alt="{{ artist.name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 16px; display: block; background: #f0f0f0;">
+
                 <h3>{{ artist.name }}</h3>
                 <p>{{ artist.role }}</p>
                 {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
                 <span class="artist-count">{{ artistArtworks }} Artworks</span>
-                <a href="/artist/{{ artist.slug }}" class="btn-small">View Portfolio</a>
+                <a href="/artist/{{ artist.slug }}" class="btn-small">View Portfolio →</a>
             </article>
             {% endfor %}
         </div>

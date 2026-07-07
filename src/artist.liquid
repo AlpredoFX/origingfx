@@ -14,18 +14,26 @@ permalink: "/artist/{{ artist.slug }}/"
 
         <div class="artist-profile">
             <div class="profile-header">
-                <img src="{{ artist.avatar | url }}" alt="{{ artist.name }}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                <!-- 👇 AVATAR PAKAI TAG <img> + FILTER url -->
+                <img src="{{ artist.avatar | url }}" alt="{{ artist.name }}" class="profile-avatar large" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+
                 <div class="profile-info">
-                <h1>{{ artist.name }}</h1>
-                <p class="profile-role">{{ artist.role }}</p>
+                    <h1>{{ artist.name }}</h1>
+                    <p class="profile-role">{{ artist.role }}</p>
                     <div class="profile-stats">
                         {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
                         <span>{{ artistArtworks }} Artworks</span>
                     </div>
                     <div class="profile-social">
-                        {% for platform in artist.social %}
-                        <a href="{{ platform[1] }}" target="_blank">{{ platform[0] | capitalize }}</a>
-                        {% endfor %}
+                        {% if artist.social.instagram %}
+                        <a href="{{ artist.social.instagram }}" target="_blank">Instagram</a>
+                        {% endif %}
+                        {% if artist.social.twitter %}
+                        <a href="{{ artist.social.twitter }}" target="_blank">Twitter</a>
+                        {% endif %}
+                        {% if artist.social.discord %}
+                        <a href="{{ artist.social.discord }}" target="_blank">Discord</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -41,7 +49,7 @@ permalink: "/artist/{{ artist.slug }}/"
                     {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug %}
                     {% for artwork in artistArtworks %}
                     <div class="card">
-                        <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
+                        <div class="thumb" style="background-image: url('{{ artwork.image | url }}'); background-size: cover; background-position: center;"></div>
                         <h3>{{ artwork.title }}</h3>
                         <p>{{ artwork.year }}</p>
                         <a href="/artwork/{{ artwork.slug }}" class="card-link">View Artwork →</a>

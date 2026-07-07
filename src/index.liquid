@@ -60,24 +60,22 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             <a href="/artists" class="section-more">View all →</a>
         </div>
 
-        <!-- ====== ARTIST LIST (3 ARTIST) ====== -->
         <div class="artists-list">
             {% assign featuredArtists = data.artists | slice: 0, 3 %}
             {% for artist in featuredArtists %}
+            {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
             <article class="artist-item">
                 <div class="artist-meta">
                     <h3>{{ artist.name }}</h3>
                     <p>{{ artist.role }}</p>
                 </div>
                 <div class="artist-info">
-                    {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
                     <span>{{ artistArtworks }} Artworks</span>
                     <a href="/artist/{{ artist.slug }}">View Portfolio →</a>
                 </div>
             </article>
             {% endfor %}
         </div>
-        <!-- ====== END ARTIST LIST ====== -->
 
     </div>
 </section>

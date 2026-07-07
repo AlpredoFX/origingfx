@@ -1,7 +1,13 @@
 module.exports = function(eleventyConfig) {
-    // Copy folder assets ke output (_site)
+    // Copy semua assets ke output (_site)
     eleventyConfig.addPassthroughCopy('src/assets');
     eleventyConfig.addPassthroughCopy('src/images');
+
+    // Filter untuk path (biar aman di Netlify)
+    eleventyConfig.addFilter("url", function(value) {
+        if (!value) return value;
+        return value.startsWith("/") ? value : "/" + value;
+    });
 
     return {
         dir: {

@@ -28,7 +28,7 @@
   "artists": [
     {
       "name": "Alpredo FX",
-      "avatar": "/assets/images/artists/alpredofx.png",
+      "avatar": "/assets/images/artists/alpredofx.webp",
       "role": "Cinematic Minecraft Artist",
       "slug": "alpredo-fx",
       "bio": "Alpredo FX adalah cinematic artist yang fokus pada pembuatan visual epik di dunia Minecraft.",
@@ -42,7 +42,7 @@
 
     {
       "name": "Aemiro",
-      "avatar": "/assets/images/artists/aemiro.png",
+      "avatar": "/assets/images/artists/aemiro.webp",
       "role": "Adventure Storytelling",
       "slug": "aemiro",
       "bio": "Aemiro adalah storyteller yang menghadirkan petualangan melalui karya-karyanya.",
@@ -56,7 +56,7 @@
 
     {
       "name": "ACXD",
-      "avatar": "/assets/images/artists/kevin.jpeg",
+      "avatar": "/assets/images/artists/kevin.webp",
       "role": "Environment Designer",
       "slug": "acxd",
       "bio": "ACXD adalah environment designer yang menciptakan dunia-dunia detail dan atmosferik.",
