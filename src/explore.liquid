@@ -16,7 +16,7 @@ permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNu
     </div>
 </section>
 
-<section class="section reveal">
+<section class="section reveal visible section-short">
     <div class="container">
         <div class="filter-bar">
             <button class="filter-btn active">All</button>
@@ -37,6 +37,8 @@ permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNu
             </div>
             {% endfor %}
         </div>
+
+<p class="explore-info">Showing {{ paginatedArtworks | size }} of {{ data.artworks | size }} artworks</p>
 
         <!-- ====== PAGINATION ====== -->
         <div class="pagination">
@@ -60,10 +62,20 @@ permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNu
             {% if pagination.href.next %}
                 <a href="{{ pagination.href.next }}" class="page-btn">Next →</a>
             {% else %}
-                <span class="page-btn disabled">lanjut njing →</span>
+                <span class="page-btn disabled">next →</span>
             {% endif %}
         </div>
         <!-- ====== END PAGINATION ====== -->
+
+        <!-- ====== SIGNATURE ====== -->
+        <section class="section reveal section-signature">
+            <div class="signature-section">
+                <div class="signature-quote">
+                    <span class="quote-mark">✦</span>
+                    <p>Every artwork deserves to be discovered.</p>
+                </div>
+            </div>
+        </section>
 
     </div>
 </section>

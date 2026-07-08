@@ -1,10 +1,6 @@
 {
-  "featured": {
-    "title": "geza mungkin",
-    "artist": "Alpredo FX",
-    "image": "/assets/images/artworks/alpredo fx/1000633555.webp",
-    "slug": "ethereal-kingdom"
-  },
+  "featured": "zonzer-epic",
+
   "latestUploads": [
     {
       "title": "Fantasy Kingdom",
@@ -15,32 +11,34 @@
     {
       "title": "Forest Temple",
       "artist": "Kenzo",
-      "image": "assets/images/artworks/forest-temple.jpg",
+      "image": "/assets/images/artworks/forest-temple.jpg",
       "slug": "forest-temple"
     },
     {
       "title": "Sky Kingdom",
       "artist": "JuihMC",
-      "image": "assets/images/artworks/sky-kingdom.jpg",
+      "image": "/assets/images/artworks/sky-kingdom.jpg",
       "slug": "sky-kingdom"
     }
   ],
+
   "artists": [
     {
+      "_comment": "🎨 ARTIST: Alpredo FX",
       "name": "Alpredo FX",
       "avatar": "/assets/images/artists/alpredofx.webp",
-      "role": "Cinematic Minecraft Artist",
+      "role": "Game Art | Minecraft Renders",
       "slug": "alpredo-fx",
-      "bio": "Alpredo FX adalah cinematic artist yang fokus pada pembuatan visual epik di dunia Minecraft.",
+      "bio": "Hey, I'm Alpredo — a digital artist from Indonesia who turns Minecraft characters into cinematic art. I render and pose on my laptop, then color-grade and edit on my phone for a crisp finish. My strength is character-focused GFX with dramatic lighting and clean compositions — no massive maps, just cool props and effects. Perfect for YouTube thumbnails, profile pics, or wallpapers. My style is bold, moody, and clean. Send me your skin and a theme, and I'll bring it to life!.",
       "social": {
         "instagram": "https://www.instagram.com/alpredofx/",
         "twitter": "https://twitter.com/alpredofx",
+        "tiktok": "https://www.tiktok.com/@alpredofx",
         "discord": "alpredofx"
       }
     },
-
-
     {
+      "_comment": "🎨 ARTIST: Aemiro",
       "name": "Aemiro",
       "avatar": "/assets/images/artists/aemiro.webp",
       "role": "Adventure Storytelling",
@@ -52,9 +50,8 @@
         "twitter": "https://twitter.com/aemiro"
       }
     },
-
-
     {
+      "_comment": "🎨 ARTIST: ACXD",
       "name": "ACXD",
       "avatar": "/assets/images/artists/kevin.webp",
       "role": "Designer",
@@ -64,9 +61,8 @@
         "instagram": "https://www.instagram.com/ac_xd.fx?igsh=ZnI0OXh6NXdvNml0"
       }
     },
-
-
     {
+      "_comment": "🎨 ARTIST: Steven",
       "name": "Steven",
       "avatar": "/assets/images/artists/kenzo.png",
       "role": "Architectural Artist",
@@ -76,63 +72,26 @@
         "instagram": "https://instagram.com/steven",
         "discord": "steven"
       }
-    },
-
-
-    {
-      "name": "JuihMC",
-      "avatar": "/assets/images/artists/juihmc.png",
-      "role": "Fantasy World Builder",
-      "slug": "juihmc",
-      "bio": "JuihMC adalah fantasy world builder yang menciptakan dunia fantasi yang imajinatif.",
-      "social": {
-        "instagram": "https://instagram.com/juihmc",
-        "discord": "juihmc"
-      }
     }
   ],
+
   "artworks": [
     {
-      "_comment": "karya punya alpredo fx",
-      "title": "Ethereal Kingdom",
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Zonzer Epic",
       "artist": "Alpredo FX",
       "artistSlug": "alpredo-fx",
-      "image": "/assets/images/artworks/alpredo fx/1000633555.webp",
-      "category": "Fantasy",
+      "image": "/assets/images/artworks/alpredo fx/zonzer epic.webp",
+      "category": "Manip",
       "year": 2026,
-      "software": "Blender",
+      "software": ["Blender", "PS touch", "Lightroom"],
       "description": "Sebuah karya yang menggambarkan kerajaan di atas awan dengan detail arsitektur megah. Terinspirasi dari kerajaan-kerajaan dalam mitologi Nordik dan fantasi epik.",
-      "slug": "ethereal-kingdom",
-      "created": "2026-07-07"
-    },
-    {
-      "title": "Fantasy Kingdom",
-      "artist": "Alpredo FX",
-      "artistSlug": "alpredo-fx",
-      "image": "assets/images/artworks/fantasy-kingdom.jpg",
-      "category": "Fantasy",
-      "year": 2026,
-      "software": "Blender",
-      "description": "Kerajaan fantasi dengan detail arsitektur yang memukau dan atmosfer magis.",
-      "slug": "fantasy-kingdom",
-      "created": "2026-07-07"
-    },
-    {
-      "title": "Mystic Forest",
-      "artist": "Alpredo FX",
-      "artistSlug": "alpredo-fx",
-      "image": "assets/images/artworks/mystic-forest.jpg",
-      "category": "Adventure",
-      "year": 2026,
-      "software": "Blender",
-      "description": "Hutan mistis dengan cahaya yang menembus pepohonan, menciptakan suasana petualangan yang menegangkan.",
-      "slug": "mystic-forest",
+      "slug": "zonzer-epic",
       "created": "2026-07-07"
     },
 
-    
     {
-      "_comment": "karya punya ACXD",
+      "_comment": "🖼️ KARYA: ACXD — My Way of Life",
       "title": "My Way of Life",
       "artist": "ACXD",
       "artistSlug": "acxd",
@@ -145,6 +104,7 @@
       "created": "2026-06-14"
     },
     {
+      "_comment": "🖼️ KARYA: ACXD — MONEY",
       "title": "MONEY",
       "artist": "ACXD",
       "artistSlug": "acxd",
@@ -157,6 +117,7 @@
       "created": "2026-04-10"
     },
     {
+      "_comment": "🖼️ KARYA: ACXD — Carpe Diem",
       "title": "Carpe Diem",
       "artist": "ACXD",
       "artistSlug": "acxd",
@@ -167,91 +128,40 @@
       "description": "Change your thoughts and you change your world",
       "slug": "carpe-diem",
       "created": "2026-01-01"
-    },
-
-
-    {
-      "_comment": "karya punya juihmc",
-      "title": "Sky Kingdom",
-      "artist": "JuihMC",
-      "artistSlug": "juihmc",
-      "image": "assets/images/artworks/sky-kingdom.jpg",
-      "category": "Fantasy",
-      "year": 2026,
-      "software": "Blender",
-      "description": "Kerajaan di atas langit dengan arsitektur megah dan awan yang dramatis.",
-      "slug": "sky-kingdom",
-      "created": "2026-07-07"
-    },
-    {
-      "title": "Crystal Cavern",
-      "artist": "JuihMC",
-      "artistSlug": "juihmc",
-      "image": "assets/images/artworks/crystal-cavern.jpg",
-      "category": "Adventure",
-      "year": 2026,
-      "software": "Blender",
-      "description": "Gua kristal yang memancarkan cahaya magis, menciptakan suasana petualangan yang menakjubkan.",
-      "slug": "crystal-cavern",
-      "created": "2026-07-07"
-    },
-
-
-    {
-      "_comment": "karya punya aemiro",
-      "title": "Mystic Ruins",
-      "artist": "Aemiro",
-      "artistSlug": "aemiro",
-      "image": "assets/images/artworks/mystic-ruins.jpg",
-      "category": "Adventure",
-      "year": 2026,
-      "software": "Blender",
-      "description": "Reruntuhan mistis yang menyimpan rahasia kuno dan atmosfer petualangan.",
-      "slug": "mystic-ruins",
-      "created": "2026-07-07"
-    },
-    {
-      "title": "Ancient Citadel",
-      "artist": "Aemiro",
-      "artistSlug": "aemiro",
-      "image": "assets/images/artworks/ancient-citadel.jpg",
-      "category": "Medieval",
-      "year": 2026,
-      "software": "Blender",
-      "description": "Benteng kuno dengan arsitektur megah yang mencerminkan kejayaan masa lalu.",
-      "slug": "ancient-citadel",
-      "created": "2026-07-07"
     }
   ],
+
   "blog": [
     {
       "title": "Behind The Artwork: Ethereal Kingdom",
       "date": "March 15, 2026",
-      "image": "assets/images/blog/ethereal-kingdom-process.jpg",
+      "image": "/assets/images/blog/ethereal-kingdom-process.jpg",
       "excerpt": "Alpredo FX berbagi proses kreatif di balik pembuatan Ethereal Kingdom, dari konsep hingga render final.",
       "slug": "behind-ethereal-kingdom"
     }
   ],
+
   "services": [
     {
-      "icon": "🏰",
+      "icon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L2 7l10 5 10-5-10-5z\"/><path d=\"M2 17l10 5 10-5\"/><path d=\"M2 12l10 5 10-5\"/></svg>",
       "name": "Minecraft Art",
       "description": "Karya seni digital bertema Minecraft dengan detail tinggi dan komposisi cinematic.",
       "slug": "minecraft-art"
     },
     {
-      "icon": "🖼️",
+      "icon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2\" ry=\"2\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"/><polyline points=\"21 15 16 10 5 21\"/></svg>",
       "name": "Thumbnail",
       "description": "Thumbnail profesional untuk YouTube, Stream, atau konten digital lainnya.",
       "slug": "thumbnail"
     },
     {
-      "icon": "📜",
+      "icon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" rx=\"2\" ry=\"2\"/><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"22\"/><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"22\"/><line x1=\"2\" y1=\"8\" x2=\"22\" y2=\"8\"/><line x1=\"2\" y1=\"16\" x2=\"22\" y2=\"16\"/></svg>",
       "name": "Poster",
       "description": "Desain poster dengan komposisi artistik yang kuat untuk berbagai keperluan.",
       "slug": "poster"
     }
   ],
+
   "pricing": [
     {
       "name": "Personal",

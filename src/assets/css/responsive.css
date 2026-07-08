@@ -1,131 +1,418 @@
-@media(max-width:768px){
-    .grid{
-        grid-template-columns:1fr
+/* ============================================================
+   RESPONSIVE.CSS — OriginGFX
+   Semua aturan diurutkan dari layar terbesar ke terkecil
+   ============================================================ */
+
+/* ============================================================
+   TABLET & LAPTOP KECIL (max-width: 992px)
+   ============================================================ */
+
+@media (max-width: 992px) {
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .nav{display:none}
-}
-
-@media (max-width:768px){
-
-    .artist-item{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:20px;
+    .artists-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .artist-info{
-        justify-content:space-between;
-        width:100%;
-        gap:20px;
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-}
-
-/* ========================================
-   RESPONSIVE TAMBAHAN
-======================================== */
-
-@media(max-width:992px){
-    .grid-4{
-        grid-template-columns:repeat(2,1fr);
+    .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .artists-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .services-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .pricing-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .contact-grid{
-        grid-template-columns:1fr;
-        gap:40px;
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
     }
 }
 
-@media(max-width:768px){
-    .artwork-detail{
-        grid-template-columns:1fr;
-        gap:32px;
+/* ============================================================
+   TABLET & MOBILE (max-width: 768px)
+   ============================================================ */
+
+@media (max-width: 768px) {
+    /* ----- GRID UMUM ----- */
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
     }
 
-    .artists-grid{
-        grid-template-columns:1fr;
-        max-width:400px;
-        margin:0 auto;
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .services-grid{
-        grid-template-columns:1fr;
-        max-width:400px;
-        margin:0 auto;
+    /* ----- HEADER & NAV ----- */
+    .header .nav {
+        display: flex;
+        flex-wrap: wrap;
+        height: auto;
+        padding: 12px 0;
     }
 
-    .pricing-grid{
-        grid-template-columns:1fr;
-        max-width:400px;
-        margin:0 auto 40px;
+    #main-nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
     }
 
-    .blog-grid{
-        grid-template-columns:1fr;
-        max-width:500px;
-        margin:0 auto;
+    #main-nav.open {
+        display: flex;
     }
 
-    .philosophy-grid{
-        grid-template-columns:1fr;
+    .hamburger {
+        display: flex !important;
     }
 
-    .profile-header{
-        flex-direction:column;
-        text-align:center;
+    /* ----- HERO ----- */
+    .hero {
+        padding: 80px 0 60px;
     }
 
-    .profile-stats{
-        justify-content:center;
+    .hero h1 {
+        font-size: 2.4rem;
     }
 
-    .profile-social{
-        justify-content:center;
+    .hero .lead {
+        font-size: 1rem;
+        margin: 12px 0;
     }
 
-    .grid-4{
-        grid-template-columns:repeat(2,1fr);
+    .hero-sub {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
     }
 
-    .footer-links{
-        gap:12px;
-        flex-wrap:wrap;
-        justify-content:center;
+    .hero-stats {
+        padding: 12px 20px;
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius: 40px;
+    }
+
+    .hero-stat-number {
+        font-size: 1.1rem;
+    }
+
+    .hero-stat-label {
+        font-size: 0.75rem;
+    }
+
+    .hero-stat-divider {
+        height: 20px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+    }
+
+    /* ----- SECTION ----- */
+    .section {
+        padding: 60px 0;
+    }
+
+    .section-head {
+        margin-bottom: 20px;
+        gap: 12px;
+    }
+
+    .section-head h2 {
+        font-size: 1.4rem;
+    }
+
+    .section-head span {
+        font-size: 0.75rem;
+    }
+
+    .section-more {
+        font-size: 0.8rem;
+    }
+
+    /* ----- ARTIST LIST (Home) ----- */
+    .artist-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 16px 12px !important;
+        border-radius: 8px;
+    }
+
+    .artist-meta h3 {
+        font-size: 1.1rem;
+    }
+
+    .artist-meta p {
+        font-size: 0.8rem;
+    }
+
+    .artist-info {
+        width: 100%;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .artist-info span {
+        font-size: 0.8rem;
+        padding: 2px 10px;
+    }
+
+    .artist-info a {
+        font-size: 0.8rem;
+    }
+
+    /* ----- ARTIST CARD (Artists page) ----- */
+    .artist-card {
+        padding: 20px 16px !important;
+    }
+
+    .artist-card .artist-avatar-wrapper {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 12px;
+    }
+
+    .artist-card h3 {
+        font-size: 1rem;
+    }
+
+    .artist-role {
+        font-size: 0.8rem;
+        margin-bottom: 8px;
+    }
+
+    .artist-stats {
+        margin-bottom: 12px;
+    }
+
+    .stat-number {
+        font-size: 1rem;
+    }
+
+    .btn-portfolio {
+        padding: 6px 16px;
+        font-size: 0.8rem;
+    }
+
+    .artists-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    /* ----- ARTWORK DETAIL ----- */
+    .artwork-detail {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    /* ====== ARTWORK DETAIL — MOBILE ====== */
+    .artwork-info {
+        padding: 0 8px; /* Kurangi padding kiri-kanan */
+    }
+
+    .artwork-info h1 {
+        font-size: 1.8rem; /* Judul lebih kecil */
+    margin-bottom: 2px;
+    }
+
+    .artwork-artist {
+        font-size: 0.95rem;
+        margin-bottom: 16px;
+    }
+
+    .artwork-meta {
+        gap: 8px; /* Jarak antar meta lebih rapat */
+        padding: 8px 0;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+    }
+
+    .artwork-description {
+        margin-bottom: 20px;
+    }
+
+    .artwork-description p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    .artwork-actions {
+        flex-direction: column; /* Tombol vertikal */
+        gap: 10px;
+    }
+
+    .artwork-actions .btn {
+        width: 100%; /* Full-width */
+        text-align: center;
+        padding: 12px;
+    }
+
+    .artwork-social {
+        gap: 12px;
+        font-size: 0.85rem;
+    }
+
+    .back-link {
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+    }
+
+    /* ----- SERVICES, PRICING, BLOG ----- */
+    .services-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto 40px;
+    }
+
+    .blog-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    /* ----- ABOUT (Philosophy Grid) ----- */
+    .philosophy-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* ----- ARTIST PROFILE ----- */
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-stats {
+        justify-content: center;
+    }
+
+    .profile-social {
+        justify-content: center;
+    }
+
+    /* ----- FOOTER ----- */
+    .footer-links {
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* ----- CARD ARTWORK ----- */
+    .card h3 {
+        font-size: 0.95rem;
+    }
+
+    .card p {
+        font-size: 0.8rem;
     }
 }
 
-@media(max-width:480px){
-    .grid-4{
-        grid-template-columns:1fr;
+/* ============================================================
+   PONSEL KECIL (max-width: 480px)
+   ============================================================ */
+
+@media (max-width: 480px) {
+    /* ----- HERO ----- */
+    .hero {
+        padding: 60px 0 40px;
     }
 
-    .filter-bar{
-        gap:8px;
+    .hero h1 {
+        font-size: 2rem;
     }
 
-    .filter-btn{
-        padding:6px 14px;
-        font-size:0.8rem;
+    .hero-stats {
+        padding: 10px 16px;
+        gap: 12px;
+        border-radius: 30px;
     }
 
-    .artwork-actions{
-        flex-direction:column;
+    .hero-stat-number {
+        font-size: 0.95rem;
     }
 
-    .artwork-social{
-        flex-wrap:wrap;
+    .hero-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 240px;
+        gap: 6px;
+        margin-bottom: 24px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    /* ----- SECTION ----- */
+    .section {
+        padding: 40px 0;
+    }
+
+    .section-head h2 {
+        font-size: 1.2rem;
+    }
+
+    /* ----- ARTIST CARD ----- */
+    .artist-card {
+        padding: 16px 12px !important;
+    }
+
+    /* ----- GRID 4 ----- */
+    .grid-4 {
+        grid-template-columns: 1fr;
+    }
+
+    /* ----- FILTER ----- */
+    .filter-bar {
+        gap: 8px;
+    }
+
+    .filter-btn {
+        padding: 6px 14px;
+        font-size: 0.8rem;
+    }
+
+    /* ----- ARTWORK ACTIONS ----- */
+    .artwork-actions {
+        flex-direction: column;
+    }
+
+    .artwork-social {
+        flex-wrap: wrap;
+    }
+
+    /* ====== ARTWORK DETAIL — PONSEL KECIL ====== */
+    .artwork-info {
+        padding: 0 4px;
+    }
+
+    .artwork-info h1 {
+        font-size: 1.4rem;
+    }
+
+    .artwork-meta {
+        font-size: 0.8rem;
+        gap: 6px;
+    }
+
+    .artwork-description p {
+        font-size: 0.9rem;
+    }
+
+    .artwork-actions .btn {
+        padding: 10px;
+        font-size: 0.9rem;
     }
 }

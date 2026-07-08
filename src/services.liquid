@@ -10,17 +10,29 @@ title: Services — OriginGFX
     </div>
 </section>
 
-<section class="section reveal">
+<section class="section reveal visible section-short">
     <div class="container">
         <div class="services-grid">
             {% for service in data.services %}
             <div class="service-card">
-                <span class="service-icon">{{ service.icon }}</span>
+                <div class="service-icon">
+                    {{ service.icon }}
+                </div>
                 <h3>{{ service.name }}</h3>
                 <p>{{ service.description }}</p>
                 <a href="/pricing" class="service-link">View Pricing →</a>
             </div>
             {% endfor %}
         </div>
+        <!-- ====== SIGNATURE ====== -->
+        <section class="section reveal section-signature">
+            <div class="signature-section">
+                <div class="signature-quote">
+                    <span class="quote-mark">✦</span>
+                    <p>Every artwork deserves to be discovered.</p>
+                </div>
+            </div>
+        </section>
+        
     </div>
 </section>

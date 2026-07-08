@@ -8,54 +8,91 @@ pagination:
 permalink: "/artist/{{ artist.slug }}/"
 ---
 
-<section class="section reveal">
+<section class="section reveal" style="padding-top: 40px;">
     <div class="container">
-        <a href="/artists" class="back-link">← Back to Artists</a>
+        <!-- Back Link -->
+        <a href="#" class="back-link" onclick="history.back(); return false;">← Back</a>
 
-        <div class="artist-profile">
-            <div class="profile-header">
-                <!-- 👇 AVATAR PAKAI TAG <img> + FILTER url -->
-                <img src="{{ artist.avatar | url }}" alt="{{ artist.name }}" class="profile-avatar large" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
-
-                <div class="profile-info">
-                    <h1>{{ artist.name }}</h1>
-                    <p class="profile-role">{{ artist.role }}</p>
-                    <div class="profile-stats">
-                        {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
-                        <span>{{ artistArtworks }} Artworks</span>
-                    </div>
-                    <div class="profile-social">
-                        {% if artist.social.instagram %}
-                        <a href="{{ artist.social.instagram }}" target="_blank">Instagram</a>
-                        {% endif %}
-                        {% if artist.social.twitter %}
-                        <a href="{{ artist.social.twitter }}" target="_blank">Twitter</a>
-                        {% endif %}
-                        {% if artist.social.discord %}
-                        <a href="{{ artist.social.discord }}" target="_blank">Discord</a>
-                        {% endif %}
-                    </div>
-                </div>
+        <!-- ====== PROFILE HEADER ====== -->
+        <div class="artist-profile-header">
+            <div class="profile-avatar-wrapper">
+                {% if artist.avatar %}
+                    <img src="{{ artist.avatar | url }}" alt="{{ artist.name }}" class="profile-avatar-img" loading="lazy">
+                {% else %}
+                    <div class="profile-avatar-placeholder">{{ artist.name | slice: 0, 1 }}</div>
+                {% endif %}
             </div>
 
-            <div class="profile-bio">
-                <h3>About</h3>
-                <p>{{ artist.bio }}</p>
-            </div>
+            <div class="profile-info">
+                <h1>{{ artist.name }}</h1>
+                <p class="profile-role">{{ artist.role }}</p>
 
-            <div class="profile-artworks">
-                <h3>Portfolio</h3>
-                <div class="grid grid-3">
-                    {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug %}
-                    {% for artwork in artistArtworks %}
-                    <div class="card">
-                        <div class="thumb" style="background-image: url('{{ artwork.image | url }}'); background-size: cover; background-position: center;"></div>
-                        <h3>{{ artwork.title }}</h3>
-                        <p>{{ artwork.year }}</p>
-                        <a href="/artwork/{{ artwork.slug }}" class="card-link">View Artwork →</a>
-                    </div>
-                    {% endfor %}
+                <div class="profile-stats">
+                    {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
+                    <span class="profile-stat">
+                        <span class="stat-number">{{ artistArtworks }}</span>
+                        <span class="stat-label">Artworks</span>
+                    </span>
                 </div>
+
+                <div class="profile-social">
+                    {% if artist.social.instagram %}
+                        <a href="{{ artist.social.instagram }}" target="_blank" class="social-link instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                            Instagram
+                        </a>
+                    {% endif %}
+                    {% if artist.social.twitter %}
+                        <a href="{{ artist.social.twitter }}" target="_blank" class="social-link twitter">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+                                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+                            </svg>
+                            Twitter
+                        </a>
+                    {% endif %}
+                    {% if artist.social.discord %}
+                        <a href="{{ artist.social.discord }}" target="_blank" class="social-link discord">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M8 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
+                                <path d="M16 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
+                                <path d="M12 16c-2.5 0-4.5-1.5-5-3.5"></path>
+                                <path d="M12 16c2.5 0 4.5-1.5 5-3.5"></path>
+                                <path d="M4 4l2 2"></path>
+                                <path d="M20 4l-2 2"></path>
+                            </svg>
+                            Discord
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== BIO ====== -->
+        <div class="profile-bio-section">
+            <h2>About</h2>
+            <p>{{ artist.bio }}</p>
+        </div>
+
+        <!-- ====== PORTFOLIO ====== -->
+        <div class="profile-portfolio">
+            <h2>Portfolio</h2>
+            <div class="grid grid-3">
+                {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug %}
+                {% for artwork in artistArtworks %}
+                <div class="card">
+                    <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
+                    <h3>{{ artwork.title }}</h3>
+                    <p>{{ artwork.year }}</p>
+                    <a href="/artwork/{{ artwork.slug }}" class="card-link">View Artwork →</a>
+                </div>
+                {% else %}
+                <p class="no-artwork">Belum ada artwork yang dipublikasikan.</p>
+                {% endfor %}
             </div>
         </div>
     </div>

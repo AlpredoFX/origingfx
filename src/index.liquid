@@ -5,27 +5,68 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
 
 <section class="hero reveal">
     <div class="container center">
-        <h1>Digital Gallery for Minecraft Artists</h1>
-        <p class="lead">Gallery First. Store Second.</p>
+        <!-- ====== HERO VISUAL (Grid Mini Artwork) ====== -->
+        <div class="hero-grid">
+            {% assign featuredArtworks = data.artworks | slice: 0, 4 %}
+            {% for artwork in featuredArtworks %}
+            <div class="hero-thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
+            {% endfor %}
+        </div>
+
+        <!-- ====== HERO TEXT ====== -->
+        <h1>Digital Gallery for <br>Minecraft Artists</h1>
+
+        <p class="lead">Gallery First. Store Second. Artist Always.</p>
+
         <p class="hero-sub">Menampilkan karya terbaik dari para kreator Minecraft</p>
+
+        <!-- ====== STATISTIK ====== -->
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-number">{{ data.artists | size }}</span>
+                <span class="hero-stat-label">Artists</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">{{ data.artworks | size }}</span>
+                <span class="hero-stat-label">Artworks</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">✦</span>
+                <span class="hero-stat-label">Curated</span>
+            </div>
+        </div>
+
         <a class="btn" href="/explore">Explore Gallery</a>
     </div>
 </section>
 
-<section class="section reveal">
+<section id="featured" class="section reveal">
     <div class="container">
         <div class="section-head">
             <span>01</span>
             <h2>Featured Showcase</h2>
         </div>
-        <div class="featured-image" style="background-image: url('{{ data.featured.image }}'); background-size: cover; background-position: center;">
-            <div class="featured-content">
-                <span class="featured-icon">✦</span>
-                <h3>{{ data.featured.title }}</h3>
-                <p>by {{ data.featured.artist }}</p>
-                <a href="/artwork/{{ data.featured.slug }}" class="featured-link">View Artwork →</a>
-            </div>
-        </div>
+
+        {% assign featuredArtwork = data.artworks | where: "slug", data.featured | first %}
+
+        {% if featuredArtwork %}
+            <a href="/artwork/{{ featuredArtwork.slug }}" class="featured-wrapper">
+                <div class="featured-image" style="background-image: url('{{ featuredArtwork.image }}'); background-size: cover; background-position: center;">
+                    <div class="featured-overlay">
+                        <div class="featured-content">
+                            <span class="featured-badge">✦ Featured</span>
+                            <h3>{{ featuredArtwork.title }}</h3>
+                            <p>by {{ featuredArtwork.artist }}</p>
+                            <span class="featured-link">View Artwork →</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% else %}
+            <p class="featured-error">Belum ada artwork yang dipilih sebagai featured.</p>
+        {% endif %}
     </div>
 </section>
 
@@ -52,7 +93,7 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
     </div>
 </section>
 
-<section class="section reveal">
+<section class="section reveal visible section-short">
     <div class="container">
         <div class="section-head">
             <span>03</span>
@@ -76,6 +117,16 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             </article>
             {% endfor %}
         </div>
+
+        <!-- ====== SIGNATURE ====== -->
+        <section class="section reveal section-signature">
+            <div class="signature-section">
+                <div class="signature-quote">
+                    <span class="quote-mark">✦</span>
+                    <p>Every artwork deserves to be discovered.</p>
+                </div>
+            </div>
+        </section>
 
     </div>
 </section>
