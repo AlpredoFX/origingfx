@@ -1,17 +1,19 @@
 ---
 layout: layout.liquid
-title: Services — OriginGFX
+title: Commission Hub — OriginGFX
 ---
 
 <section class="page-hero reveal">
     <div class="container center">
-        <h1>Commission & Services</h1>
-        <p class="lead">Wujudkan visi kreatifmu bersama artist OriginGFX</p>
+        <h1>Commission Hub</h1>
+        <p class="lead">Find artists based on the type of work you need</p>
+        <p class="hero-sub">Temukan artist yang sesuai dengan kebutuhanmu</p>
     </div>
 </section>
 
-<section class="section reveal visible section-short">
+<section class="section reveal">
     <div class="container">
+
         <div class="services-grid">
             {% for service in data.services %}
             <div class="service-card">
@@ -20,19 +22,20 @@ title: Services — OriginGFX
                 </div>
                 <h3>{{ service.name }}</h3>
                 <p>{{ service.description }}</p>
-                <a href="/pricing" class="service-link">View Pricing →</a>
+
+                {% assign artists = data.artists | where: "services", service.slug %}
+                {% assign artistCount = artists | size %}
+                <p class="service-artist-count">{{ artistCount }} Artists Available</p>
+
+                <a href="/artists?service={{ service.slug }}" class="service-link">
+                    Meet the Artists →
+                </a>
             </div>
             {% endfor %}
         </div>
-        <!-- ====== SIGNATURE ====== -->
-        <section class="section reveal section-signature">
-            <div class="signature-section">
-                <div class="signature-quote">
-                    <span class="quote-mark">✦</span>
-                    <p>Every artwork deserves to be discovered.</p>
-                </div>
-            </div>
-        </section>
-        
+
     </div>
 </section>
+
+<!-- Signature -->
+{% include "signature.liquid" with quote: "Great ideas become unforgettable visuals." %}

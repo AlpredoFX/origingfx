@@ -29,6 +29,8 @@
       "avatar": "/assets/images/artists/alpredofx.webp",
       "role": "Game Art | Minecraft Renders",
       "slug": "alpredo-fx",
+      "price": "Mulai dari Rp 40K",
+      "services": ["minecraft-art", "thumbnail", "poster"],
       "bio": "Hey, I'm Alpredo — a digital artist from Indonesia who turns Minecraft characters into cinematic art. I render and pose on my laptop, then color-grade and edit on my phone for a crisp finish. My strength is character-focused GFX with dramatic lighting and clean compositions — no massive maps, just cool props and effects. Perfect for YouTube thumbnails, profile pics, or wallpapers. My style is bold, moody, and clean. Send me your skin and a theme, and I'll bring it to life!.",
       "social": {
         "instagram": "https://www.instagram.com/alpredofx/",
@@ -43,6 +45,8 @@
       "avatar": "/assets/images/artists/aemiro.webp",
       "role": "Adventure Storytelling",
       "slug": "aemiro",
+      "price": "Mulai dari $50",
+      "services": ["storyboarding", "concept-art"],
       "bio": "Aemiro adalah storyteller yang menghadirkan petualangan melalui karya-karyanya.",
       "social": {
         "instagram": "https://instagram.com/aemiro",
@@ -56,6 +60,8 @@
       "avatar": "/assets/images/artists/kevin.webp",
       "role": "Designer",
       "slug": "acxd",
+      "price": "Mulai dari $60",
+      "services": ["graphic-design", "ui-ux"],
       "bio": "Seize The Day.",
       "social": {
         "instagram": "https://www.instagram.com/ac_xd.fx?igsh=ZnI0OXh6NXdvNml0"
@@ -67,6 +73,8 @@
       "avatar": "/assets/images/artists/kenzo.png",
       "role": "Architectural Artist",
       "slug": "steven",
+      "price": "Mulai dari $70",
+      "services": ["architectural-design"],
       "bio": "Steven adalah architectural artist yang fokus pada desain bangunan dan struktur megah.",
       "social": {
         "instagram": "https://instagram.com/steven",

@@ -336,3 +336,154 @@ document.addEventListener('keydown', function(e) {
         closeLightbox();
     }
 });
+
+// ============================================================
+// THEME TOGGLE — DENGAN ANIMASI TRANSISI
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('theme-toggle');
+    const icon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+
+    // Icon SVG
+    const sunIcon = `
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    `;
+
+    const moonIcon = `
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linejoin="round"/>
+    `;
+    // Fungsi set tema dengan animasi
+    function setTheme(theme, animate = true) {
+        const isDark = theme === 'dark';
+        
+        // Animasi ikon
+        if (animate) {
+            icon.classList.remove('morphing');
+            // Force reflow
+            void icon.offsetHeight;
+            icon.classList.add('morphing');
+        }
+
+        // Hapus semua class
+        html.classList.remove('light-mode', 'dark-mode', 'manual-theme');
+
+        // Tambah class baru
+        if (isDark) {
+            html.classList.add('dark-mode', 'manual-theme');
+            icon.innerHTML = sunIcon;
+            toggle.setAttribute('aria-label', 'Switch to light mode');
+        } else {
+            html.classList.add('light-mode', 'manual-theme');
+            icon.innerHTML = moonIcon;
+            toggle.setAttribute('aria-label', 'Switch to dark mode');
+        }
+
+        localStorage.setItem('theme', theme);
+    }
+
+    // Inisialisasi tema
+    const storedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (storedTheme) {
+        setTheme(storedTheme, false);
+    } else {
+        if (prefersDark) {
+            setTheme('dark', false);
+        } else {
+            setTheme('light', false);
+        }
+        html.classList.remove('manual-theme');
+    }
+
+    // Event listener toggle
+    toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+
+        const isDark = html.classList.contains('dark-mode');
+        const newTheme = isDark ? 'light' : 'dark';
+        
+        // Tambah efek klik
+        this.style.transform = 'scale(0.92)';
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 150);
+
+        setTheme(newTheme, true);
+    });
+
+    // Reset animasi ikon setelah selesai
+    icon.addEventListener('animationend', function() {
+        this.classList.remove('morphing');
+    });
+
+    // Auto follow system (jika belum manual)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme')) {
+            if (e.matches) {
+                setTheme('dark', true);
+            } else {
+                setTheme('light', true);
+            }
+            html.classList.remove('manual-theme');
+        }
+    });
+});
+
+// ============================================================
+// PAGE TRANSITIONS — FALLBACK (Jika View Transitions Tidak Didukung)
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Cek apakah View Transitions didukung
+    const supportsViewTransition = 'startViewTransition' in document;
+
+    if (!supportsViewTransition) {
+        // Jika tidak didukung, tambahkan animasi fade-in untuk semua konten
+        const main = document.querySelector('main');
+        if (main) {
+            main.style.opacity = '0';
+            main.style.transform = 'translateY(12px)';
+            main.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+
+            requestAnimationFrame(() => {
+                main.style.opacity = '1';
+                main.style.transform = 'translateY(0)';
+            });
+        }
+    }
+});
+
+// ============================================================
+// INTERCEPT NAVIGATION — Pakai View Transition
+// ============================================================
+
+document.addEventListener('click', function(e) {
+    // Cari link internal (bukan external, bukan #anchor)
+    const link = e.target.closest('a');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
+
+    // Cegah navigasi default, pakai View Transition
+    if ('startViewTransition' in document) {
+        e.preventDefault();
+        const targetUrl = link.href;
+
+        document.startViewTransition(() => {
+            window.location.href = targetUrl;
+        });
+    }
+    // Kalau tidak support, biarkan navigasi normal
+});

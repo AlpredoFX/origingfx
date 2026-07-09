@@ -34,41 +34,6 @@ permalink: "/artist/{{ artist.slug }}/"
                         <span class="stat-label">Artworks</span>
                     </span>
                 </div>
-
-                <div class="profile-social">
-                    {% if artist.social.instagram %}
-                        <a href="{{ artist.social.instagram }}" target="_blank" class="social-link instagram">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                            </svg>
-                            Instagram
-                        </a>
-                    {% endif %}
-                    {% if artist.social.twitter %}
-                        <a href="{{ artist.social.twitter }}" target="_blank" class="social-link twitter">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
-                                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
-                            </svg>
-                            Twitter
-                        </a>
-                    {% endif %}
-                    {% if artist.social.discord %}
-                        <a href="{{ artist.social.discord }}" target="_blank" class="social-link discord">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M8 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
-                                <path d="M16 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
-                                <path d="M12 16c-2.5 0-4.5-1.5-5-3.5"></path>
-                                <path d="M12 16c2.5 0 4.5-1.5 5-3.5"></path>
-                                <path d="M4 4l2 2"></path>
-                                <path d="M20 4l-2 2"></path>
-                            </svg>
-                            Discord
-                        </a>
-                    {% endif %}
-                </div>
             </div>
         </div>
 
@@ -76,6 +41,19 @@ permalink: "/artist/{{ artist.slug }}/"
         <div class="profile-bio-section">
             <h2>About</h2>
             <p>{{ artist.bio }}</p>
+           
+        </div>
+            <p class="artist-price">{{ artist.price }}</p>
+        <div class="artist-contact-buttons">
+            {% if artist.social.instagram %}
+                <a href="{{ artist.social.instagram }}" target="_blank" class="btn">Commission via Instagram</a>
+            {% endif %}
+            {% if artist.social.discord %}
+                <a href="{{ artist.social.discord }}" target="_blank" class="btn">Commission via Discord</a>
+            {% endif %}
+            {% if artist.social.fiverr %}
+                <a href="{{ artist.social.fiverr }}" target="_blank" class="btn">Commission via Fiverr</a>
+            {% endif %}
         </div>
 
         <!-- ====== PORTFOLIO ====== -->

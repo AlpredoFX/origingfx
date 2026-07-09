@@ -10,11 +10,14 @@ permalink: "/artwork/{{ artwork.slug }}/"
 
 <section class="section reveal" style="padding-top: 40px;">
     <div class="container">
-        <!-- Back Link -->
+
+        <!-- ====== BACK LINK ====== -->
         <a href="#" class="back-link" onclick="history.back(); return false;">← Back</a>
 
         <!-- ====== ARTWORK DETAIL ====== -->
         <div class="artwork-detail">
+
+            <!-- KIRI: Gambar (60%) -->
             <div class="artwork-image">
                 <div class="artwork-placeholder" onclick="openLightbox('{{ artwork.image }}', '{{ artwork.title }}')">
                     <img src="{{ artwork.image }}" alt="{{ artwork.title }}" loading="lazy">
@@ -22,106 +25,141 @@ permalink: "/artwork/{{ artwork.slug }}/"
                 </div>
             </div>
 
+            <!-- KANAN: Info (40%) -->
             <div class="artwork-info">
                 <span class="artwork-tag">{{ artwork.category }}</span>
                 <h1>{{ artwork.title }}</h1>
-                <p class="artwork-artist">by <a href="/artist/{{ artwork.artistSlug }}">{{ artwork.artist }}</a></p>
 
+                <!-- ====== ARTIST CARD (mini) ====== -->
+                {% assign artist = data.artists | where: "slug", artwork.artistSlug | first %}
+                <div class="artwork-artist-card">
+                    <div class="mini-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
+                    <div class="mini-artist-info">
+                        <a href="/artist/{{ artist.slug }}" class="mini-artist-name">{{ artist.name }}</a>
+                        <span class="mini-artist-role">{{ artist.role }}</span>
+                        <span class="mini-artist-stats">
+                            {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
+                            {{ artistArtworks }} Artworks
+                        </span>
+                    </div>
+                    <a href="/artist/{{ artist.slug }}" class="mini-artist-link">View Profile →</a>
+                </div>
+
+                <!-- ====== META ====== -->
                 <div class="artwork-meta">
                     <span>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                         {{ artwork.year }}
                     </span>
-                    <span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                        {{ artwork.software | join: ", " }}
-                    </span>
-                    <span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                        {{ artwork.category }}
-                    </span>
                 </div>
 
+                <!-- ====== ARTWORK STORY ====== -->
                 <div class="artwork-description">
                     <p>{{ artwork.description }}</p>
                 </div>
 
+                <!-- ====== TOOLS (jika software lebih dari 1) ====== -->
+                {% if artwork.software.size > 1 %}
+                <div class="artwork-tools">
+                    <span class="tools-label">Tools</span>
+                    <div class="tools-list">
+                        {% for tool in artwork.software %}
+                        <span class="tool-badge">{{ tool }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- ====== COMMISSION & ACTION ====== -->
                 <div class="artwork-actions">
-                    <a href="#" class="btn">Commission Artist</a>
-                    <a href="#" class="btn btn-outline">Save Artwork</a>
+                    <div class="action-primary">
+                        <span class="action-hint">Interested in a similar style?</span>
+                        <a href="/artist/{{ artwork.artistSlug }}" class="btn btn-commission">Commission Artist →</a>
+                    </div>
+                    <div class="action-secondary">
+                        <a href="/artist/{{ artwork.artistSlug }}" class="btn-outline">Visit Artist Profile</a>
+                    </div>
                 </div>
 
-                <div class="artwork-social">
-                    <span>Share:</span>
-                    <a href="#">Twitter</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">Pinterest</a>
+                <!-- ====== SHARE ====== -->
+                <div class="artwork-share">
+                    <span class="share-label">Share this Artwork</span>
+                    <div class="share-links">
+                        <a href="https://twitter.com/intent/tweet?url={{ page.url | url_encode }}&text={{ artwork.title }} by {{ artist.name }}" target="_blank" class="share-btn twitter">Twitter</a>
+                        <a href="https://www.pinterest.com/pin/create/button/?url={{ page.url | url_encode }}&media={{ artwork.image }}&description={{ artwork.title }}" target="_blank" class="share-btn pinterest">Pinterest</a>
+                        <a href="#" class="share-btn copy-link" onclick="navigator.clipboard.writeText(window.location.href); alert('Link copied!'); return false;">Copy Link</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ====== RELATED ARTWORKS ====== -->
-        <div class="related-artworks">
-            <h3>Related Artworks</h3>
+        <!-- ====== MORE FROM THIS ARTIST ====== -->
+        <div class="more-from-artist">
+            <h3>More from {{ artist.name }}</h3>
             <div class="grid grid-3">
-                {% assign allArtworks = data.artworks %}
-                {% assign related = "" | split: "" %}
-                {% for a in allArtworks %}
-                    {% if a.artistSlug == artwork.artistSlug and a.slug != artwork.slug %}
-                        {% assign related = related | push: a %}
+                {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug %}
+                {% for a in artistArtworks %}
+                    {% if a.slug != artwork.slug %}
+                    <div class="card">
+                        <div class="thumb" style="background-image: url('{{ a.image }}'); background-size: cover; background-position: center;"></div>
+                        <h3>{{ a.title }}</h3>
+                        <p>{{ a.year }}</p>
+                        <a href="/artwork/{{ a.slug }}" class="card-link">View Artwork →</a>
+                    </div>
                     {% endif %}
                 {% endfor %}
-                {% assign relatedCount = related | size %}
-                {% if relatedCount == 0 %}
-                    {% assign fallback = allArtworks | reverse %}
-                    {% for a in fallback limit: 3 %}
-                        {% if a.slug != artwork.slug %}
+            </div>
+        </div>
+
+        <!-- ====== RELATED ARTWORKS (lainnya) ====== -->
+        <div class="related-artworks">
+            <h3>You Might Also Like</h3>
+            <div class="grid grid-3">
+                {% assign allOthers = data.artworks | reverse %}
+                {% assign count = 0 %}
+                {% for a in allOthers %}
+                    {% if a.slug != artwork.slug and a.artistSlug != artist.slug %}
+                        {% if count < 3 %}
                         <div class="card">
                             <div class="thumb" style="background-image: url('{{ a.image }}'); background-size: cover; background-position: center;"></div>
                             <h3>{{ a.title }}</h3>
                             <p>by {{ a.artist }}</p>
                             <a href="/artwork/{{ a.slug }}" class="card-link">View Artwork →</a>
                         </div>
+                        {% assign count = count | plus: 1 %}
                         {% endif %}
-                    {% endfor %}
-                {% else %}
-                    {% for a in related limit: 3 %}
-                    <div class="card">
-                        <div class="thumb" style="background-image: url('{{ a.image }}'); background-size: cover; background-position: center;"></div>
-                        <h3>{{ a.title }}</h3>
-                        <p>by {{ a.artist }}</p>
-                        <a href="/artwork/{{ a.slug }}" class="card-link">View Artwork →</a>
-                    </div>
-                    {% endfor %}
-                {% endif %}
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
+
     </div>
 </section>
 
-<!-- ====== LIGHTBOX MODAL PREMIUM ====== -->
+<!-- ====== LIGHTBOX ====== -->
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
     <div class="lightbox-content" onclick="event.stopPropagation()">
-        <!-- Close Button -->
         <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-
-        <!-- Zoom Controls -->
-        <div class="lightbox-controls">
-            <button class="zoom-btn" onclick="zoomIn()" title="Perbesar">＋</button>
-            <button class="zoom-btn" onclick="zoomOut()" title="Perkecil">−</button>
-            <button class="zoom-btn" onclick="resetZoom()" title="Reset">⟲</button>
-        </div>
-
-        <!-- Image Container (untuk zoom & drag) -->
         <div class="lightbox-image-container" id="lightbox-container">
             <img id="lightbox-img" src="" alt="">
+            <div class="zoom-hint">🔍 Klik untuk memperbesar</div>
+            <div class="lightbox-controls">
+                <button class="zoom-btn" onclick="zoomIn()">＋</button>
+                <button class="zoom-btn" onclick="zoomOut()">−</button>
+                <button class="zoom-btn" onclick="resetZoom()">⟲</button>
+            </div>
         </div>
-
-        <!-- Caption -->
         <p id="lightbox-caption" class="lightbox-caption"></p>
-
-        <!-- Hint -->
         <p class="lightbox-hint">Scroll untuk zoom · Drag untuk geser</p>
     </div>
 </div>
-<!-- ====== END LIGHTBOX ====== -->
+
+        <!-- ====== SIGNATURE ====== -->
+        <section class="section reveal section-signature">
+            <div class="signature-section">
+                <div class="signature-quote">
+                    <span class="quote-mark">✦</span>
+                    <p>Every artwork deserves to be discovered.</p>
+                </div>
+            </div>
+        </section>
