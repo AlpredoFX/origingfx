@@ -1,2 +1,29 @@
-.reveal{opacity:0;transform:translateY(24px);transition:.6s}
-.visible{opacity:1;transform:none}
+/* ============================================================
+   REVEAL ON SCROLL — OriginGFX Premium Motion
+   ============================================================ */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(3px);
+
+    transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+                filter 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    will-change: opacity, transform, filter;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+/* ============================================================
+   Stagger Effect (menggunakan delay di JavaScript)
+   ============================================================ */
+
+/* Kita akan atur delay via JS agar lebih fleksibel */

@@ -6,76 +6,138 @@ pagination:
   size: 8
   alias: paginatedArtworks
   reverse: true
-permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber | plus: 1 }}/{% endif %}"
+  permalink: "/explore/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber | plus: 1 }}/{% endif %}"
 ---
 
 <section class="page-hero reveal">
     <div class="container center">
-        <h1>Explore Artworks</h1>
+        <h1>Discover Artworks</h1>
         <p class="lead">Temukan karya terbaik dari para kreator Minecraft</p>
+        <p class="hero-tagline" style="font-size: 0.9rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 6px;">
+            Gallery First. Store Second. Artist Always.
+        </p>
     </div>
 </section>
 
-<section class="section reveal visible section-short">
+<section class="section reveal" style="padding-top: 20px;">
     <div class="container">
-        <div class="filter-bar">
-            <button class="filter-btn active">All</button>
-            <button class="filter-btn">Manip</button>
-            <button class="filter-btn">Abstract</button>
-            <button class="filter-btn">Art</button>
-            <button class="filter-btn">Scene</button>
-            <button class="filter-btn">Horror</button>
+
+        <!-- ====== STATISTIK ====== -->
+        <div class="explore-stats">
+            <span class="stat-item">
+                <span class="stat-number">{{ data.artworks | size }}</span>
+                <span class="stat-label">Artworks</span>
+            </span>
+            <span class="stat-divider"></span>
+            <span class="stat-item">
+                <span class="stat-number">{{ data.artists | size }}</span>
+                <span class="stat-label">Artists</span>
+            </span>
+            <span class="stat-divider"></span>
+            <span class="stat-item">
+                <span class="stat-number">{{ data.artworks | map: "category" | uniq | size }}</span>
+                <span class="stat-label">Categories</span>
+            </span>
         </div>
 
-        <div class="grid grid-4">
-            {% for artwork in paginatedArtworks %}
-            <div class="card" data-category="{{ artwork.category }}">
-                <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
-                <h3>{{ artwork.title }}</h3>
-                <p>by {{ artwork.artist }}</p>
-                <a href="/artwork/{{ artwork.slug }}" class="card-link">View Artwork →</a>
-            </div>
-            {% endfor %}
-        </div>
-
-<p class="explore-info">Showing {{ paginatedArtworks | size }} of {{ data.artworks | size }} artworks</p>
-
-        <!-- ====== PAGINATION ====== -->
-        <div class="pagination">
-            <!-- Previous -->
-            {% if pagination.href.previous %}
-                <a href="{{ pagination.href.previous }}" class="page-btn">← Previous</a>
-            {% else %}
-                <span class="page-btn disabled">← Previous</span>
-            {% endif %}
-
-            <!-- Nomor Halaman -->
-            {% for pageUrl in pagination.hrefs %}
-                {% if pageUrl == pagination.href.current %}
-                    <span class="page-btn active">{{ forloop.index }}</span>
-                {% else %}
-                    <a href="{{ pageUrl }}" class="page-btn">{{ forloop.index }}</a>
-                {% endif %}
-            {% endfor %}
-
-            <!-- Next -->
-            {% if pagination.href.next %}
-                <a href="{{ pagination.href.next }}" class="page-btn">Next →</a>
-            {% else %}
-                <span class="page-btn disabled">next →</span>
-            {% endif %}
-        </div>
-        <!-- ====== END PAGINATION ====== -->
-
-        <!-- ====== SIGNATURE ====== -->
-        <section class="section reveal section-signature">
-            <div class="signature-section">
-                <div class="signature-quote">
-                    <span class="quote-mark">✦</span>
-                    <p>Every artwork deserves to be discovered.</p>
+        <!-- ====== FEATURED TODAY ====== -->
+        {% assign featuredArtwork = data.artworks | where: "slug", data.featured | first %}
+        {% if featuredArtwork %}
+        <div class="featured-today">
+            <span class="featured-today-label">✦ Featured Today</span>
+            <a href="/artwork/{{ featuredArtwork.slug }}" class="featured-today-link">
+                <div class="featured-today-image" style="background-image: url('{{ featuredArtwork.image }}'); background-size: cover; background-position: center;"></div>
+                <div class="featured-today-content">
+                    <h3>{{ featuredArtwork.title }}</h3>
+                    <p>by {{ featuredArtwork.artist }}</p>
+                    <span class="featured-today-cta">View Artwork →</span>
                 </div>
-            </div>
-        </section>
+            </a>
+        </div>
+        {% endif %}
 
+        <!-- ====== FILTER (dengan tooltip) ====== -->
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Manip" data-tooltip="Photo manipulation dengan compositing dan efek sinematik.">Manip</button>
+            <button class="filter-btn" data-filter="Art" data-tooltip="Render 3D yang dipoles ulang dengan ilustrasi digital hingga tampak seperti anime atau semi-2D.">Art</button>
+            <button class="filter-btn" data-filter="Scene" data-tooltip="Fokus pada environment, komposisi, dan storytelling.">Scene</button>
+            <button class="filter-btn" data-filter="Abstract" data-tooltip="Eksplorasi warna, shape, dan efek visual tanpa komposisi realistis.">Abstract</button>
+            <button class="filter-btn style-guide-btn" id="styleGuideBtn">📖 Style Guide</button>
+        </div>
+
+        <!-- ====== GRID ====== -->
+        <div class="grid grid-4" id="explore-grid">
+            {% for artwork in paginatedArtworks %}
+            <div class="card" data-category="{{ artwork.category }}" data-artist="{{ artwork.artistSlug }}">
+                <a href="/artwork/{{ artwork.slug }}" class="card-link-wrapper">
+                    <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;">
+                        <div class="card-overlay">
+                            <h3>{{ artwork.title }}</h3>
+                            <p>by {{ artwork.artist }}</p>
+                            {% assign artist = data.artists | where: "slug", artwork.artistSlug | first %}
+                            <div class="card-artist-mini">
+                                <div class="mini-avatar-sm" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
+                                <span>{{ artist.name }}</span>
+                                <span class="mini-artwork-count">{{ artist.artworks }} artworks</span>
+                            </div>
+                            <span class="card-link">View Artwork →</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- ====== LOAD MORE ====== -->
+        {% if pagination.href.next %}
+        <div class="load-more-wrapper">
+            <button class="btn load-more-btn" id="load-more-btn" data-next-page="{{ pagination.href.next }}">
+                Load More
+            </button>
+        </div>
+        {% else %}
+        <p class="explore-end">You've reached the end of the gallery.</p>
+        {% endif %}
+
+        <p class="explore-info">Showing {{ paginatedArtworks | size }} of {{ data.artworks | size }} artworks</p>
+
+    </div>
+</section>
+
+<!-- ====== STYLE GUIDE MODAL ====== -->
+<div id="styleGuideModal" class="style-guide-modal">
+    <div class="style-guide-content">
+        <h2>Minecraft Artwork Styles</h2>
+        <p class="sub">Istilah yang digunakan komunitas render Minecraft Indonesia</p>
+
+        <div class="style-guide-item">
+            <h3>Manip</h3>
+            <p>Photo manipulation dengan compositing dan efek sinematik. Fokus pada lighting, atmosfer, dan penggabungan elemen visual.</p>
+        </div>
+        <div class="style-guide-item">
+            <h3>Art</h3>
+            <p>Render 3D yang dipoles ulang dengan teknik digital painting hingga tampak seperti ilustrasi 2D atau semi-anime.</p>
+        </div>
+        <div class="style-guide-item">
+            <h3>Scene</h3>
+            <p>Menonjolkan lingkungan, storytelling, dan komposisi. Biasanya tidak berfokus pada karakter tunggal.</p>
+        </div>
+        <div class="style-guide-item">
+            <h3>Abstract</h3>
+            <p>Eksplorasi warna, shape, dan efek visual tanpa mengikuti komposisi realistis.</p>
+        </div>
+
+        <button class="modal-close" id="modalClose">Close</button>
+    </div>
+</div>
+
+<!-- ====== SIGNATURE ====== -->
+<section class="section reveal section-signature">
+    <div class="signature-section">
+         <div class="signature-quote">
+            <span class="quote-mark">✦</span>
+            <p>Discover the artists behind every masterpiece.</p>
+        </div>
     </div>
 </section>

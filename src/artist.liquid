@@ -8,70 +8,123 @@ pagination:
 permalink: "/artist/{{ artist.slug }}/"
 ---
 
+
+<!-- ====== HERO ====== -->
+<section class="artist-profile-hero" style="background: linear-gradient(135deg, var(--bg) 0%, var(--surface-2) 100%); padding: 60px 0 40px;">
+    <div class="container">
+        <a href="#" class="back-link" onclick="history.back(); return false;">← Back</a>
+        <div class="profile-hero-content">
+            <div class="profile-hero-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
+            <div class="profile-hero-info">
+                <h1>{{ artist.name }}</h1>
+                <p class="profile-hero-role">{{ artist.role }}</p>
+                <p class="profile-hero-bio">{{ artist.bio }}</p>
+                <div class="profile-hero-stats">
+                    {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
+                    <span><strong>{{ artistArtworks }}</strong> Artworks</span>
+                    {% if artist.joined %}
+                    <span><strong>Joined {{ artist.joined }}</strong></span>
+                    {% endif %}
+                    {% if artist.social.size > 0 %}
+                    <span><strong>{{ artist.social.size }}</strong> Social</span>
+                    {% endif %}
+                </div>
+
+                <!-- ====== HERO SOCIAL (HARDCODE) ====== -->
+                <div class="profile-hero-social">
+                    {% if artist.social.instagram %}<a href="{{ artist.social.instagram }}" target="_blank" class="social-link">Instagram</a>{% endif %}
+                    {% if artist.social.twitter %}<a href="{{ artist.social.twitter }}" target="_blank" class="social-link">Twitter</a>{% endif %}
+                    {% if artist.social.discord %}<a href="{{ artist.social.discord }}" target="_blank" class="social-link">Discord</a>{% endif %}
+                    {% if artist.social.fiverr %}<a href="{{ artist.social.fiverr }}" target="_blank" class="social-link">Fiverr</a>{% endif %}
+                    {% if artist.social.tiktok %}<a href="{{ artist.social.tiktok }}" target="_blank" class="social-link">TikTok</a>{% endif %}
+                    {% if artist.social.youtube %}<a href="{{ artist.social.youtube }}" target="_blank" class="social-link">YouTube</a>{% endif %}
+                    {% if artist.social.website %}<a href="{{ artist.social.website }}" target="_blank" class="social-link">Website</a>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== PORTFOLIO GALLERY (dengan Load More) ====== -->
+<section class="section" style="padding-top: 40px;">
+    <div class="container">
+        <h2 class="section-title">Portfolio</h2>
+
+        {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug %}
+        {% if artistArtworks.size == 0 %}
+        <p class="no-artwork">Belum ada artwork yang dipublikasikan.</p>
+        {% else %}
+
+        <!-- SEMUA ARTWORK DALAM SATU GRID -->
+        <div class="grid grid-3" id="artwork-grid">
+            {% for artwork in artistArtworks %}
+            <div class="card artwork-card" data-index="{{ forloop.index }}">
+                <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
+                <h3>{{ artwork.title }}</h3>
+                <p>{{ artwork.year }}</p>
+                <a href="/artwork/{{ artwork.slug }}" class="card-link">View Artwork →</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- TOMBOL LOAD MORE (hanya muncul jika total > 3) -->
+        {% if artistArtworks.size > 3 %}
+        <div class="load-more-wrapper">
+            <button class="btn load-more-btn" id="load-more-btn">Load More</button>
+        </div>
+        {% endif %}
+
+        {% endif %}
+    </div>
+</section>
+
+<!-- ====== SERVICES / COMMISSION ====== -->
 <section class="section reveal" style="padding-top: 40px;">
     <div class="container">
-        <!-- Back Link -->
-        <a href="#" class="back-link" onclick="history.back(); return false;">← Back</a>
-
-        <!-- ====== PROFILE HEADER ====== -->
-        <div class="artist-profile-header">
-            <div class="profile-avatar-wrapper">
-                {% if artist.avatar %}
-                    <img src="{{ artist.avatar | url }}" alt="{{ artist.name }}" class="profile-avatar-img" loading="lazy">
-                {% else %}
-                    <div class="profile-avatar-placeholder">{{ artist.name | slice: 0, 1 }}</div>
-                {% endif %}
-            </div>
-
-            <div class="profile-info">
-                <h1>{{ artist.name }}</h1>
-                <p class="profile-role">{{ artist.role }}</p>
-
-                <div class="profile-stats">
-                    {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
-                    <span class="profile-stat">
-                        <span class="stat-number">{{ artistArtworks }}</span>
-                        <span class="stat-label">Artworks</span>
-                    </span>
-                </div>
-            </div>
+        <h2 class="section-title">Services</h2>
+        {% if artist.services %}
+        <div class="services-list">
+            {% for service in artist.services %}
+            <span class="service-tag">{{ service }}</span>
+            {% endfor %}
         </div>
+        {% else %}
+        <p class="no-services">Belum ada layanan yang ditawarkan.</p>
+        {% endif %}
 
-        <!-- ====== BIO ====== -->
-        <div class="profile-bio-section">
-            <h2>About</h2>
-            <p>{{ artist.bio }}</p>
-           
-        </div>
-            <p class="artist-price">{{ artist.price }}</p>
         <div class="artist-contact-buttons">
             {% if artist.social.instagram %}
-                <a href="{{ artist.social.instagram }}" target="_blank" class="btn">Commission via Instagram</a>
+            <a href="{{ artist.social.instagram }}" target="_blank" class="btn">Commission via Instagram</a>
             {% endif %}
             {% if artist.social.discord %}
-                <a href="{{ artist.social.discord }}" target="_blank" class="btn">Commission via Discord</a>
+            <a href="{{ artist.social.discord }}" target="_blank" class="btn">Commission via Discord</a>
             {% endif %}
             {% if artist.social.fiverr %}
-                <a href="{{ artist.social.fiverr }}" target="_blank" class="btn">Commission via Fiverr</a>
+            <a href="{{ artist.social.fiverr }}" target="_blank" class="btn">Commission via Fiverr</a>
             {% endif %}
         </div>
+    </div>
+</section>
 
-        <!-- ====== PORTFOLIO ====== -->
-        <div class="profile-portfolio">
-            <h2>Portfolio</h2>
-            <div class="grid grid-3">
-                {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug %}
-                {% for artwork in artistArtworks %}
-                <div class="card">
-                    <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
-                    <h3>{{ artwork.title }}</h3>
-                    <p>{{ artwork.year }}</p>
-                    <a href="/artwork/{{ artwork.slug }}" class="card-link">View Artwork →</a>
-                </div>
-                {% else %}
-                <p class="no-artwork">Belum ada artwork yang dipublikasikan.</p>
-                {% endfor %}
-            </div>
+<!-- ====== ABOUT ====== -->
+<section class="section reveal" style="padding-top: 40px;">
+    <div class="container">
+        <h2 class="section-title">About {{ artist.name }}</h2>
+        <div class="about-artist">
+            <p>{{ artist.bio }}</p>
+            {% if artist.badge == "Founder" %}
+            <p class="founder-note"><strong>✦ Founder of OriginGFX</strong> — OriginGFX dimulai sebagai portfolio pribadi dan kini menjadi rumah bagi artist lain.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- ====== SIGNATURE ====== -->
+<section class="section reveal section-signature">
+    <div class="signature-section">
+        <div class="signature-quote">
+            <span class="quote-mark">✦</span>
+            <p>Behind every artwork is a story worth knowing.</p>
         </div>
     </div>
 </section>

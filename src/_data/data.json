@@ -1,5 +1,5 @@
 {
-  "featured": "zonzer-epic",
+  "featured": "lele-dunbo",
 
   "latestUploads": [
     {
@@ -27,16 +27,26 @@
       "_comment": "🎨 ARTIST: Alpredo FX",
       "name": "Alpredo FX",
       "avatar": "/assets/images/artists/alpredofx.webp",
-      "role": "Game Art | Minecraft Renders",
+      "role": "Minecraft Cinematic Artist",
       "slug": "alpredo-fx",
-      "price": "Mulai dari Rp 40K",
-      "services": ["minecraft-art", "thumbnail", "poster"],
-      "bio": "Hey, I'm Alpredo — a digital artist from Indonesia who turns Minecraft characters into cinematic art. I render and pose on my laptop, then color-grade and edit on my phone for a crisp finish. My strength is character-focused GFX with dramatic lighting and clean compositions — no massive maps, just cool props and effects. Perfect for YouTube thumbnails, profile pics, or wallpapers. My style is bold, moody, and clean. Send me your skin and a theme, and I'll bring it to life!.",
+      "price": "Starting at $15",
+      "services": [
+        "Minecraft Artwork",
+        "YouTube Thumbnails",
+        "Posters"
+      ],
+      "identity": "Digital Artist & Minecraft GFX Creator",
+      "joined": "2026",
+      "badge": "Founder",
+      "bio": "Hey, I'm Alpredo, a digital artist from Indonesia specializing in cinematic Minecraft artwork. I create character-focused visuals with dramatic lighting, clean compositions, and high-quality post-processing. Whether it's a YouTube thumbnail, wallpaper, poster, or custom artwork, my goal is to bring every Minecraft character to life with a unique cinematic style.",
       "social": {
-        "instagram": "https://www.instagram.com/alpredofx/",
-        "twitter": "https://twitter.com/alpredofx",
-        "tiktok": "https://www.tiktok.com/@alpredofx",
-        "discord": "alpredofx"
+          "instagram": "https://instagram.com/alpredofx",
+          "twitter": "https://twitter.com/alpredof",
+          "discord": "alpredofx",
+          "fiverr": "https://www.fiverr.com/s/yvzBWdq",
+          "tiktok": "https://tiktok.com/@alpredofx",
+          "youtube": "https://youtube.com/@alpredofx",
+          "website": "https://alpredo.com"
       }
     },
     {
@@ -47,6 +57,8 @@
       "slug": "aemiro",
       "price": "Mulai dari $50",
       "services": ["storyboarding", "concept-art"],
+      "identity": "Adventure Storyteller",
+      "joined": "2026",
       "bio": "Aemiro adalah storyteller yang menghadirkan petualangan melalui karya-karyanya.",
       "social": {
         "instagram": "https://instagram.com/aemiro",
@@ -62,6 +74,8 @@
       "slug": "acxd",
       "price": "Mulai dari $60",
       "services": ["graphic-design", "ui-ux"],
+      "identity": "Graphic Designer",
+      "joined": "2026",
       "bio": "Seize The Day.",
       "social": {
         "instagram": "https://www.instagram.com/ac_xd.fx?igsh=ZnI0OXh6NXdvNml0"
@@ -75,6 +89,8 @@
       "slug": "steven",
       "price": "Mulai dari $70",
       "services": ["architectural-design"],
+      "identity": "Architectural Artist",
+      "joined": "2026",
       "bio": "Steven adalah architectural artist yang fokus pada desain bangunan dan struktur megah.",
       "social": {
         "instagram": "https://instagram.com/steven",
@@ -86,17 +102,227 @@
   "artworks": [
     {
       "_comment": "🖼️ KARYA: Alpredo FX",
-      "title": "Zonzer Epic",
+      "title": "Untitled",
       "artist": "Alpredo FX",
       "artistSlug": "alpredo-fx",
       "image": "/assets/images/artworks/alpredo fx/zonzer epic.webp",
       "category": "Manip",
       "year": 2026,
       "software": ["Blender", "PS touch", "Lightroom"],
-      "description": "Sebuah karya yang menggambarkan kerajaan di atas awan dengan detail arsitektur megah. Terinspirasi dari kerajaan-kerajaan dalam mitologi Nordik dan fantasi epik.",
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
       "slug": "zonzer-epic",
-      "created": "2026-07-07"
+      "created": "2026-04-19"
     },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/lele dunbo.webp",
+      "category": "Manip",
+      "year": 2026,
+      "software": ["Blender", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "lele-dunbo",
+      "created": "2026-04-08"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/geza knight.webp",
+      "category": "Manip",
+      "year": 2026,
+      "software": ["Blender", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "forest-temple",
+      "created": "2026-04-26"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/krahkrah.webp",
+      "category": "Scene",
+      "year": 2026,
+      "software": ["Blender", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "krahkrah",
+      "created": "2026-04-17"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/Ayon dan marvel basah.webp",
+      "category": "Manip",
+      "year": 2022,
+      "software": ["Cinema 4D", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "ayon-basah",
+      "created": "2022-07-15"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/dika duduk.webp",
+      "category": "Manip",
+      "year": 2024,
+      "software": ["Cinema 4D", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "dika-duduk",
+      "created": "2024-04-28"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/dika duel.webp",
+      "category": "Manip",
+      "year": 2024,
+      "software": ["Cinema 4D", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "dika-duel",
+      "created": "2024-01-24"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/dika masa depan.webp",
+      "category": "Manip",
+      "year": 2023,
+      "software": ["Prisma 3D", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "dika-masa-depan",
+      "created": "2023-09-11"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/dunbo 100hari warden.webp",
+      "category": "Scene",
+      "year": 2026,
+      "software": ["Blender", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "dunbo-100hari-warden",
+      "created": "2026-05-07"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/dunbo api es.webp",
+      "category": "Manip",
+      "year": 2025,
+      "software": ["Blender", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "dunbo-api-es",
+      "created": "2025-07-25"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/dunbo petir.webp",
+      "category": "Manip",
+      "year": 2025,
+      "software": ["Blender", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "dunbo-petir",
+      "created": "2025-08-09"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/ijet angel.webp",
+      "category": "Manip",
+      "year": 2024,
+      "software": ["Cinema 4D", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "ijet-angel",
+      "created": "2024-02-03"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/itaci ledib.webp",
+      "category": "Manip",
+      "year": 2023,
+      "software": ["Cinema 4D", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "itaci-ledib",
+      "created": "2023-08-02"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/marvel 2 senjata.webp",
+      "category": "Manip",
+      "year": 2026,
+      "software": ["Blender", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "marvel-2-senjata",
+      "created": "2026-06-22"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/marvel aura farming.webp",
+      "category": "Manip",
+      "year": 2026,
+      "software": ["Cinema 4D", "PS touch", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "marvel-aura-farming",
+      "created": "2026-06-12"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/SAYYA terbang.webp",
+      "category": "Scene",
+      "year": 2025,
+      "software": ["Blender", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "sayya-terbang",
+      "created": "2025-08-22"
+    },
+    {
+      "_comment": "🖼️ KARYA: Alpredo FX",
+      "title": "Untitled",
+      "artist": "Alpredo FX",
+      "artistSlug": "alpredo-fx",
+      "image": "/assets/images/artworks/alpredo fx/the bunker.webp",
+      "category": "Scene",
+      "year": 2026,
+      "software": ["Blender", "Lightroom"],
+      "description": "This artwork is currently part of my personal archive. A title and detailed story will be added as the collection continues to grow.",
+      "slug": "the-bunker",
+      "created": "2026-05-13"
+    },
+
+
 
     {
       "_comment": "🖼️ KARYA: ACXD — My Way of Life",

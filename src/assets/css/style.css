@@ -17,10 +17,15 @@
     --transition-timing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* Hanya transisi untuk properti tertentu (bukan all) */
     transition:
         background-color var(--transition-duration) var(--transition-timing),
         color var(--transition-duration) var(--transition-timing),
@@ -30,39 +35,6 @@
         stroke var(--transition-duration) var(--transition-timing),
         opacity var(--transition-duration) var(--transition-timing);
 }
-
-/* Elemen yang lebih cepat */
-.logo,
-.nav-link,
-.btn,
-.card,
-.thumb,
-.featured-image,
-.artist-card,
-.philosophy-item {
-    transition:
-        background-color 0.4s var(--transition-timing),
-        color 0.4s var(--transition-timing),
-        border-color 0.4s var(--transition-timing),
-        box-shadow 0.4s var(--transition-timing),
-        transform 0.3s var(--transition-timing) !important;
-}
-
-.header,
-#main-nav {
-    transition: background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
-}
-
-img,
-.thumb,
-.featured-image img,
-.artwork-placeholder img {
-    transition: none !important;
-}
-
-/* ============================================================
-   RESET & BASE
-   ============================================================ */
 
 html {
     scroll-behavior: smooth;
@@ -150,7 +122,7 @@ body {
     font-weight: 500;
 }
 
-/* ----- Responsive font adjustments ----- */
+/* Responsive font adjustments */
 @media (max-width: 768px) {
     .hero h1 { font-size: 2.4rem; }
     .lead { font-size: 1rem; }
@@ -214,7 +186,7 @@ body {
     display: flex;
     align-items: center;
     gap: 2rem;
-    background: transparent ;
+    background: transparent !important;
     backdrop-filter: none !important;
 }
 
@@ -320,7 +292,7 @@ html.manual-theme.dark-mode .theme-toggle:active {
     height: 2.5px;
     background: var(--text);
     border-radius: 4px;
-    transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: transform 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     transform-origin: center;
 }
 .hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
@@ -331,7 +303,7 @@ html.manual-theme.dark-mode .theme-toggle:active {
 @media (max-width: 768px) {
     .nav {
         height: 64px;
-        padding: 0 16px; /* tambahkan padding kiri-kanan agar tidak menempel */
+        padding: 0 16px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -371,21 +343,18 @@ html.manual-theme.dark-mode .theme-toggle:active {
     .nav-link::after { display: none; }
     .nav-link:hover { padding-left: 8px; background: rgba(0,0,0,0.02); border-radius: 4px; }
 
-    /* ----- LOGO ----- */
     .logo {
-        font-size: 1.2rem; /* ukuran pas */
+        font-size: 1.2rem;
         flex-shrink: 0;
-        margin-right: auto; /* Logo di kiri */
+        margin-right: auto;
     }
 
-    /* ----- NAV RIGHT (hamburger + toggle) ----- */
     .nav-right {
         display: flex;
         align-items: center;
-        gap: 6px; /* jarak antar tombol */
+        gap: 6px;
     }
 
-    /* ----- HAMBURGER ----- */
     .hamburger {
         width: 38px;
         height: 38px;
@@ -405,13 +374,12 @@ html.manual-theme.dark-mode .theme-toggle:active {
         height: 2.5px;
         background: var(--text);
         border-radius: 4px;
-        transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transition: transform 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         transform-origin: center;
     }
 
-    /* ----- THEME TOGGLE ----- */
     .theme-toggle {
-        width: 38px;  /* ← SAMA DENGAN HAMBURGER */
+        width: 38px;
         height: 38px;
         display: flex;
         align-items: center;
@@ -426,13 +394,12 @@ html.manual-theme.dark-mode .theme-toggle:active {
         transition: background 0.3s;
     }
     .theme-toggle .theme-icon {
-        width: 20px;  /* ← proporsional dengan ukuran tombol */
+        width: 20px;
         height: 20px;
         stroke: currentColor;
         stroke-width: 1.5;
     }
 
-    /* ----- HOVER (opsional) ----- */
     .hamburger:hover,
     .theme-toggle:hover {
         background: rgba(0, 0, 0, 0.04);
@@ -584,7 +551,7 @@ h1 {
    ============================================================ */
 
 .section {
-    padding: 110px 0;
+    padding: 70px 0;
 }
 .section-head {
     display: flex;
@@ -614,7 +581,7 @@ h1 {
 
 .section-signature {
     padding-bottom: 40px !important;
-    padding-top: 40px !important;
+    padding-top: 0px !important;
 }
 .section-short {
     padding-bottom: 0 !important;
@@ -634,10 +601,9 @@ h1 {
 }
 
 /* ============================================================
-   FEATURED SHOWCASE — PREMIUM & MEGAH
+   FEATURED SHOWCASE
    ============================================================ */
 
-/* ----- WRAPPER ----- */
 .featured-wrapper {
     display: block;
     text-decoration: none;
@@ -647,13 +613,11 @@ h1 {
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
 }
-
 .featured-wrapper:hover {
     transform: translateY(-6px) scale(1.005);
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.16);
 }
 
-/* ----- IMAGE ----- */
 .featured-image {
     position: relative;
     height: 520px;
@@ -663,12 +627,8 @@ h1 {
     background-position: center;
     transition: transform 0.8s ease;
 }
+.featured-wrapper:hover .featured-image { transform: scale(1.02); }
 
-.featured-wrapper:hover .featured-image {
-    transform: scale(1.02);
-}
-
-/* ----- DECORATIVE LINE (atas) ----- */
 .featured-deco-line {
     position: absolute;
     top: 32px;
@@ -679,199 +639,127 @@ h1 {
     z-index: 2;
     transition: width 0.6s ease;
 }
-
 .featured-wrapper:hover .featured-deco-line {
     width: 100px;
     background: rgba(255, 255, 255, 0.6);
 }
 
-/* ----- OVERLAY ----- */
 .featured-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.75) 0%,
-        rgba(0, 0, 0, 0.2) 50%,
-        rgba(0, 0, 0, 0.05) 80%,
-        transparent 100%
-    );
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.05) 80%, transparent 100%);
     display: flex;
     align-items: flex-end;
     padding: 48px 56px;
     transition: background 0.6s ease;
 }
-
 .featured-wrapper:hover .featured-overlay {
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.80) 0%,
-        rgba(0, 0, 0, 0.15) 50%,
-        rgba(0, 0, 0, 0.02) 80%,
-        transparent 100%
-    );
+    background: linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.02) 80%, transparent 100%);
 }
 
-/* ----- CONTENT ----- */
 .featured-content {
     max-width: 620px;
     color: #fff;
     position: relative;
     z-index: 2;
     transform: translateY(0);
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
 }
+.featured-wrapper:hover .featured-content { transform: translateY(-4px); }
 
-.featured-wrapper:hover .featured-content {
-    transform: translateY(-4px);
-}
-
-/* ----- BADGE (dengan garis samping) ----- */
 .featured-badge-wrapper {
     display: flex;
     align-items: center;
     gap: 16px;
     margin-bottom: 14px;
 }
-
 .featured-badge-line {
     display: inline-block;
     width: 28px;
     height: 1.5px;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255,255,255,0.3);
     transition: width 0.5s ease, background 0.5s ease;
 }
-
 .featured-wrapper:hover .featured-badge-line {
     width: 44px;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255,255,255,0.6);
 }
-
 .featured-badge {
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255,255,255,0.8);
     font-family: 'General Sans', sans-serif;
 }
 
-/* ----- TITLE ----- */
 .featured-content h3 {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(2.4rem, 5vw, 3.8rem);
     font-weight: 700;
-    margin: 0 0 4px 0;
+    margin: 0 0 4px;
     letter-spacing: -0.02em;
     line-height: 1.1;
     color: #fff;
-    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 4px 30px rgba(0,0,0,0.2);
 }
-
-/* ----- ARTIST ----- */
 .featured-content p {
     font-family: 'General Sans', sans-serif;
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255,255,255,0.65);
     margin-bottom: 20px;
     letter-spacing: 0.04em;
     font-weight: 400;
 }
 
-/* ----- LINK ----- */
 .featured-link {
     display: inline-block;
     color: #fff;
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 2px solid rgba(255,255,255,0.2);
     padding-bottom: 4px;
     transition: border-color 0.4s ease, transform 0.4s ease, color 0.4s ease;
     font-family: 'General Sans', sans-serif;
 }
-
 .featured-link:hover {
     border-color: #fff;
     transform: translateX(6px);
     color: #fff;
 }
+.featured-wrapper:hover .featured-link { border-color: rgba(255,255,255,0.5); }
 
-.featured-wrapper:hover .featured-link {
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* ----- ACCENT BAR (bawah) ----- */
 .featured-accent-bar {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
     z-index: 2;
     opacity: 0;
     transition: opacity 0.8s ease;
 }
+.featured-wrapper:hover .featured-accent-bar { opacity: 1; }
 
-.featured-wrapper:hover .featured-accent-bar {
-    opacity: 1;
-}
-
-/* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
-    .featured-image {
-        height: 380px;
-        border-radius: 18px;
-    }
-    .featured-overlay {
-        padding: 32px 28px;
-    }
-    .featured-content h3 {
-        font-size: 2rem;
-    }
-    .featured-content p {
-        font-size: 0.95rem;
-    }
-    .featured-deco-line {
-        top: 24px;
-        left: 28px;
-        width: 40px;
-    }
-    .featured-badge-line {
-        width: 18px;
-    }
-    .featured-badge-wrapper {
-        gap: 12px;
-    }
+    .featured-image { height: 380px; border-radius: 18px; }
+    .featured-overlay { padding: 32px 28px; }
+    .featured-content h3 { font-size: 2rem; }
+    .featured-content p { font-size: 0.95rem; }
+    .featured-deco-line { top: 24px; left: 28px; width: 40px; }
+    .featured-badge-line { width: 18px; }
+    .featured-badge-wrapper { gap: 12px; }
 }
-
 @media (max-width: 480px) {
-    .featured-image {
-        height: 300px;
-        border-radius: 14px;
-    }
-    .featured-overlay {
-        padding: 24px 20px;
-    }
-    .featured-content h3 {
-        font-size: 1.6rem;
-    }
-    .featured-content p {
-        font-size: 0.85rem;
-        margin-bottom: 14px;
-    }
-    .featured-link {
-        font-size: 0.85rem;
-    }
-    .featured-badge {
-        font-size: 0.6rem;
-    }
-    .featured-deco-line {
-        top: 18px;
-        left: 20px;
-        width: 30px;
-    }
+    .featured-image { height: 300px; border-radius: 14px; }
+    .featured-overlay { padding: 24px 20px; }
+    .featured-content h3 { font-size: 1.6rem; }
+    .featured-content p { font-size: 0.85rem; margin-bottom: 14px; }
+    .featured-link { font-size: 0.85rem; }
+    .featured-badge { font-size: 0.6rem; }
+    .featured-deco-line { top: 18px; left: 20px; width: 30px; }
 }
 
 /* ============================================================
@@ -930,21 +818,7 @@ h1 {
     overflow: hidden;
     transition: transform 0.4s ease;
 }
-.thumb::after {
-    content: "View Artwork";
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    background: rgba(0,0,0,0.65);
-    color: #fff;
-    opacity: 0;
-    transition: 0.25s;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
 .card:hover .thumb { transform: scale(1.02); }
-.card:hover .thumb::after { opacity: 1; }
 
 /* Filter animation */
 .grid-4 .card {
@@ -979,10 +853,62 @@ h1 {
 }
 
 /* ============================================================
-   ARTWORK DETAIL — PREMIUM & ARTIST-FOCUSED
+   CARD LINK — Seluruh Card Bisa Diklik
    ============================================================ */
 
-   .back-link {
+.card-link-wrapper {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    height: 100%;
+}
+
+.card-link-wrapper .thumb {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: #ddd;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+}
+
+.card-link-wrapper:hover .thumb {
+    transform: scale(1.02);
+}
+
+/* Pastikan overlay tetap di dalam thumb */
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 70%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: #fff;
+    text-align: center;
+    pointer-events: none; /* ← Penting agar klik tetap ke link */
+}
+
+.card-link-wrapper:hover .card-overlay {
+    opacity: 1;
+}
+
+/* ----- Tidak ada hover lama yang tumpang tindih ----- */
+.thumb::after {
+    display: none !important;
+}
+
+/* ============================================================
+   ARTWORK DETAIL
+   ============================================================ */
+
+.back-link {
     display: inline-block;
     margin-bottom: 32px;
     color: var(--muted);
@@ -990,8 +916,8 @@ h1 {
     font-size: 0.9rem;
     transition: color 0.3s;
 }
+.back-link:hover { color: var(--text); }
 
-/* ----- LAYOUT 60/40 ----- */
 .artwork-detail {
     display: flex;
     flex-wrap: wrap;
@@ -1007,14 +933,15 @@ h1 {
     flex: 1 1 45%;
     min-width: 280px;
 }
+
 .artwork-placeholder {
     position: relative;
     cursor: pointer;
     overflow: hidden;
     border-radius: 16px;
     background: var(--border);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
-    max-height: 70vh; /* ← batasi tinggi maks */
+    box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    max-height: 70vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1029,7 +956,6 @@ h1 {
     object-fit: contain;
     border-radius: 16px;
 }
-.artwork-placeholder:hover .zoom-hint { opacity: 1; }
 .zoom-hint {
     position: absolute;
     bottom: 16px;
@@ -1044,6 +970,7 @@ h1 {
     transition: opacity 0.3s;
     pointer-events: none;
 }
+.artwork-placeholder:hover .zoom-hint { opacity: 1; }
 
 /* ----- ARTIST CARD (mini) ----- */
 .artwork-artist-card {
@@ -1082,9 +1009,7 @@ h1 {
     color: var(--text);
     text-decoration: none;
 }
-.mini-artist-name:hover {
-    text-decoration: underline;
-}
+.mini-artist-name:hover { text-decoration: underline; }
 .mini-artist-role {
     font-size: 0.85rem;
     color: var(--muted);
@@ -1109,9 +1034,7 @@ h1 {
     border-bottom: 1px solid transparent;
     transition: border-color 0.3s;
 }
-.mini-artist-link:hover {
-    border-color: var(--text);
-}
+.mini-artist-link:hover { border-color: var(--text); }
 
 /* ----- TOOLS ----- */
 .artwork-tools {
@@ -1179,9 +1102,7 @@ h1 {
     transition: color 0.3s;
     font-family: inherit;
 }
-.btn-text:hover {
-    color: var(--text);
-}
+.btn-text:hover { color: var(--text); }
 
 /* ----- SHARE ----- */
 .artwork-share {
@@ -1239,7 +1160,6 @@ h1 {
     border-top: 1px solid var(--border);
 }
 
-/* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
     .artwork-detail {
         flex-direction: column;
@@ -1253,37 +1173,22 @@ h1 {
         flex: 1 1 100%;
         min-width: unset;
     }
-    .artwork-placeholder img {
-        max-height: 50vh;
-    }
+    .artwork-placeholder img { max-height: 50vh; }
     .artwork-artist-card {
         flex-wrap: wrap;
         gap: 12px;
         padding: 14px 16px;
     }
-    .mini-artist-link {
-        margin-left: auto;
-    }
-    .action-secondary {
-        flex-direction: column;
-    }
-    .share-links {
-        gap: 6px;
-    }
-    .share-btn {
-        padding: 4px 12px;
-        font-size: 0.75rem;
-    }
+    .mini-artist-link { margin-left: auto; }
+    .action-secondary { flex-direction: column; }
+    .share-links { gap: 6px; }
+    .share-btn { padding: 4px 12px; font-size: 0.75rem; }
 }
 @media (max-width: 480px) {
     .artwork-artist-card {
-        flex-direction: column;
-        align-items: flex-start;
         gap: 8px;
     }
-    .mini-artist-link {
-        margin-left: 0;
-    }
+    .mini-artist-link { margin-left: 0; }
 }
 
 /* ============================================================
@@ -1298,7 +1203,7 @@ h1 {
     padding: 28px 20px;
     border-top: 1px solid var(--border);
     border-radius: 12px;
-    transition: all 0.35s ease;
+    transition: transform 0.35s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
     background: transparent;
 }
 .artist-item:last-child { border-bottom: 1px solid var(--border); }
@@ -1353,93 +1258,415 @@ h1 {
 }
 
 /* ============================================================
-   ARTIST GRID (Artists page)
+   EXPLORE — ENHANCED GALLERY EXPERIENCE
+   ============================================================ */
+
+/* ----- STATISTIK ----- */
+.explore-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 32px;
+    padding: 12px 24px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    flex-wrap: wrap;
+}
+.stat-item {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+.stat-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+}
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+.stat-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+}
+
+/* ----- FEATURED TODAY ----- */
+.featured-today {
+    margin-bottom: 40px;
+    position: relative;
+}
+.featured-today-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+.featured-today-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+}
+.featured-today-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+}
+.featured-today-image {
+    width: 100%;
+    height: 240px;
+    background-size: cover;
+    background-position: center;
+}
+.featured-today-content {
+    padding: 20px 24px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+}
+.featured-today-content h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0;
+}
+.featured-today-content p {
+    color: var(--muted);
+    margin: 2px 0 8px;
+}
+.featured-today-cta {
+    font-weight: 500;
+    color: var(--text);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+.featured-today-link:hover .featured-today-cta {
+    border-color: var(--text);
+}
+
+/* ----- CARD OVERLAY (hover) ----- */
+.card .thumb {
+    position: relative;
+    overflow: hidden;
+}
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 70%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: #fff;
+    text-align: center;
+}
+.card:hover .card-overlay {
+    opacity: 1;
+}
+.card-overlay h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 2px;
+    color: #fff;
+}
+.card-overlay p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8);
+    margin: 0 0 8px;
+}
+.card-artist-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 12px;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.9);
+}
+.mini-avatar-sm {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    background-size: cover;
+    background-position: center;
+}
+.mini-artwork-count {
+    font-size: 0.7rem;
+    opacity: 0.6;
+}
+.card-link {
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    transition: border-color 0.3s;
+}
+.card:hover .card-link {
+    border-color: #fff;
+}
+
+/* ----- LOAD MORE ----- */
+.load-more-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+.load-more-btn {
+    padding: 12px 48px;
+    font-size: 1rem;
+}
+.explore-end {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-top: 40px;
+}
+
+/* ----- RESPONSIVE ----- */
+@media (max-width: 768px) {
+    .featured-today-image {
+        height: 160px;
+    }
+    .featured-today-content h3 {
+        font-size: 1.1rem;
+    }
+    .explore-stats {
+        gap: 12px;
+        padding: 8px 16px;
+    }
+    .stat-number {
+        font-size: 1rem;
+    }
+    .card-overlay {
+        padding: 12px;
+    }
+    .card-overlay h3 {
+        font-size: 0.95rem;
+    }
+    .mini-avatar-sm {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* ============================================================
+   FILTER TOOLTIP
+   ============================================================ */
+
+.filter-btn {
+    position: relative;
+}
+
+.filter-btn[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--bg);
+    color: var(--text);
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 0.75rem;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    z-index: 10;
+    max-width: 260px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.filter-btn[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ----- STYLE GUIDE BUTTON ----- */
+.style-guide-btn {
+    background: transparent !important;
+    border-color: var(--border) !important;
+    color: var(--muted) !important;
+}
+.style-guide-btn:hover {
+    background: var(--border) !important;
+    color: var(--text) !important;
+}
+
+/* ----- STYLE GUIDE MODAL ----- */
+.style-guide-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.style-guide-modal.open {
+    display: flex;
+}
+.style-guide-content {
+    max-width: 560px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 32px 24px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.12);
+    animation: modalFadeIn 0.3s ease;
+}
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+.style-guide-content h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+}
+.style-guide-content .sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+}
+.style-guide-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+}
+.style-guide-item:last-child {
+    border-bottom: none;
+}
+.style-guide-item h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+.style-guide-item p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+}
+.modal-close {
+    margin-top: 20px;
+    padding: 8px 24px;
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: opacity 0.3s;
+    width: 100%;
+}
+.modal-close:hover {
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+    .style-guide-content {
+        padding: 24px 20px 20px;
+        margin: 10px;
+    }
+    .style-guide-content h2 {
+        font-size: 1.3rem;
+    }
+    .filter-btn[data-tooltip]::after {
+        max-width: 200px;
+        font-size: 0.7rem;
+        padding: 4px 10px;
+    }
+}
+
+/* ============================================================
+   ARTIST GRID — 4 KOLOM KOMPAK
    ============================================================ */
 
 .artists-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 28px;
-    margin-top: 20px;
+    gap: 24px;
+    max-width: 1120px;
+    margin: 0 auto;
 }
 
 .artist-card {
+    padding: 20px 16px 24px;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 32px 24px 28px;
     text-align: center;
-    transition: all 0.35s ease;
-    position: relative;
-    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.artist-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--text);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-}
-.artist-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--text);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.07);
-}
-.artist-card:hover::before { transform: scaleX(1); }
 
+.artist-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--text);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+}
+
+/* ----- AVATAR LEBIH KECIL ----- */
 .artist-avatar-wrapper {
-    width: 88px;
-    height: 88px;
-    margin: 0 auto 16px;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 12px;
     border-radius: 50%;
     border: 2px solid var(--border);
     background-size: cover;
     background-position: center;
-    transition: border-color 0.3s, transform 0.3s;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    flex-shrink: 0;
 }
 .artist-card:hover .artist-avatar-wrapper {
-    border-color: var(--text);
     transform: scale(1.04);
+    border-color: var(--text);
 }
-.artist-avatar-img {
+
+/* ----- KONTEN ----- */
+.artist-card-content {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.artist-avatar-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--border);
-    font-size: 2.2rem;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
 }
 .artist-card-content h3 {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 600;
-    margin: 0 0 4px;
-    letter-spacing: 0.05em;
+    margin: 0 0 2px;
 }
-.artist-role {
-    font-size: 0.9rem;
+.artist-identity {
+    font-size: 0.8rem;
     color: var(--muted);
-    margin: 0 0 14px;
-    line-height: 1.4;
+    margin: 0 0 8px;
 }
 .artist-stats {
     display: flex;
     justify-content: center;
-    margin-bottom: 18px;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
 }
 .artist-stat {
     display: flex;
@@ -1447,228 +1674,705 @@ h1 {
     gap: 4px;
 }
 .stat-number {
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 700;
     color: var(--text);
 }
 .stat-label {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: var(--muted);
 }
 
+/* ----- BUTTON ----- */
 .btn-portfolio {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 24px;
-    border: 1px solid var(--border);
-    border-radius: 40px;
-    text-decoration: none;
-    color: var(--text);
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.3s;
-    background: transparent;
-}
-.btn-portfolio svg { transition: transform 0.3s; }
-.btn-portfolio:hover {
-    background: var(--text);
-    color: #fff;
-    border-color: var(--text);
-}
-.btn-portfolio:hover svg { transform: translateX(4px); }
-
-.artists-footer {
-    color: var(--muted);
-    font-size: 0.9rem;
-    margin-top: 56px;
-    text-align: center;
-    border-top: 1px solid var(--border);
-    padding-top: 32px;
-}
-
-@media (max-width: 1024px) {
-    .artists-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
-}
-@media (max-width: 992px) {
-    .artists-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 768px) {
-    .artists-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    .artist-card { padding: 24px 16px 20px; }
-    .artist-avatar-wrapper { width: 72px; height: 72px; }
-    .artist-card-content h3 { font-size: 1rem; }
-    .btn-portfolio { padding: 6px 16px; font-size: 0.8rem; }
-}
-@media (max-width: 480px) {
-    .artists-grid { grid-template-columns: 1fr; max-width: 340px; margin: 20px auto 0; gap: 16px; }
-    .artist-card { padding: 16px 12px !important; }
-    .artist-avatar-wrapper { width: 64px; height: 64px; }
-    .stat-number { font-size: 1rem; }
-}
-
-/* ============================================================
-   ARTIST PROFILE
-   ============================================================ */
-
-.artist-profile-header {
-    display: flex;
-    gap: 48px;
-    align-items: center;
-    margin-bottom: 48px;
-    padding: 32px 40px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    transition: border-color 0.3s;
-}
-.artist-profile-header:hover { border-color: var(--text); }
-
-.profile-avatar-wrapper {
-    width: 140px;
-    height: 140px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid var(--border);
-    transition: border-color 0.3s, transform 0.3s;
-    background: var(--border);
-}
-.artist-profile-header:hover .profile-avatar-wrapper {
-    border-color: var(--text);
-    transform: scale(1.02);
-}
-.profile-avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.profile-avatar-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3.5rem;
-    font-weight: 600;
-    color: var(--muted);
-    background: var(--border);
-    text-transform: uppercase;
-}
-
-.profile-info { flex: 1; }
-.profile-info h1 {
-    font-size: 2.8rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    margin: 0 0 4px;
-    line-height: 1.1;
-}
-.profile-role {
-    font-size: 1.1rem;
-    color: var(--muted);
-    margin: 0 0 16px;
-}
-.profile-stats {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-.profile-stat {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    background: var(--bg);
-    padding: 6px 18px;
-    border-radius: 40px;
-    border: 1px solid var(--border);
-}
-.profile-social {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-.social-link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 6px 16px;
+    border: 1px solid var(--border);
     border-radius: 40px;
     text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
     color: var(--text);
-    border: 1px solid var(--border);
-    transition: all 0.3s;
-    background: var(--bg);
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: transparent;
+    opacity: 0;
+    transform: translateY(4px);
 }
-.social-link svg { flex-shrink: 0; }
-.social-link:hover {
+.artist-card:hover .btn-portfolio {
+    opacity: 1;
+    transform: translateY(0);
+}
+.btn-portfolio:hover {
     background: var(--text);
-    color: #fff;
+    color: var(--bg);
     border-color: var(--text);
 }
-.social-link.instagram:hover { background: #E4405F; border-color: #E4405F; }
-.social-link.twitter:hover { background: #1DA1F2; border-color: #1DA1F2; }
-.social-link.discord:hover { background: #5865F2; border-color: #5865F2; }
+.btn-portfolio svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+}
+.btn-portfolio:hover svg {
+    transform: translateX(4px);
+}
 
-.profile-bio-section {
-    margin-bottom: 56px;
-    padding: 0 8px;
+/* ----- EMPTY ----- */
+.artist-empty {
+    display: inline-block;
+    padding: 4px 14px;
+    background: var(--border);
+    color: var(--muted);
+    font-size: 0.75rem;
+    border-radius: 40px;
 }
-.profile-bio-section h2 {
-    font-size: 1.4rem;
+
+/* ----- RESPONSIVE ----- */
+@media (max-width: 1024px) {
+    .artists-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+}
+@media (max-width: 768px) {
+    .artists-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    .artist-avatar-wrapper {
+        width: 64px;
+        height: 64px;
+    }
+    .btn-portfolio {
+        opacity: 1;
+        transform: none;
+    }
+}
+@media (max-width: 480px) {
+    .artists-grid {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+        margin: 0 auto;
+    }
+    .artist-avatar-wrapper {
+        width: 72px;
+        height: 72px;
+    }
+}
+
+/* ============================================================
+   LOAD MORE — ARTIST PROFILE
+   ============================================================ */
+
+.artwork-card.hidden {
+    display: none;
+}
+
+.load-more-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.load-more-btn {
+    display: inline-block;
+    padding: 10px 40px;
+    font-size: 0.95rem;
+}
+
+.load-more-btn.hidden {
+    display: none !important;
+}
+
+/* ============================================================
+   SECTION LABEL — Untuk "Community Artists" & "Future Artists"
+   ============================================================ */
+
+.section-label {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+/* ============================================================
+   COMMUNITY SECTION
+   ============================================================ */
+
+.community-section {
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+
+/* ============================================================
+   FUTURE ARTISTS
+   ============================================================ */
+
+.future-artists {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+}
+
+.future-text {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0;
+}
+.future-text a {
+    color: var(--text);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+.future-text a:hover {
+    border-color: var(--text);
+}
+
+/* ============================================================
+   ARTISTS FOOTER QUOTE
+   ============================================================ */
+
+.artists-footer {
+    margin-top: 48px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 32px;
+}
+.artists-footer p {
+    color: var(--muted);
+    font-size: 1rem;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    margin: 0;
+}
+
+/* ============================================================
+   ARTISTS — BAGIAN BAWAH (COMPACT)
+   ============================================================ */
+
+.artists-closing {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.future-artists {
+    text-align: center;
+    padding: 16px 0 8px;
+    margin-bottom: 0;
+    border: none; /* Hapus border ganda */
+}
+
+.future-text {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0;
+}
+.future-text a {
+    color: var(--text);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+.future-text a:hover {
+    border-color: var(--text);
+}
+
+.artists-footer-quote {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    margin: 8px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+/* ============================================================
+   FOUNDER SPOTLIGHT — ELEGAN & COMPACT
+   ============================================================ */
+
+.founder-spotlight {
+    margin-bottom: 48px;
+}
+
+.founder-spotlight-card {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 28px 36px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.founder-spotlight-card:hover {
+    border-color: var(--text);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+}
+
+.founder-spotlight-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.founder-spotlight-card:hover .founder-spotlight-avatar {
+    transform: scale(1.04);
+    border-color: var(--text);
+}
+
+.founder-spotlight-info {
+    flex: 1;
+}
+.founder-spotlight-info h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 2px;
+    display: inline-block;
+    margin-right: 12px;
+}
+.founder-badge {
+    display: inline-block;
+    font-size: 0.6rem;
     font-weight: 600;
-    margin-bottom: 12px;
-    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 2px 12px;
+    border-radius: 40px;
+    vertical-align: middle;
 }
-.profile-bio-section p {
+.founder-role {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 4px 0 10px;
+}
+.founder-spotlight-stats {
+    display: flex;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+.founder-spotlight-info .btn-portfolio {
+    padding: 8px 24px;
+}
+
+/* ----- RESPONSIVE ----- */
+@media (max-width: 768px) {
+    .founder-spotlight-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px 20px;
+        gap: 20px;
+    }
+    .founder-spotlight-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    .founder-spotlight-info h3 {
+        font-size: 1.3rem;
+        margin-right: 6px;
+    }
+    .founder-spotlight-stats {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+@media (max-width: 480px) {
+    .founder-spotlight-card {
+        padding: 16px;
+    }
+    .founder-spotlight-avatar {
+        width: 64px;
+        height: 64px;
+    }
+    .founder-spotlight-info h3 {
+        font-size: 1.1rem;
+    }
+}
+
+
+/* ============================================================
+   ARTIST PROFILE — PORTFOLIO WEBSITE
+   ============================================================ */
+
+.artist-profile-hero {
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-hero-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.profile-hero-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.profile-hero-info {
+    flex: 1;
+}
+
+.profile-hero-info h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.profile-hero-role {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin: 0 0 8px;
+}
+
+.profile-hero-bio {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text);
+    opacity: 0.8;
+    max-width: 600px;
+    margin: 0 0 16px;
+}
+
+.profile-hero-stats {
+    display: flex;
+    gap: 24px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+.profile-hero-stats strong {
+    color: var(--text);
+}
+
+.profile-hero-social {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.profile-hero-social .social-link {
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+.profile-hero-social .social-link:hover {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+}
+
+/* Services */
+.services-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.service-tag {
+    background: var(--border);
+    padding: 4px 14px;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    color: var(--text);
+}
+.no-services {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+.artist-contact-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.artist-contact-buttons .btn {
+    margin: 0;
+}
+
+/* About */
+.about-artist p {
     font-size: 1.05rem;
-    line-height: 1.9;
+    line-height: 1.8;
     color: var(--text);
     opacity: 0.85;
     max-width: 680px;
 }
-
-.profile-portfolio { padding: 0 8px; }
-.profile-portfolio h2 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 24px;
-    letter-spacing: -0.01em;
-}
-.no-artwork {
-    color: var(--muted);
+.founder-note {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: var(--bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
     font-size: 0.95rem;
-    padding: 40px 0;
+    color: var(--muted);
+}
+
+/* ============================================================
+   SOCIAL LINKS — HOVER WARNA
+   ============================================================ */
+
+/* Platform yang sudah ada */
+.social-link.instagram:hover,
+.social-btn.instagram:hover {
+    background: #E4405F;
+    border-color: #E4405F;
+    color: #fff;
+}
+.social-link.twitter:hover,
+.social-btn.twitter:hover {
+    background: #1DA1F2;
+    border-color: #1DA1F2;
+    color: #fff;
+}
+.social-link.discord:hover,
+.social-btn.discord:hover {
+    background: #5865F2;
+    border-color: #5865F2;
+    color: #fff;
+}
+.social-link.fiverr:hover,
+.social-btn.fiverr:hover {
+    background: #1DBF73;
+    border-color: #1DBF73;
+    color: #fff;
+}
+
+/* ----- TAMBAHAN PLATFORM BARU ----- */
+.social-link.tiktok:hover,
+.social-btn.tiktok:hover {
+    background: #000000;
+    border-color: #000000;
+    color: #fff;
+}
+/* TikTok official color: hitam + putih, atau bisa juga gradien, tapi kita sederhanakan */
+
+.social-link.youtube:hover,
+.social-btn.youtube:hover {
+    background: #FF0000;
+    border-color: #FF0000;
+    color: #fff;
+}
+
+.social-link.website:hover,
+.social-btn.website:hover {
+    background: #333333;
+    border-color: #333333;
+    color: #fff;
+}
+
+.social-link.github:hover,
+.social-btn.github:hover {
+    background: #181717;
+    border-color: #181717;
+    color: #fff;
+}
+
+.social-link.linkedin:hover,
+.social-btn.linkedin:hover {
+    background: #0A66C2;
+    border-color: #0A66C2;
+    color: #fff;
+}
+
+.social-link.pinterest:hover,
+.social-btn.pinterest:hover {
+    background: #E60023;
+    border-color: #E60023;
+    color: #fff;
+}
+
+.social-link.deviantart:hover,
+.social-btn.deviantart:hover {
+    background: #05CC47;
+    border-color: #05CC47;
+    color: #fff;
+}
+
+.social-link.artstation:hover,
+.social-btn.artstation:hover {
+    background: #13AFF0;
+    border-color: #13AFF0;
+    color: #fff;
+}
+
+/* ============================================================
+   ARTISTS DIRECTORY — CARD COMPACT
+   ============================================================ */
+
+.artists-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 20px;
+}
+.artist-card {
+    position: relative;
+    padding: 20px 16px 24px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.artist-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--text);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+}
+.artist-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 10px;
+    border-radius: 40px;
+}
+.artist-avatar-wrapper {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.artist-card:hover .artist-avatar-wrapper {
+    transform: scale(1.04);
+    border-color: var(--text);
+}
+.artist-card-content h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 2px;
+}
+.artist-identity {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin: 0 0 8px;
+}
+.artist-stats {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+.artist-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+.stat-number {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+}
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+}
+.btn-portfolio {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: transparent;
+    opacity: 0;
+    transform: translateY(4px);
+}
+.artist-card:hover .btn-portfolio {
+    opacity: 1;
+    transform: translateY(0);
+}
+.btn-portfolio:hover {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+}
+.btn-portfolio svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+}
+.btn-portfolio:hover svg {
+    transform: translateX(4px);
+}
+.artists-closing {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
     text-align: center;
 }
+.artists-footer-quote {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+    margin: 0;
+}
 
+/* Responsive */
+@media (max-width: 1024px) {
+    .artists-grid { grid-template-columns: repeat(3, 1fr); }
+}
 @media (max-width: 768px) {
-    .artist-profile-header {
-        flex-direction: column;
-        text-align: center;
-        padding: 28px 20px;
-        gap: 24px;
-    }
-    .profile-avatar-wrapper { width: 100px; height: 100px; }
-    .profile-info h1 { font-size: 2rem; }
-    .profile-stats { justify-content: center; }
-    .profile-social { justify-content: center; }
-    .profile-bio-section p { font-size: 0.95rem; }
-    .profile-portfolio .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .artists-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .btn-portfolio { opacity: 1; transform: none; }
+    .profile-hero-content { flex-direction: column; text-align: center; gap: 24px; }
+    .profile-hero-avatar { width: 100px; height: 100px; }
+    .profile-hero-info h1 { font-size: 2rem; }
+    .profile-hero-bio { max-width: 100%; }
+    .profile-hero-stats { justify-content: center; }
+    .profile-hero-social { justify-content: center; }
 }
 @media (max-width: 480px) {
-    .artist-profile-header { padding: 20px 16px; }
-    .profile-avatar-wrapper { width: 80px; height: 80px; }
-    .profile-info h1 { font-size: 1.6rem; }
-    .profile-role { font-size: 0.9rem; }
-    .profile-stats { flex-direction: column; align-items: center; gap: 6px; }
-    .profile-stat { padding: 4px 14px; }
-    .profile-portfolio .grid-3 { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
-    .social-link { font-size: 0.8rem; padding: 4px 12px; }
-    .social-link svg { width: 14px; height: 14px; }
+    .artists-grid { grid-template-columns: 1fr; max-width: 340px; margin: 0 auto; }
+    .profile-hero-avatar { width: 80px; height: 80px; }
+    .profile-hero-info h1 { font-size: 1.6rem; }
 }
 
 /* ============================================================
@@ -1723,7 +2427,7 @@ h1 {
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 32px 28px;
-    transition: all 0.3s;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
     position: relative;
     overflow: hidden;
 }
@@ -1804,7 +2508,7 @@ h1 {
     border: 1px solid var(--border);
     border-radius: 16px;
     text-align: center;
-    transition: all 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 .about-signature:hover {
     border-color: var(--text);
@@ -1827,7 +2531,7 @@ h1 {
     color: var(--text);
     text-decoration: none;
     border-bottom: 2px solid var(--border);
-    transition: all 0.3s;
+    transition: border-bottom-color 0.3s, color 0.3s;
     padding-bottom: 2px;
 }
 .about-link:hover {
@@ -2078,7 +2782,7 @@ h1 {
     padding: 32px;
     border: 1px solid var(--border);
     border-radius: 12px;
-    transition: 0.3s;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 .service-card:hover {
     transform: translateY(-4px);
@@ -2135,7 +2839,7 @@ h1 {
     border: 1px solid var(--border);
     border-radius: 12px;
     text-align: center;
-    transition: 0.3s;
+    transition: transform 0.3s ease, border-color 0.3s ease;
     position: relative;
 }
 .pricing-card:hover { transform: translateY(-4px); }
@@ -2197,7 +2901,7 @@ h1 {
     border: 1px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
-    transition: 0.3s;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 .blog-card:hover { transform: translateY(-4px); }
 .blog-thumb {
@@ -2236,19 +2940,6 @@ h1 {
     .services-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
     .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto 40px; }
     .blog-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
-}
-
-.artist-contact-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin: 16px 0 24px;
-}
-
-.artist-contact-buttons .btn {
-    margin: 0;
-    padding: 10px 24px;
-    font-size: 0.9rem;
 }
 
 /* ============================================================
@@ -2608,7 +3299,148 @@ footer {
 }
 
 /* ============================================================
-   THEME OVERRIDES — AUTO & MANUAL (GABUNGAN)
+   PAGE REVEAL
+   OriginGFX Motion System
+   ============================================================ */
+
+/* Animasi hanya untuk elemen, bukan seluruh main */
+.page-hero,
+.section-head,
+.grid .card,
+.artists-list .artist-item,
+.artists-grid .artist-card,
+.about-story,
+.philosophy-item,
+.about-vision,
+.about-closing,
+.contact-grid,
+.services-grid,
+.pricing-grid,
+.blog-grid,
+.artwork-detail,
+.related-artworks,
+.featured-wrapper {
+
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(4px);
+
+    animation: pageReveal .55s cubic-bezier(.22,.61,.36,1) forwards;
+
+    will-change: opacity, transform, filter;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+/* ============================================================
+   Premium Reveal Animation
+   ============================================================ */
+
+@keyframes pageReveal {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+        filter: blur(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+
+}
+
+/* ============================================================
+   Elegant Stagger
+   ============================================================ */
+
+.section-head {
+    animation-delay: .05s;
+}
+
+.grid .card:nth-child(1) { animation-delay: .08s; }
+.grid .card:nth-child(2) { animation-delay: .14s; }
+.grid .card:nth-child(3) { animation-delay: .20s; }
+.grid .card:nth-child(4) { animation-delay: .26s; }
+.grid .card:nth-child(5) { animation-delay: .32s; }
+.grid .card:nth-child(6) { animation-delay: .38s; }
+
+.artists-list .artist-item:nth-child(1) { animation-delay: .08s; }
+.artists-list .artist-item:nth-child(2) { animation-delay: .14s; }
+.artists-list .artist-item:nth-child(3) { animation-delay: .20s; }
+
+.artists-grid .artist-card:nth-child(1) { animation-delay: .08s; }
+.artists-grid .artist-card:nth-child(2) { animation-delay: .14s; }
+.artists-grid .artist-card:nth-child(3) { animation-delay: .20s; }
+.artists-grid .artist-card:nth-child(4) { animation-delay: .26s; }
+
+.philosophy-item:nth-child(1) { animation-delay: .08s; }
+.philosophy-item:nth-child(2) { animation-delay: .14s; }
+.philosophy-item:nth-child(3) { animation-delay: .20s; }
+
+.contact-grid .contact-info {
+    animation-delay: .08s;
+}
+
+.contact-grid .contact-form {
+    animation-delay: .16s;
+}
+
+.services-grid .service-card:nth-child(1) { animation-delay: .08s; }
+.services-grid .service-card:nth-child(2) { animation-delay: .14s; }
+.services-grid .service-card:nth-child(3) { animation-delay: .20s; }
+
+.pricing-grid .pricing-card:nth-child(1) { animation-delay: .08s; }
+.pricing-grid .pricing-card:nth-child(2) { animation-delay: .14s; }
+.pricing-grid .pricing-card:nth-child(3) { animation-delay: .20s; }
+
+.blog-grid .blog-card:nth-child(1) { animation-delay: .08s; }
+.blog-grid .blog-card:nth-child(2) { animation-delay: .14s; }
+
+.artwork-detail .artwork-image {
+    animation-delay: .08s;
+}
+
+.artwork-detail .artwork-info {
+    animation-delay: .16s;
+}
+
+.related-artworks .card:nth-child(1) { animation-delay: .08s; }
+.related-artworks .card:nth-child(2) { animation-delay: .14s; }
+.related-artworks .card:nth-child(3) { animation-delay: .20s; }
+
+/* ============================================================
+   Disable Animation
+   ============================================================ */
+
+.no-animation .page-hero,
+.no-animation .section-head,
+.no-animation .grid .card,
+.no-animation .artists-list .artist-item,
+.no-animation .artists-grid .artist-card,
+.no-animation .about-story,
+.no-animation .philosophy-item,
+.no-animation .about-vision,
+.no-animation .about-closing,
+.no-animation .contact-grid,
+.no-animation .services-grid,
+.no-animation .pricing-grid,
+.no-animation .blog-grid,
+.no-animation .artwork-detail,
+.no-animation .related-artworks,
+.no-animation .featured-wrapper {
+
+    animation: none !important;
+
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+}
+
+/* ============================================================
+   THEME OVERRIDES — AUTO & MANUAL
    ============================================================ */
 
 /* --- Auto Dark Mode --- */
@@ -2738,7 +3570,7 @@ footer {
     .theme-toggle:hover { background: rgba(255,255,255,0.04); }
 }
 
-/* --- Manual Theme Override --- */
+/* --- Manual Light Mode Override --- */
 html.manual-theme.light-mode {
     --bg: #fafafa;
     --text: #111111;
@@ -2750,22 +3582,9 @@ html.manual-theme.light-mode {
     --accent: #d4b483;
     --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
-html.manual-theme.dark-mode {
-    --bg: #111111;
-    --text: #f5f5f5;
-    --muted: #a1a1aa;
-    --border: #2d2d2d;
-    --surface: #1a1a1a;
-    --surface-2: #202020;
-    --hover: #262626;
-    --accent: #d4b483;
-    --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-}
-
-/* Light-mode manual overrides */
 html.manual-theme.light-mode body { background: var(--bg); color: var(--text); }
 html.manual-theme.light-mode .header { background: rgba(250,250,250,0.92); border-bottom-color: rgba(0,0,0,0.04); }
-html.manual-theme.light-mode #main-nav { background: rgb(250, 250, 250); border-bottom-color: var(--border); }
+html.manual-theme.light-mode #main-nav { background: rgba(250, 250, 250, 0.96) !important; border-bottom-color: var(--border); }
 html.manual-theme.light-mode .nav-link { color: var(--text); }
 html.manual-theme.light-mode .nav-link::after { background: var(--text); }
 html.manual-theme.light-mode .nav-link:hover { background: rgba(0,0,0,0.02); color: var(--text); }
@@ -2789,7 +3608,8 @@ html.manual-theme.light-mode .artist-avatar-wrapper { border-color: var(--border
 html.manual-theme.light-mode .artist-card:hover .artist-avatar-wrapper { border-color: rgba(0,0,0,0.88); }
 html.manual-theme.light-mode .artist-item { border-top-color: var(--border); }
 html.manual-theme.light-mode .artist-item:last-child { border-bottom-color: var(--border); }
-html.manual-theme.light-mode .artist-item:hover { background: var(--bg); border-color: var(--border); box-shadow: var(--shadow); }
+html.manual-theme.light-mode .artist-item:hover { background: var(--bg); border-color: rgba(0,0,0,0.88); box-shadow: var(--shadow); }
+html.manual-theme.light-mode .artist-item:hover .artist-info a { color: var(--muted) !important; }
 html.manual-theme.light-mode .artist-info span { background: var(--bg); border-color: var(--border); color: var(--muted); }
 html.manual-theme.light-mode .artist-info a { color: var(--text); }
 html.manual-theme.light-mode .artist-info a:hover { color: var(--muted); }
@@ -2888,10 +3708,40 @@ html.manual-theme.light-mode .zoom-btn:hover { background: rgba(255,255,255,0.15
 html.manual-theme.light-mode .lightbox-close { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #fff; }
 html.manual-theme.light-mode .lightbox-close:hover { background: rgba(255,255,255,0.15); }
 html.manual-theme.light-mode .lightbox-hint { color: rgba(255,255,255,0.2); }
+html.manual-theme.light-mode .nav-link::after { background: var(--text) !important; }
+html.manual-theme.light-mode .nav-link:hover { color: var(--text) !important; }
+html.manual-theme.light-mode .nav-link.active { color: var(--text) !important; }
+html.manual-theme.light-mode .nav-link.active::after { background: var(--text) !important; }
+html.manual-theme.light-mode .nav-link:hover { background: rgba(0,0,0,0.02) !important; }
+html.manual-theme.light-mode .artist-item:hover { border-color: rgba(0,0,0,0.88) !important; background: var(--bg) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.04) !important; }
+html.manual-theme.light-mode .artist-item:hover .artist-info a { color: var(--muted) !important; }
+html.manual-theme.light-mode .back-link { color: var(--muted) !important; }
+html.manual-theme.light-mode .back-link:hover { color: var(--text) !important; }
+html.manual-theme.light-mode .artist-info a { color: var(--text) !important; }
+html.manual-theme.light-mode .artist-info a:hover { color: var(--muted) !important; }
+html.manual-theme.light-mode .card-link { color: var(--muted) !important; }
+html.manual-theme.light-mode .card-link:hover { color: var(--text) !important; }
+html.manual-theme.light-mode .section-more { color: var(--muted) !important; }
+html.manual-theme.light-mode .section-more:hover { color: var(--text) !important; }
+html.manual-theme.light-mode .featured-link { color: #fff !important; border-bottom-color: rgba(255,255,255,0.3) !important; }
+html.manual-theme.light-mode .featured-link:hover { border-color: #fff !important; color: #fff !important; }
+html.manual-theme.light-mode .featured-wrapper:hover .featured-link { border-color: #fff !important; color: #fff !important; }
 
+/* --- Manual Dark Mode Override --- */
+html.manual-theme.dark-mode {
+    --bg: #111111;
+    --text: #f5f5f5;
+    --muted: #a1a1aa;
+    --border: #2d2d2d;
+    --surface: #1a1a1a;
+    --surface-2: #202020;
+    --hover: #262626;
+    --accent: #d4b483;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
 html.manual-theme.dark-mode body { background: var(--bg); color: var(--text); }
 html.manual-theme.dark-mode .header { background: rgba(17,17,17,0.92); border-bottom-color: rgba(255,255,255,0.04); }
-html.manual-theme.dark-mode #main-nav { background: rgba(17,17,17,0.96); border-bottom-color: var(--border); }
+html.manual-theme.dark-mode #main-nav { background: rgba(17,17,17,0.96) !important; border-bottom-color: var(--border); }
 html.manual-theme.dark-mode .nav-link { color: var(--text); }
 html.manual-theme.dark-mode .nav-link::after { background: var(--text); }
 html.manual-theme.dark-mode .nav-link:hover { background: var(--hover); color: var(--accent); }
@@ -2905,7 +3755,7 @@ html.manual-theme.dark-mode .btn { background: var(--text); color: var(--bg); }
 html.manual-theme.dark-mode .btn:hover { background: #eaeaea; box-shadow: var(--shadow); }
 html.manual-theme.dark-mode .btn-outline { border-color: var(--border); color: var(--text); background: transparent; }
 html.manual-theme.dark-mode .btn-outline:hover { background: var(--hover); border-color: var(--text); }
-html.manual-theme.dark-mode .card { background:#111111; }
+html.manual-theme.dark-mode .card { background: #111111; }
 html.manual-theme.dark-mode .card:hover { box-shadow: var(--shadow); }
 html.manual-theme.dark-mode .thumb, .hero-thumb, .blog-thumb { background: var(--surface-2); }
 html.manual-theme.dark-mode .artist-card { background: var(--surface); border-color: var(--border); }
@@ -3014,42 +3864,6 @@ html.manual-theme.dark-mode .zoom-btn:hover { background: rgba(255,255,255,0.15)
 html.manual-theme.dark-mode .lightbox-close { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #fff; }
 html.manual-theme.dark-mode .lightbox-close:hover { background: rgba(255,255,255,0.15); }
 html.manual-theme.dark-mode .lightbox-hint { color: rgba(255,255,255,0.2); }
-
-/* ---- Hapus sisa aksen emas di light mode ---- */
-html.manual-theme.light-mode .nav-link::after { background: var(--text) !important; }
-html.manual-theme.light-mode .nav-link:hover { color: var(--text) !important; }
-html.manual-theme.light-mode .nav-link.active { color: var(--text) !important; }
-html.manual-theme.light-mode .nav-link.active::after { background: var(--text) !important; }
-html.manual-theme.light-mode .nav-link:hover { background: rgba(0,0,0,0.02) !important; }
-html.manual-theme.light-mode .artist-item:hover { border-color:  rgba(0,0,0,0.88) !important; background: var(--bg) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.04) !important; }
-html.manual-theme.light-mode .artist-item:hover .artist-info a { color: var(--muted) !important; }
-html.manual-theme.light-mode .back-link { color: var(--muted) !important; }
-html.manual-theme.light-mode .back-link:hover { color: var(--text) !important; }
-html.manual-theme.light-mode .artist-info a { color: var(--text) !important; }
-html.manual-theme.light-mode .artist-info a:hover { color: var(--muted) !important; }
-html.manual-theme.light-mode .card-link { color: var(--muted) !important; }
-html.manual-theme.light-mode .card-link:hover { color: var(--text) !important; }
-html.manual-theme.light-mode .section-more { color: var(--muted) !important; }
-html.manual-theme.light-mode .section-more:hover { color: var(--text) !important; }
-html.manual-theme.light-mode .featured-link { color: #fff !important; border-bottom-color: rgba(255,255,255,0.3) !important; }
-html.manual-theme.light-mode .featured-link:hover { border-color: #fff !important; color: #fff !important; }
-html.manual-theme.light-mode .featured-wrapper:hover .featured-link { border-color: #fff !important; color: #fff !important; }
-
-/* ============================================================
-   VIEW TRANSITIONS
-   ============================================================ */
-
-@view-transition { navigation: auto; }
-::view-transition-old(root) { animation: pageOut 0.4s cubic-bezier(0.4,0,0.2,1) forwards; }
-::view-transition-new(root) { animation: pageIn 0.5s cubic-bezier(0.4,0,0.2,1) forwards; }
-@keyframes pageOut {
-    0% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.96); }
-}
-@keyframes pageIn {
-    0% { opacity: 0; transform: scale(0.96) translateY(12px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
-}
 
 /* ============================================================
    UTILITY / MISC

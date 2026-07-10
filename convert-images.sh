@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# run pake ini :  ./convert-images.sh
+
 # ============================================================
 # ORIGINGFX - AUTO CONVERT & RESIZE GAMBAR KE WebP (SUPPORT SUBFOLDER)
 # ============================================================
