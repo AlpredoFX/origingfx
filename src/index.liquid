@@ -7,7 +7,7 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
     <div class="container center">
         <!-- ====== HERO VISUAL (Grid Mini Artwork) ====== -->
         <div class="hero-grid">
-            {% assign featuredArtworks = data.artworks | slice: 0, 4 %}
+            {% assign featuredArtworks = supabase.artworks | slice: 0, 4 %}
             {% for artwork in featuredArtworks %}
             <div class="hero-thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
             {% endfor %}
@@ -23,12 +23,12 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
         <!-- ====== STATISTIK ====== -->
         <div class="hero-stats">
             <div class="hero-stat">
-                <span class="hero-stat-number">{{ data.artists | size }}</span>
+                <span class="hero-stat-number">{{ supabase.artists | size }}</span>
                 <span class="hero-stat-label">Artists</span>
             </div>
             <div class="hero-stat-divider"></div>
             <div class="hero-stat">
-                <span class="hero-stat-number">{{ data.artworks | size }}</span>
+                <span class="hero-stat-number">{{ supabase.artworks | size }}</span>
                 <span class="hero-stat-label">Artworks</span>
             </div>
             <div class="hero-stat-divider"></div>
@@ -42,6 +42,7 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
     </div>
 </section>
 
+<!-- ====== FEATURED SHOWCASE ====== -->
 <section id="featured" class="section reveal">
     <div class="container">
         <div class="section-head">
@@ -49,7 +50,7 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             <h2>Featured Showcase</h2>
         </div>
 
-        {% assign featuredArtwork = data.artworks | where: "slug", data.featured | first %}
+        {% assign featuredArtwork = supabase.artworks | where: "slug", data.featured | first %}
 
         {% if featuredArtwork %}
             <a href="/artwork/{{ featuredArtwork.slug }}" class="featured-wrapper">
@@ -74,6 +75,7 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
     </div>
 </section>
 
+<!-- ====== LATEST UPLOADS ====== -->
 <section class="section reveal">
     <div class="container">
         <div class="section-head">
@@ -82,10 +84,9 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             <a href="/explore" class="section-more">View all →</a>
         </div>
         <div class="grid">
-            {% assign sortedArtworks = data.artworks | sort: "year" | reverse %}
+            {% assign sortedArtworks = supabase.artworks | sort: "created_at" | reverse %}
             {% assign latestArtworks = sortedArtworks | slice: 0, 3 %}
             {% for item in latestArtworks %}
-            {% assign sortedArtworks = data.artworks | sort: "created" | reverse %}
             <div class="card">
                 <div class="thumb" style="background-image: url('{{ item.image }}'); background-size: cover; background-position: center;"></div>
                 <h3>{{ item.title }}</h3>
@@ -97,6 +98,29 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
     </div>
 </section>
 
+<!-- ====== FEATURED ARTIST ====== -->
+{% assign featuredArtist = supabase.artists | where: "badge", "featured" | first %}
+{% if featuredArtist %}
+<section class="section reveal" style="padding-top: 20px;">
+    <div class="container">
+        <div class="section-head">
+            <span>✦</span>
+            <h2>Featured Artist</h2>
+        </div>
+        <div class="featured-artist-card">
+            <div class="featured-artist-avatar" style="background-image: url('{{ featuredArtist.avatar }}'); background-size: cover; background-position: center;"></div>
+            <div class="featured-artist-info">
+                <h3>{{ featuredArtist.name }}</h3>
+                <p class="featured-artist-role">{{ featuredArtist.role }}</p>
+                <p class="featured-artist-bio">{{ featuredArtist.bio | truncate: 120 }}</p>
+                <a href="/artist/{{ featuredArtist.slug }}" class="btn">View Profile →</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ====== MEET OUR ARTISTS ====== -->
 <section class="section reveal visible section-short">
     <div class="container">
         <div class="section-head">
@@ -106,19 +130,24 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
         </div>
 
         <div class="artists-list">
-            {% assign featuredArtists = data.artists | slice: 0, 3 %}
+            <!-- Ambil artist yang is_featured = true, kalau tidak ada ambil 3 artist pertama -->
+            {% assign featuredArtists = supabase.artists | where: "is_featured", true %}
+            {% if featuredArtists.size == 0 %}
+                {% assign featuredArtists = supabase.artists | slice: 0, 3 %}
+            {% endif %}
+
             {% for artist in featuredArtists %}
-            {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
-            <article class="artist-item">
-                <div class="artist-meta">
-                    <h3>{{ artist.name }}</h3>
-                    <p>{{ artist.role }}</p>
-                </div>
-                <div class="artist-info">
-                    <span>{{ artistArtworks }} Artworks</span>
-                    <a href="/artist/{{ artist.slug }}">View Portfolio →</a>
-                </div>
-            </article>
+                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
+                <article class="artist-item">
+                    <div class="artist-meta">
+                        <h3>{{ artist.name }}</h3>
+                        <p>{{ artist.role }}</p>
+                    </div>
+                    <div class="artist-info">
+                        <span>{{ artistArtworks }} Artworks</span>
+                        <a href="/artist/{{ artist.slug }}">View Portfolio →</a>
+                    </div>
+                </article>
             {% endfor %}
         </div>
 

@@ -2,25 +2,50 @@
 layout: layout.liquid
 title: "{{ artist.name }} — OriginGFX"
 pagination:
-  data: data.artists
+  data: supabase.artists
   size: 1
   alias: artist
 permalink: "/artist/{{ artist.slug }}/"
 ---
 
-
 <!-- ====== HERO ====== -->
 <section class="artist-profile-hero" style="background: linear-gradient(135deg, var(--bg) 0%, var(--surface-2) 100%); padding: 60px 0 40px;">
     <div class="container">
         <a href="#" class="back-link" onclick="history.back(); return false;">← Back</a>
+
         <div class="profile-hero-content">
+            <!-- Avatar -->
             <div class="profile-hero-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
+
+            <!-- Info -->
             <div class="profile-hero-info">
                 <h1>{{ artist.name }}</h1>
-                <p class="profile-hero-role">{{ artist.role }}</p>
+
+                <!-- Role + Badge -->
+                <p class="profile-hero-role">
+                    {% if artist.badge %}
+                    <span class="artist-badge {{ artist.badge }}">
+                        {% case artist.badge %}
+                            {% when 'founder' %}👑 Founder
+                            {% when 'featured' %}⭐ Featured
+                            {% when 'new' %}🌱 New Artist
+                            {% when 'verified' %}✔ Verified
+                            {% when 'contributor' %}🤝 Contributor
+                            {% when 'curator' %}🏛 Curator
+                            {% when 'editors-pick' %}🏆 Editor's Pick
+                            {% when 'community-favorite' %}❤️ Community Favorite
+                        {% endcase %}
+                    </span>
+                    {% endif %}
+                    {{ artist.role }}
+                </p>
+
+                <!-- Bio -->
                 <p class="profile-hero-bio">{{ artist.bio }}</p>
+
+                <!-- Stats -->
                 <div class="profile-hero-stats">
-                    {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
+                    {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
                     <span><strong>{{ artistArtworks }}</strong> Artworks</span>
                     {% if artist.joined %}
                     <span><strong>Joined {{ artist.joined }}</strong></span>
@@ -30,7 +55,7 @@ permalink: "/artist/{{ artist.slug }}/"
                     {% endif %}
                 </div>
 
-                <!-- ====== HERO SOCIAL (HARDCODE) ====== -->
+                <!-- Social Links -->
                 <div class="profile-hero-social">
                     {% if artist.social.instagram %}<a href="{{ artist.social.instagram }}" target="_blank" class="social-link">Instagram</a>{% endif %}
                     {% if artist.social.twitter %}<a href="{{ artist.social.twitter }}" target="_blank" class="social-link">Twitter</a>{% endif %}
@@ -50,7 +75,7 @@ permalink: "/artist/{{ artist.slug }}/"
     <div class="container">
         <h2 class="section-title">Portfolio</h2>
 
-        {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug %}
+        {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id %}
         {% if artistArtworks.size == 0 %}
         <p class="no-artwork">Belum ada artwork yang dipublikasikan.</p>
         {% else %}
@@ -112,7 +137,7 @@ permalink: "/artist/{{ artist.slug }}/"
         <h2 class="section-title">About {{ artist.name }}</h2>
         <div class="about-artist">
             <p>{{ artist.bio }}</p>
-            {% if artist.badge == "Founder" %}
+            {% if artist.badge == "founder" %}
             <p class="founder-note"><strong>✦ Founder of OriginGFX</strong> — OriginGFX dimulai sebagai portfolio pribadi dan kini menjadi rumah bagi artist lain.</p>
             {% endif %}
         </div>

@@ -597,3 +597,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ============================================================
+// INCREMENT VIEWS (artwork detail page)
+// ============================================================
+
+async function incrementViews(slug) {
+    try {
+        const response = await fetch('/.netlify/functions/increment-views', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug })
+        });
+        const data = await response.json();
+        if (data.views) {
+            // Update tampilan views di halaman (opsional)
+            const viewsEl = document.querySelector('.artwork-views');
+            if (viewsEl) viewsEl.textContent = `${data.views} views`;
+        }
+    } catch (err) {
+        console.warn('Failed to increment views:', err);
+    }
+}
+
+// Panggil otomatis di halaman artwork detail
+document.addEventListener('DOMContentLoaded', () => {
+    const slug = document.querySelector('meta[name="artwork-slug"]')?.content;
+    if (slug) {
+        incrementViews(slug);
+    }
+});

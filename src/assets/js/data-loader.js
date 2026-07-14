@@ -58,9 +58,9 @@ function renderLatestUploads() {
 
 function renderArtists() {
     const container = document.querySelector('.artists-list');
-    if (!container || !data.artists) return;
+    if (!container || !supabase.artists) return;
 
-    container.innerHTML = data.artists.map(artist => `
+    container.innerHTML = supabase.artists.map(artist => `
         <article class="artist-item">
             <div class="artist-meta">
                 <h3>${artist.name}</h3>
@@ -76,9 +76,9 @@ function renderArtists() {
 
 function renderArtworks() {
     const container = document.querySelector('.grid-4');
-    if (!container || !data.artworks) return;
+    if (!container || !supabase.artworks) return;
 
-    container.innerHTML = data.artworks.map(item => `
+    container.innerHTML = supabase.artworks.map(item => `
         <div class="card">
             <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;"></div>
             <h3>${item.title}</h3>
@@ -146,7 +146,7 @@ function loadArtworkDetail() {
 
     if (!slug) return;
 
-    const artwork = data.artworks.find(a => a.slug === slug);
+    const artwork = supabase.artworks.find(a => a.slug === slug);
     if (!artwork) return;
 
     document.querySelector('.artwork-info h1').textContent = artwork.title;
@@ -171,7 +171,7 @@ function loadArtworkDetail() {
     // Related Artworks
     const relatedContainer = document.querySelector('.grid-3');
     if (relatedContainer) {
-        const related = data.artworks.filter(a => a.slug !== slug).slice(0, 3);
+        const related = supabase.artworks.filter(a => a.slug !== slug).slice(0, 3);
         relatedContainer.innerHTML = related.map(item => `
             <div class="card">
                 <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;"></div>
@@ -193,7 +193,7 @@ function loadArtistDetail() {
 
     if (!slug) return;
 
-    const artist = data.artists.find(a => a.slug === slug);
+    const artist = supabase.artists.find(a => a.slug === slug);
     if (!artist) return;
 
     document.querySelector('.profile-info h1').textContent = artist.name;
@@ -217,7 +217,7 @@ function loadArtistDetail() {
     // Artist's Artworks
     const container = document.querySelector('.profile-artworks .grid-3');
     if (container) {
-        const artistArtworks = data.artworks.filter(a => a.artistSlug === slug);
+        const artistArtworks = supabase.artworks.filter(a => a.artistSlug === slug);
         container.innerHTML = artistArtworks.map(item => `
             <div class="card">
                 <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;"></div>

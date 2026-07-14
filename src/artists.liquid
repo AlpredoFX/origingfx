@@ -19,17 +19,17 @@ title: Artists — OriginGFX
         <!-- ====== STATISTIK ====== -->
         <div class="explore-stats artists-stats">
             <span class="stat-item">
-                <span class="stat-number">{{ data.artists | size }}</span>
+                <span class="stat-number">{{ supabase.artists | size }}</span>
                 <span class="stat-label">Artists</span>
             </span>
             <span class="stat-divider"></span>
             <span class="stat-item">
-                <span class="stat-number">{{ data.artworks | size }}</span>
+                <span class="stat-number">{{ supabase.artworks | size }}</span>
                 <span class="stat-label">Artworks</span>
             </span>
             <span class="stat-divider"></span>
             <span class="stat-item">
-                <span class="stat-number">{{ data.artworks | map: "category" | uniq | size }}</span>
+                <span class="stat-number">{{ supabase.artworks | map: "category" | uniq | size }}</span>
                 <span class="stat-label">Styles</span>
             </span>
         </div>
@@ -38,8 +38,8 @@ title: Artists — OriginGFX
             1. FOUNDER SPOTLIGHT
         ============================================================ -->
         {% assign founder = nil %}
-        {% for a in data.artists %}
-            {% if a.badge == "Founder" %}
+        {% for a in supabase.artists %}
+            {% if a.badge == "founder" %}
                 {% assign founder = a %}
             {% endif %}
         {% endfor %}
@@ -54,7 +54,7 @@ title: Artists — OriginGFX
                     <span class="founder-badge">Founder</span>
                     <p class="founder-role">{{ founder.identity | default: founder.role }}</p>
                     <div class="founder-spotlight-stats">
-                        {% assign founderArtworks = data.artworks | where: "artistSlug", founder.slug | size %}
+                        {% assign founderArtworks = supabase.artworks | where: "artist_id", founder.id | size %}
                         <span>{{ founderArtworks }} Artworks</span>
                         {% if founder.joined %}
                         <span>· Joined {{ founder.joined }}</span>
@@ -78,15 +78,29 @@ title: Artists — OriginGFX
         <div class="community-section">
             <span class="section-label">Community Artists</span>
             <div class="artists-grid">
-                {% for artist in data.artists %}
-                    {% if artist.badge != "Founder" %}
+                {% for artist in supabase.artists %}
+                    {% if artist.badge != "founder" %}
                     <article class="artist-card">
+                        {% if artist.badge %}
+                        <span class="artist-badge {{ artist.badge }}">
+                            {% case artist.badge %}
+                                {% when 'founder' %}👑 Founder
+                                {% when 'featured' %}⭐ Featured
+                                {% when 'new' %}🌱 New Artist
+                                {% when 'verified' %}✔ Verified
+                                {% when 'contributor' %}🤝 Contributor
+                                {% when 'curator' %}🏛 Curator
+                                {% when 'editors-pick' %}🏆 Editor's Pick
+                                {% when 'community-favorite' %}❤️ Community Favorite
+                            {% endcase %}
+                        </span>
+                        {% endif %}
                         <div class="artist-avatar-wrapper" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
                         <div class="artist-card-content">
                             <h3>{{ artist.name }}</h3>
                             <p class="artist-identity">{{ artist.identity | default: artist.role }}</p>
                             <div class="artist-stats">
-                                {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
+                                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
                                 <span class="artist-stat">
                                     <span class="stat-number">{{ artistArtworks }}</span>
                                     <span class="stat-label">Artworks</span>
@@ -118,7 +132,6 @@ title: Artists — OriginGFX
         <!-- ============================================================
             3. FUTURE ARTISTS / JOIN
         ============================================================ -->
-        <!-- ====== FUTURE ARTISTS + FOOTER QUOTE ====== -->
         <div class="artists-closing">
             <div class="future-artists">
                 <span class="section-label">✦ Future Artists</span>
