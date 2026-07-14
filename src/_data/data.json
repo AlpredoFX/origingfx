@@ -59,6 +59,7 @@
       "services": ["storyboarding", "concept-art"],
       "identity": "Adventure Storyteller",
       "joined": "2026",
+      "badge": "new",
       "bio": "Aemiro adalah storyteller yang menghadirkan petualangan melalui karya-karyanya.",
       "social": {
         "instagram": "https://instagram.com/aemiro",
@@ -76,6 +77,7 @@
       "services": ["graphic-design", "ui-ux"],
       "identity": "Graphic Designer",
       "joined": "2026",
+      "badge": "new",
       "bio": "Seize The Day.",
       "social": {
         "instagram": "https://www.instagram.com/ac_xd.fx?igsh=ZnI0OXh6NXdvNml0"
@@ -91,6 +93,7 @@
       "services": ["architectural-design"],
       "identity": "Architectural Artist",
       "joined": "2026",
+      "badge": "new",
       "bio": "Steven adalah architectural artist yang fokus pada desain bangunan dan struktur megah.",
       "social": {
         "instagram": "https://instagram.com/steven",
@@ -310,7 +313,7 @@
     },
     {
       "_comment": "🖼️ KARYA: Alpredo FX",
-      "title": "Untitled",
+      "title": "The Bunker",
       "artist": "Alpredo FX",
       "artistSlug": "alpredo-fx",
       "image": "/assets/images/artworks/alpredo fx/the bunker.webp",

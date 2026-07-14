@@ -2,7 +2,7 @@
 layout: layout.liquid
 title: "{{ artwork.title }} — OriginGFX"
 pagination:
-  data: data.artworks
+  data: supabase.artworks
   size: 1
   alias: artwork
 permalink: "/artwork/{{ artwork.slug }}/"
@@ -17,7 +17,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
         <!-- ====== ARTWORK DETAIL ====== -->
         <div class="artwork-detail">
 
-            <!-- KIRI: Gambar (60%) -->
+            <!-- KIRI: Gambar -->
             <div class="artwork-image">
                 <div class="artwork-placeholder" onclick="openLightbox('{{ artwork.image }}', '{{ artwork.title }}')">
                     <img src="{{ artwork.image }}" alt="{{ artwork.title }}" loading="lazy">
@@ -25,20 +25,20 @@ permalink: "/artwork/{{ artwork.slug }}/"
                 </div>
             </div>
 
-            <!-- KANAN: Info (40%) -->
+            <!-- KANAN: Info -->
             <div class="artwork-info">
                 <span class="artwork-tag">{{ artwork.category }}</span>
                 <h1>{{ artwork.title }}</h1>
 
                 <!-- ====== ARTIST CARD (mini) ====== -->
-                {% assign artist = data.artists | where: "slug", artwork.artistSlug | first %}
+                {% assign artist = supabase.artists | where: "id", artwork.artist_id | first %}
                 <div class="artwork-artist-card">
                     <div class="mini-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
                     <div class="mini-artist-info">
                         <a href="/artist/{{ artist.slug }}" class="mini-artist-name">{{ artist.name }}</a>
                         <span class="mini-artist-role">{{ artist.role }}</span>
                         <span class="mini-artist-stats">
-                            {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug | size %}
+                            {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
                             {{ artistArtworks }} Artworks
                         </span>
                     </div>
@@ -51,6 +51,16 @@ permalink: "/artwork/{{ artwork.slug }}/"
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                         {{ artwork.year }}
                     </span>
+                    <span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        {{ artwork.software | join: ", " }}
+                    </span>
+                    <span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        {{ artwork.category }}
+                    </span>
+                    <!-- 👇 VIEWS — selalu tampil (default 0) -->
+                    <span>👁️ {{ artwork.views | default: 0 }} views</span>
                 </div>
 
                 <!-- ====== ARTWORK STORY ====== -->
@@ -58,7 +68,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
                     <p>{{ artwork.description }}</p>
                 </div>
 
-                <!-- ====== TOOLS (jika software lebih dari 1) ====== -->
+                <!-- ====== TOOLS ====== -->
                 {% if artwork.software.size > 1 %}
                 <div class="artwork-tools">
                     <span class="tools-label">Tools</span>
@@ -74,10 +84,11 @@ permalink: "/artwork/{{ artwork.slug }}/"
                 <div class="artwork-actions">
                     <div class="action-primary">
                         <span class="action-hint">Interested in a similar style?</span>
-                        <a href="/artist/{{ artwork.artistSlug }}" class="btn btn-commission">Commission Artist →</a>
+                        <a href="/artist/{{ artist.slug }}" class="btn btn-commission">Commission Artist →</a>
                     </div>
                     <div class="action-secondary">
-                        <a href="/artist/{{ artwork.artistSlug }}" class="btn-outline">Visit Artist Profile</a>
+                        <a href="/artist/{{ artist.slug }}" class="btn-outline">Visit Artist Profile</a>
+                        <button class="btn-text" id="save-artwork">♡ Save Artwork</button>
                     </div>
                 </div>
 
@@ -97,7 +108,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
         <div class="more-from-artist">
             <h3>More from {{ artist.name }}</h3>
             <div class="grid grid-3">
-                {% assign artistArtworks = data.artworks | where: "artistSlug", artist.slug %}
+                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id %}
                 {% for a in artistArtworks %}
                     {% if a.slug != artwork.slug %}
                     <div class="card">
@@ -111,14 +122,35 @@ permalink: "/artwork/{{ artwork.slug }}/"
             </div>
         </div>
 
-        <!-- ====== RELATED ARTWORKS (lainnya) ====== -->
+        <!-- ====== VIEWS COUNTER SCRIPT ====== -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const slug = '{{ artwork.slug }}';
+                if (slug) {
+                    fetch(`/.netlify/functions/update-views?slug=${slug}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Update tampilan views di halaman
+                                const viewElement = document.querySelector('.artwork-meta span:last-child');
+                                if (viewElement && data.views !== undefined) {
+                                    viewElement.textContent = `👁️ ${data.views} views`;
+                                }
+                            }
+                        })
+                        .catch(err => console.log('Views update skipped:', err));
+                }
+            });
+        </script>
+
+        <!-- ====== RELATED ARTWORKS ====== -->
         <div class="related-artworks">
             <h3>You Might Also Like</h3>
             <div class="grid grid-3">
-                {% assign allOthers = data.artworks | reverse %}
+                {% assign allOthers = supabase.artworks | reverse %}
                 {% assign count = 0 %}
                 {% for a in allOthers %}
-                    {% if a.slug != artwork.slug and a.artistSlug != artist.slug %}
+                    {% if a.slug != artwork.slug and a.artist_id != artist.id %}
                         {% if count < 3 %}
                         <div class="card">
                             <div class="thumb" style="background-image: url('{{ a.image }}'); background-size: cover; background-position: center;"></div>
@@ -154,12 +186,12 @@ permalink: "/artwork/{{ artwork.slug }}/"
     </div>
 </div>
 
-        <!-- ====== SIGNATURE ====== -->
-        <section class="section reveal section-signature">
-            <div class="signature-section">
-                <div class="signature-quote">
-                    <span class="quote-mark">✦</span>
-                    <p>Every artwork deserves to be discovered.</p>
-                </div>
-            </div>
-        </section>
+<!-- ====== SIGNATURE ====== -->
+<section class="section reveal section-signature">
+    <div class="signature-section">
+         <div class="signature-quote">
+            <span class="quote-mark">✦</span>
+            <p>Every artwork deserves to be discovered.</p>
+        </div>
+    </div>
+</section>

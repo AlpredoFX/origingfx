@@ -23,7 +23,7 @@ title: Commission Hub — OriginGFX
                 <h3>{{ service.name }}</h3>
                 <p>{{ service.description }}</p>
 
-                {% assign artists = data.artists | where: "services", service.slug %}
+                {% assign artists = supabase.artists | where: "services", service.slug %}
                 {% assign artistCount = artists | size %}
                 <p class="service-artist-count">{{ artistCount }} Artists Available</p>
 

@@ -2,7 +2,7 @@
 layout: layout.liquid
 title: Explore — OriginGFX
 pagination:
-  data: data.artworks
+  data: supabase.artworks
   size: 8
   alias: paginatedArtworks
   reverse: true
@@ -25,23 +25,23 @@ pagination:
         <!-- ====== STATISTIK ====== -->
         <div class="explore-stats">
             <span class="stat-item">
-                <span class="stat-number">{{ data.artworks | size }}</span>
+                <span class="stat-number">{{ supabase.artworks | size }}</span>
                 <span class="stat-label">Artworks</span>
             </span>
             <span class="stat-divider"></span>
             <span class="stat-item">
-                <span class="stat-number">{{ data.artists | size }}</span>
+                <span class="stat-number">{{ supabase.artists | size }}</span>
                 <span class="stat-label">Artists</span>
             </span>
             <span class="stat-divider"></span>
             <span class="stat-item">
-                <span class="stat-number">{{ data.artworks | map: "category" | uniq | size }}</span>
+                <span class="stat-number">{{ supabase.artworks | map: "category" | uniq | size }}</span>
                 <span class="stat-label">Categories</span>
             </span>
         </div>
 
         <!-- ====== FEATURED TODAY ====== -->
-        {% assign featuredArtwork = data.artworks | where: "slug", data.featured | first %}
+        {% assign featuredArtwork = supabase.artworks | where: "slug", data.featured | first %}
         {% if featuredArtwork %}
         <div class="featured-today">
             <span class="featured-today-label">✦ Featured Today</span>
@@ -69,13 +69,13 @@ pagination:
         <!-- ====== GRID ====== -->
         <div class="grid grid-4" id="explore-grid">
             {% for artwork in paginatedArtworks %}
-            <div class="card" data-category="{{ artwork.category }}" data-artist="{{ artwork.artistSlug }}">
+            {% assign artist = supabase.artists | where: "id", artwork.artist_id | first %}
+            <div class="card" data-category="{{ artwork.category }}" data-artist="{{ artist.slug }}">
                 <a href="/artwork/{{ artwork.slug }}" class="card-link-wrapper">
                     <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;">
                         <div class="card-overlay">
                             <h3>{{ artwork.title }}</h3>
                             <p>by {{ artwork.artist }}</p>
-                            {% assign artist = data.artists | where: "slug", artwork.artistSlug | first %}
                             <div class="card-artist-mini">
                                 <div class="mini-avatar-sm" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
                                 <span>{{ artist.name }}</span>
@@ -100,7 +100,7 @@ pagination:
         <p class="explore-end">You've reached the end of the gallery.</p>
         {% endif %}
 
-        <p class="explore-info">Showing {{ paginatedArtworks | size }} of {{ data.artworks | size }} artworks</p>
+        <p class="explore-info">Showing {{ paginatedArtworks | size }} of {{ supabase.artworks | size }} artworks</p>
 
     </div>
 </section>
