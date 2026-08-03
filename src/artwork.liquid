@@ -59,7 +59,6 @@ permalink: "/artwork/{{ artwork.slug }}/"
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         {{ artwork.category }}
                     </span>
-                    <!-- 👇 VIEWS — selalu tampil (default 0) -->
                     <span>👁️ {{ artwork.views | default: 0 }} views</span>
                 </div>
 
@@ -122,45 +121,27 @@ permalink: "/artwork/{{ artwork.slug }}/"
             </div>
         </div>
 
-        <!-- ====== VIEWS COUNTER SCRIPT ====== -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const slug = '{{ artwork.slug }}';
-                if (slug) {
-                    fetch(`/.netlify/functions/update-views?slug=${slug}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Update tampilan views di halaman
-                                const viewElement = document.querySelector('.artwork-meta span:last-child');
-                                if (viewElement && data.views !== undefined) {
-                                    viewElement.textContent = `👁️ ${data.views} views`;
-                                }
-                            }
-                        })
-                        .catch(err => console.log('Views update skipped:', err));
-                }
-            });
-        </script>
-
-        <!-- ====== RELATED ARTWORKS ====== -->
+        <!-- ====== RELATED ARTWORKS (based on category) ====== -->
         <div class="related-artworks">
             <h3>You Might Also Like</h3>
             <div class="grid grid-3">
-                {% assign allOthers = supabase.artworks | reverse %}
-                {% assign count = 0 %}
-                {% for a in allOthers %}
-                    {% if a.slug != artwork.slug and a.artist_id != artist.id %}
-                        {% if count < 3 %}
-                        <div class="card">
-                            <div class="thumb" style="background-image: url('{{ a.image }}'); background-size: cover; background-position: center;"></div>
-                            <h3>{{ a.title }}</h3>
-                            <p>by {{ a.artist }}</p>
-                            <a href="/artwork/{{ a.slug }}" class="card-link">View Artwork →</a>
-                        </div>
-                        {% assign count = count | plus: 1 %}
-                        {% endif %}
-                    {% endif %}
+                {% assign sameCategory = supabase.artworks | where: "category", artwork.category | reject: "id", artwork.id %}
+                {% assign others = supabase.artworks | reject: "id", artwork.id | reject: "artist_id", artist.id %}
+                {% assign combined = sameCategory | concat: others %}
+                {% assign unique = "" | split: "" %}
+                {% for item in combined %}
+                    {% unless unique contains item.id %}
+                        {% assign unique = unique | push: item %}
+                    {% endunless %}
+                {% endfor %}
+                {% assign related = unique | slice: 0, 3 %}
+                {% for item in related %}
+                <div class="card">
+                    <div class="thumb" style="background-image: url('{{ item.image }}'); background-size: cover; background-position: center;"></div>
+                    <h3>{{ item.title }}</h3>
+                    <p>by {{ item.artist }}</p>
+                    <a href="/artwork/{{ item.slug }}" class="card-link">View Artwork →</a>
+                </div>
                 {% endfor %}
             </div>
         </div>
@@ -185,6 +166,26 @@ permalink: "/artwork/{{ artwork.slug }}/"
         <p class="lightbox-hint">Scroll untuk zoom · Drag untuk geser</p>
     </div>
 </div>
+
+<!-- ====== VIEWS COUNTER SCRIPT ====== -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slug = '{{ artwork.slug }}';
+        if (slug) {
+            fetch(`/.netlify/functions/update-views?slug=${slug}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const viewElement = document.querySelector('.artwork-meta span:last-child');
+                        if (viewElement && data.views !== undefined) {
+                            viewElement.textContent = `👁️ ${data.views} views`;
+                        }
+                    }
+                })
+                .catch(err => console.log('Views update skipped:', err));
+        }
+    });
+</script>
 
 <!-- ====== SIGNATURE ====== -->
 <section class="section reveal section-signature">

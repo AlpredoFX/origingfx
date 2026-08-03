@@ -3,24 +3,25 @@ layout: layout.liquid
 title: OriginGFX — Digital Gallery for Minecraft Artists
 ---
 
+<!-- ============================================================
+     HERO
+     ============================================================ -->
 <section class="hero reveal">
     <div class="container center">
-        <!-- ====== HERO VISUAL (Grid Mini Artwork) ====== -->
+        <!-- Hero Grid -->
         <div class="hero-grid">
-            {% assign featuredArtworks = supabase.artworks | slice: 0, 4 %}
-            {% for artwork in featuredArtworks %}
+            {% assign heroArtworks = supabase.latestArtworks | slice: 0, 4 %}
+            {% for artwork in heroArtworks %}
             <div class="hero-thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;"></div>
             {% endfor %}
         </div>
 
-        <!-- ====== HERO TEXT ====== -->
+        <!-- Hero Text -->
         <h1>Digital Gallery for <br>Minecraft Artists</h1>
-
         <p class="lead">Gallery First. Store Second. Artist Always.</p>
-
         <p class="hero-sub">Menampilkan karya terbaik dari para kreator Minecraft</p>
 
-        <!-- ====== STATISTIK ====== -->
+        <!-- Stats -->
         <div class="hero-stats">
             <div class="hero-stat">
                 <span class="hero-stat-number">{{ supabase.artists | size }}</span>
@@ -39,19 +40,42 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
         </div>
 
         <a class="btn" href="/explore">Explore Gallery</a>
+
+        <!-- ===== HERO "NYAWA" — Featured Today Mini ===== -->
+        <div class="hero-extra">
+            {% assign featuredArtwork = supabase.featuredArtworks | first %}
+            {% if featuredArtwork %}
+            <span class="hero-extra-label">✦ Featured Today</span>
+            <a href="/artwork/{{ featuredArtwork.slug }}" class="hero-extra-link">
+                <span class="hero-extra-title">{{ featuredArtwork.title }}</span>
+                <span class="hero-extra-artist">by {{ featuredArtwork.artist }}</span>
+            </a>
+            {% else %}
+            <span class="hero-extra-label">✦ Latest Artist</span>
+            {% assign latestArtist = supabase.artists | sort: "created_at" | reverse | first %}
+            {% if latestArtist %}
+            <a href="/artist/{{ latestArtist.slug }}" class="hero-extra-link">
+                <span class="hero-extra-title">{{ latestArtist.name }}</span>
+                <span class="hero-extra-artist">joined OriginGFX</span>
+            </a>
+            {% endif %}
+            {% endif %}
+        </div>
     </div>
 </section>
 
-<!-- ====== FEATURED SHOWCASE ====== -->
+<!-- ============================================================
+     FEATURED SHOWCASE
+     ============================================================ -->
 <section id="featured" class="section reveal">
     <div class="container">
         <div class="section-head">
             <span>01</span>
             <h2>Featured Showcase</h2>
         </div>
+        <p class="section-subtitle">Pilihan karya yang paling merepresentasikan kualitas dan kreativitas komunitas OriginGFX.</p>
 
-        {% assign featuredArtwork = supabase.artworks | where: "slug", data.featured | first %}
-
+        {% assign featuredArtwork = supabase.featuredArtworks | first %}
         {% if featuredArtwork %}
             <a href="/artwork/{{ featuredArtwork.slug }}" class="featured-wrapper">
                 <div class="featured-image" style="background-image: url('{{ featuredArtwork.image }}'); background-size: cover; background-position: center;">
@@ -59,11 +83,22 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
                         <div class="featured-content">
                             <div class="featured-badge-wrapper">
                                 <span class="featured-badge-line"></span>
-                                <span class="featured-badge">✦ Featured</span>
+                                <span class="featured-badge">✦ Editor's Pick</span>
                                 <span class="featured-badge-line"></span>
                             </div>
                             <h3>{{ featuredArtwork.title }}</h3>
                             <p>by {{ featuredArtwork.artist }}</p>
+
+                            <!-- Metadata tambahan -->
+                            <div class="featured-meta">
+                                {% if featuredArtwork.category %}
+                                <span class="featured-tag">{{ featuredArtwork.category }}</span>
+                                {% endif %}
+                                {% if featuredArtwork.year %}
+                                <span class="featured-year">{{ featuredArtwork.year }}</span>
+                                {% endif %}
+                            </div>
+
                             <span class="featured-link">View Artwork →</span>
                         </div>
                     </div>
@@ -75,7 +110,9 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
     </div>
 </section>
 
-<!-- ====== LATEST UPLOADS ====== -->
+<!-- ============================================================
+     LATEST UPLOADS
+     ============================================================ -->
 <section class="section reveal">
     <div class="container">
         <div class="section-head">
@@ -83,14 +120,35 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             <h2>Latest Uploads</h2>
             <a href="/explore" class="section-more">View all →</a>
         </div>
+        <p class="section-subtitle">Karya terbaru dari para artist di galeri.</p>
+
         <div class="grid">
-            {% assign sortedArtworks = supabase.artworks | sort: "created_at" | reverse %}
-            {% assign latestArtworks = sortedArtworks | slice: 0, 3 %}
-            {% for item in latestArtworks %}
+            {% assign latestItems = supabase.latestArtworks | slice: 0, 3 %}
+            {% if latestItems.size == 0 %}
+                {% assign latestItems = supabase.artworks | sort: "created_at" | reverse | slice: 0, 3 %}
+            {% endif %}
+            {% for item in latestItems %}
             <div class="card">
-                <div class="thumb" style="background-image: url('{{ item.image }}'); background-size: cover; background-position: center;"></div>
+                <div class="thumb" style="background-image: url('{{ item.image }}'); background-size: cover; background-position: center;">
+                    <!-- Badge "New" jika dibuat dalam 7 hari terakhir -->
+                    {% assign itemDate = item.created_at | date: "%s" | plus: 0 %}
+                    {% assign nowDate = "now" | date: "%s" | plus: 0 %}
+                    {% assign diff = nowDate | minus: itemDate %}
+                    {% if diff < 604800 %}
+                    <span class="badge-new">New</span>
+                    {% endif %}
+                </div>
                 <h3>{{ item.title }}</h3>
                 <p>by {{ item.artist }}</p>
+                <!-- Metadata tambahan -->
+                <div class="card-meta">
+                    {% if item.category %}
+                    <span class="card-category">{{ item.category }}</span>
+                    {% endif %}
+                    {% if item.created_at %}
+                    <span class="card-date">{{ item.created_at | date: "%d %b %Y" }}</span>
+                    {% endif %}
+                </div>
                 <a href="/artwork/{{ item.slug }}" class="card-link">View Artwork →</a>
             </div>
             {% endfor %}
@@ -98,8 +156,81 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
     </div>
 </section>
 
-<!-- ====== FEATURED ARTIST ====== -->
-{% assign featuredArtist = supabase.artists | where: "badge", "featured" | first %}
+<!-- ============================================================
+     TRENDING NOW
+     ============================================================ -->
+<section class="section reveal" style="padding-top: 20px;">
+    <div class="container">
+        <div class="section-head">
+            <span>🔥</span>
+            <h2>Trending Now</h2>
+            <a href="/explore" class="section-more">View all →</a>
+        </div>
+        <p class="section-subtitle">Artwork yang sedang paling banyak menarik perhatian.</p>
+
+        <div class="grid">
+            {% assign trendingItems = supabase.trendingArtworks | slice: 0, 3 %}
+            {% if trendingItems.size == 0 %}
+                {% assign trendingItems = supabase.artworks | sort: "updated_at" | reverse | slice: 0, 3 %}
+            {% endif %}
+            {% for item in trendingItems %}
+            <div class="card">
+                <div class="thumb" style="background-image: url('{{ item.image }}'); background-size: cover; background-position: center;">
+                    <div class="trending-badge-wrapper">
+                        <span class="trending-badge">🔥 Trending</span>
+                    </div>
+                </div>
+                <h3>{{ item.title }}</h3>
+                <p>by {{ item.artist }}</p>
+                <div class="card-meta">
+                    {% if item.category %}
+                    <span class="card-category">{{ item.category }}</span>
+                    {% endif %}
+                    <span class="trending-label">Popular this week</span>
+                </div>
+                <a href="/artwork/{{ item.slug }}" class="card-link">View Artwork →</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     WHAT IS ORIGINGFX? — cerita & jiwa
+     ============================================================ -->
+<section class="section reveal" style="padding-top: 40px;">
+    <div class="container">
+        <div class="origin-story">
+            <div class="origin-story-content">
+                <span class="origin-label">✦ Gallery First</span>
+                <h2>What is OriginGFX?</h2>
+                <p>
+                    OriginGFX adalah galeri digital yang dibuat untuk memperkenalkan 
+                    <strong>Minecraft artist</strong> dan karya mereka. 
+                    Kami percaya setiap artwork memiliki cerita, dan setiap artist 
+                    pantas memiliki ruang untuk dikenal.
+                </p>
+                <p style="margin-top: 12px; opacity: 0.7;">
+                    <em>Gallery First. Store Second. Artist Always.</em>
+                </p>
+                <a href="/about" class="btn btn-outline" style="margin-top: 16px;">About OriginGFX →</a>
+            </div>
+            <div class="origin-story-visual">
+                <div class="origin-quote-block">
+                    <span class="quote-icon">✦</span>
+                    <blockquote>
+                        "Behind every artwork is a story worth knowing."
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     FEATURED ARTIST
+     ============================================================ -->
+{% assign featuredArtist = supabase.featuredArtists | first %}
 {% if featuredArtist %}
 <section class="section reveal" style="padding-top: 20px;">
     <div class="container">
@@ -107,6 +238,8 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             <span>✦</span>
             <h2>Featured Artist</h2>
         </div>
+        <p class="section-subtitle">Talenta di balik karya yang kamu lihat.</p>
+
         <div class="featured-artist-card">
             <div class="featured-artist-avatar" style="background-image: url('{{ featuredArtist.avatar }}'); background-size: cover; background-position: center;"></div>
             <div class="featured-artist-info">
@@ -120,7 +253,9 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
 </section>
 {% endif %}
 
-<!-- ====== MEET OUR ARTISTS ====== -->
+<!-- ============================================================
+     MEET OUR ARTISTS — dengan avatar & metadata
+     ============================================================ -->
 <section class="section reveal visible section-short">
     <div class="container">
         <div class="section-head">
@@ -128,38 +263,37 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
             <h2>Meet Our Artists</h2>
             <a href="/artists" class="section-more">View all →</a>
         </div>
+        <p class="section-subtitle">Talenta di balik setiap karya yang kamu lihat.</p>
 
-        <div class="artists-list">
-            <!-- Ambil artist yang is_featured = true, kalau tidak ada ambil 3 artist pertama -->
-            {% assign featuredArtists = supabase.artists | where: "is_featured", true %}
+        <div class="artists-grid-home">
+            {% assign featuredArtists = supabase.featuredArtists %}
             {% if featuredArtists.size == 0 %}
-                {% assign featuredArtists = supabase.artists | slice: 0, 3 %}
+                {% assign featuredArtists = supabase.artists | slice: 0, 4 %}
             {% endif %}
 
             {% for artist in featuredArtists %}
                 {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
-                <article class="artist-item">
-                    <div class="artist-meta">
-                        <h3>{{ artist.name }}</h3>
-                        <p>{{ artist.role }}</p>
+                <a href="/artist/{{ artist.slug }}" class="artist-card-home">
+                    <div class="artist-avatar-home" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
+                    <div class="artist-info-home">
+                        <h4>{{ artist.name }}</h4>
+                        <span class="artist-role-home">{{ artist.role }}</span>
+                        <span class="artist-count-home">{{ artistArtworks }} Artworks</span>
                     </div>
-                    <div class="artist-info">
-                        <span>{{ artistArtworks }} Artworks</span>
-                        <a href="/artist/{{ artist.slug }}">View Portfolio →</a>
-                    </div>
-                </article>
+                </a>
             {% endfor %}
         </div>
+    </div>
+</section>
 
-        <!-- ====== SIGNATURE ====== -->
-        <section class="section reveal section-signature">
-            <div class="signature-section">
-                <div class="signature-quote">
-                    <span class="quote-mark">✦</span>
-                    <p>Every artwork deserves to be discovered.</p>
-                </div>
-            </div>
-        </section>
-
+<!-- ============================================================
+     SIGNATURE
+     ============================================================ -->
+<section class="section reveal section-signature">
+    <div class="signature-section">
+        <div class="signature-quote">
+            <span class="quote-mark">✦</span>
+            <p>Every artwork deserves to be discovered.</p>
+        </div>
     </div>
 </section>
