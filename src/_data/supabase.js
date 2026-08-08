@@ -1,7 +1,7 @@
 // src/_data/supabase.js
 const fs = require('fs');
 const path = require('path');
-const fetch = require('node-fetch');  // polyfill untuk Node.js
+const fetch = require('node-fetch');
 
 module.exports = async function() {
     const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -28,6 +28,7 @@ module.exports = async function() {
 
     async function fetchData(table) {
         const url = `${SUPABASE_URL}/rest/v1/${table}?select=*`;
+        console.log(`📡 Fetching ${table} from Supabase...`);
         const response = await fetch(url, {
             headers: {
                 'apikey': SUPABASE_KEY,
@@ -38,10 +39,13 @@ module.exports = async function() {
 
         if (!response.ok) {
             const errorText = await response.text();
+            console.error(`❌ HTTP ${response.status} for ${table}:`, errorText);
             throw new Error(`HTTP ${response.status}: ${errorText}`);
         }
 
-        return response.json();
+        const data = await response.json();
+        console.log(`   ✅ ${table}: ${data.length} records`);
+        return data;
     }
 
     try {
@@ -51,6 +55,12 @@ module.exports = async function() {
         ]);
 
         console.log(`✅ Supabase: ${artists.length} artists, ${artworks.length} artworks loaded`);
+
+        // Jika data dari Supabase kosong, jangan fallback, biarkan saja.
+        // Tapi kita tetap beri peringatan.
+        if (artworks.length === 0) {
+            console.warn('⚠️ WARNING: 0 artworks fetched from Supabase. Check your database.');
+        }
 
         // ====== MAP artist_id → name ======
         const artistMap = {};
@@ -64,65 +74,37 @@ module.exports = async function() {
             artist: artistMap[artwork.artist_id] || 'Unknown'
         }));
 
-        // ========== OLAHAN DATA DENGAN FALLBACK ==========
-
-        // 1. Latest Artworks (urutkan berdasarkan created_at, fallback ke updated_at/id)
+        // ========== OLAHAN DATA ==========
         const latestArtworks = [...artworksWithArtist]
             .filter(item => item.created_at || item.updated_at || item.id)
-            .sort((a, b) => {
-                const dateA = new Date(a.created_at || a.updated_at || 0);
-                const dateB = new Date(b.created_at || b.updated_at || 0);
-                return dateB - dateA;
-            })
+            .sort((a, b) => new Date(b.created_at || b.updated_at || 0) - new Date(a.created_at || a.updated_at || 0))
             .slice(0, 6);
 
-        // 2. Trending (prioritas views, fallback updated_at)
         const trendingArtworks = [...artworksWithArtist]
-            .filter(item => item.updated_at || item.views)
-            .sort((a, b) => {
-                if (a.views !== undefined && b.views !== undefined) {
-                    return (b.views || 0) - (a.views || 0);
-                }
-                const dateA = new Date(a.updated_at || 0);
-                const dateB = new Date(b.updated_at || 0);
-                return dateB - dateA;
-            })
+            .filter(item => item.views || item.updated_at)
+            .sort((a, b) => (b.views || 0) - (a.views || 0))
             .slice(0, 6);
 
-        // 3. Featured Artworks (cek field 'featured' atau 'is_featured')
         const featuredArtworks = artworksWithArtist.filter(item => 
             item.featured === true || item.is_featured === true
         );
 
-        // 4. Featured Artists
-        const featuredArtists = artists.filter(item => 
-            item.featured === true || item.is_featured === true
-        );
+        const finalFeaturedArtworks = featuredArtworks.length > 0 ? featuredArtworks : artworksWithArtist.slice(0, 3);
+        const finalLatestArtworks = latestArtworks.length > 0 ? latestArtworks : artworksWithArtist.slice(0, 6);
 
-        // 5. Jika featuredArtworks kosong, ambil 3 artwork pertama sebagai fallback
-        const finalFeaturedArtworks = featuredArtworks.length > 0 
-            ? featuredArtworks 
-            : artworksWithArtist.slice(0, 3);
-
-        // 6. Pastikan latestArtworks tidak kosong (fallback ke semua artwork)
-        const finalLatestArtworks = latestArtworks.length > 0 
-            ? latestArtworks 
-            : artworksWithArtist.slice(0, 6);
-
-        // 7. Categories & Artist Names untuk filter (dari artworksWithArtist)
         const categories = [...new Set(artworksWithArtist.map(item => item.category).filter(Boolean))];
         const artistNames = [...new Set(artworksWithArtist.map(item => item.artist).filter(Boolean))];
 
-        console.log(`📊 Olahan: ${finalLatestArtworks.length} latest, ${trendingArtworks.length} trending, ${finalFeaturedArtworks.length} featured artworks, ${featuredArtists.length} featured artists`);
+        console.log(`📊 Olahan: ${finalLatestArtworks.length} latest, ${trendingArtworks.length} trending, ${finalFeaturedArtworks.length} featured`);
 
-        // ====== KEMBALIKAN DATA LENGKAP ======
+        // Kembalikan data dari Supabase (jangan fallback ke local)
         return {
             artists,
-            artworks: artworksWithArtist,      // semua artwork dengan field 'artist'
+            artworks: artworksWithArtist,
             latestArtworks: finalLatestArtworks,
             trendingArtworks,
             featuredArtworks: finalFeaturedArtworks,
-            featuredArtists,
+            featuredArtists: artists.filter(a => a.featured === true || a.is_featured === true),
             categories,
             artistNames
         };

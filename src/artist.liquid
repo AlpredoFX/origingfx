@@ -19,52 +19,72 @@ permalink: "/artist/{{ artist.slug }}/"
             <!-- ===== AVATAR ===== -->
             <div class="profile-hero-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
 
-            <!-- ===== IDENTITAS ===== -->
-            <div class="profile-hero-info">
-                <!-- Nama + Badge Founder di sini -->
-                <div class="profile-name-wrapper">
-                    <h1>{{ artist.name }}</h1>
-                    {% if artist.badge == "founder" %}
-                        <span class="founder-badge">✦ Founder</span>
-                    {% endif %}
-                </div>
+        <!-- ===== IDENTITAS ===== -->
+        <div class="profile-hero-info">
+            <!-- Nama + Badge Founder di sini -->
+            <div class="profile-name-wrapper">
+                <h1>{{ artist.name }}</h1>
+                {% if artist.badge == "founder" %}
+                    <span class="founder-badge">✦ Founder</span>
+                {% endif %}
+            </div>
 
-                <!-- Role + Badge lainnya -->
-                <div class="profile-role-wrapper">
-                    {% if artist.badge and artist.badge != "founder" %}
-                        <span class="artist-badge {{ artist.badge }}">
-                            {% case artist.badge %}
-                                {% when 'founder' %}👑 Founder
-                                {% when 'featured' %}⭐ Featured
-                                {% when 'new' %}🌱 New Artist
-                                {% when 'verified' %}✔ Verified
-                                {% when 'contributor' %}🤝 Contributor
-                                {% when 'curator' %}🏛 Curator
-                                {% when 'editors-pick' %}🏆 Editor's Pick
-                                {% when 'community-favorite' %}❤️ Community Favorite
-                            {% endcase %}
-                        </span>
-                    {% endif %}
-                    <span class="profile-role">{{ artist.role }}</span>
-                </div>
+            <!-- Role + Badge lainnya -->
+            <div class="profile-role-wrapper">
+                {% if artist.badge and artist.badge != "founder" %}
+                    <span class="artist-badge {{ artist.badge }}">
+                        {% case artist.badge %}
+                            {% when 'founder' %}👑 Founder
+                            {% when 'featured' %}⭐ Featured
+                            {% when 'new' %}🌱 New Artist
+                            {% when 'verified' %}✔ Verified
+                            {% when 'contributor' %}🤝 Contributor
+                            {% when 'curator' %}🏛 Curator
+                            {% when 'editors-pick' %}🏆 Editor's Pick
+                            {% when 'community-favorite' %}❤️ Community Favorite
+                        {% endcase %}
+                    </span>
+                {% endif %}
+                <span class="profile-role">{{ artist.role }}</span>
+            </div>
 
-                <!-- ===== METADATA SINGKAT ===== -->
-                <div class="profile-meta">
-                    {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
-                    <span><strong>{{ artistArtworks }}</strong> Artworks</span>
+            <!-- ===== ROLE DESCRIPTION (Founder, Contributor, Curator) ===== -->
+            <div class="role-description-block">
+                {% if artist.badge == "founder" %}
+                    <div class="role-desc-item">
+                        <span class="role-desc-label">✦ Founder of OriginGFX</span>
+                        <p class="role-desc-text">OriginGFX dimulai sebagai portfolio pribadi dan kini menjadi rumah bagi artist lain.</p>
+                    </div>
+                {% elsif artist.badge == "contributor" %}
+                    <div class="role-desc-item">
+                        <span class="role-desc-label">✦ Contributor to OriginGFX</span>
+                        <p class="role-desc-text">Berkontribusi dalam membangun komunitas, proyek, dan ruang kreatif di OriginGFX.</p>
+                    </div>
+                {% elsif artist.badge == "curator" %}
+                    <div class="role-desc-item">
+                        <span class="role-desc-label">✦ Curator at OriginGFX</span>
+                        <p class="role-desc-text">Membantu memilih dan menyoroti karya yang menjadi bagian dari gallery OriginGFX.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- ===== METADATA SINGKAT ===== -->
+            <div class="profile-meta">
+                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
+                <span><strong>{{ artistArtworks }}</strong> Artworks</span>
+                <span class="meta-dot">•</span>
+                {% if artist.location %}
+                    <span>{{ artist.location }}</span>
                     <span class="meta-dot">•</span>
-                    {% if artist.location %}
-                        <span>{{ artist.location }}</span>
-                        <span class="meta-dot">•</span>
-                    {% endif %}
-                    {% if artist.joined %}
-                        <span>Since {{ artist.joined }}</span>
-                        <span class="meta-dot">•</span>
-                    {% endif %}
-                    {% if artist.badge %}
-                        <span class="badge-label">{{ artist.badge | capitalize }}</span>
-                    {% endif %}
-                </div>
+                {% endif %}
+                {% if artist.joined %}
+                    <span>Since {{ artist.joined }}</span>
+                    <span class="meta-dot">•</span>
+                {% endif %}
+                {% if artist.badge %}
+                    <span class="badge-label">{{ artist.badge | capitalize }}</span>
+                {% endif %}
+            </div>
 
                 <!-- ===== BADGE COMMISSION STATUS ===== -->
                 {% assign hasContact = false %}
@@ -159,53 +179,42 @@ permalink: "/artist/{{ artist.slug }}/"
 </section>
 
 <!-- ============================================================
-     PORTFOLIO — HERO ARTWORK + GRID
+     PORTFOLIO — CLIENT-SIDE RENDER (SAMA KAYAK EXPLORE)
      ============================================================ -->
-<section class="section" style="padding-top: 10px;">
+<section class="section" style="padding-top: 20px;">
     <div class="container">
         <div class="portfolio-header">
             <h2 class="section-title">Portfolio</h2>
-            <a href="/explore" class="section-more">View All Artworks →</a>
+            <div class="portfolio-controls">
+                <select id="sort-select" class="sort-select">
+                    <option value="created_at.desc">Latest</option>
+                    <option value="created_at.asc">Oldest</option>
+                    <option value="views.desc">Most Viewed</option>
+                    <option value="featured.desc">Featured</option>
+                </select>
+            </div>
         </div>
 
         {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id %}
-        {% if artistArtworks.size == 0 %}
+        {% assign totalArtworks = artistArtworks | size %}
+
+        {% if totalArtworks == 0 %}
             <p class="no-artwork">Belum ada artwork yang dipublikasikan.</p>
         {% else %}
+            <!-- INFORMASI TOTAL -->
+            <div class="portfolio-info" id="portfolio-info">
+                Showing <span id="showing-count">0</span> of <span id="total-count">{{ totalArtworks }}</span> artworks
+            </div>
 
-            <!-- GRID DENGAN ARTWORK PERTAMA LEBIH BESAR -->
-            <div class="portfolio-grid">
-                {% for artwork in artistArtworks limit: 1 %}
-                    <!-- ARTWORK HERO (span 2 kolom) -->
-                    <div class="portfolio-hero-card">
-                        <a href="/artwork/{{ artwork.slug }}" class="card-link-wrapper">
-                            <div class="thumb-hero" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;">
-                                <div class="thumb-overlay">
-                                    <h3>{{ artwork.title }}</h3>
-                                    <p>{{ artwork.year }}</p>
-                                    <span class="card-link">View Artwork →</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
+            <!-- GRID (diisi JavaScript) -->
+            <div id="portfolio-grid" class="grid grid-3">
+                <!-- Akan diisi oleh JavaScript -->
+            </div>
 
-                <!-- SISANYA (mulai dari artwork ke-2) -->
-                <div class="portfolio-grid-rest">
-                    {% for artwork in artistArtworks offset: 1 %}
-                        <div class="card">
-                            <a href="/artwork/{{ artwork.slug }}" class="card-link-wrapper">
-                                <div class="thumb" style="background-image: url('{{ artwork.image }}'); background-size: cover; background-position: center;">
-                                    <div class="card-overlay">
-                                        <h3>{{ artwork.title }}</h3>
-                                        <p>{{ artwork.year }}</p>
-                                        <span class="card-link">View Artwork →</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    {% endfor %}
-                </div>
+            <!-- ACTION BUTTONS -->
+            <div class="portfolio-actions">
+                <button class="btn load-more-btn" id="load-more-btn">Load More</button>
+                <button class="btn btn-outline" id="view-all-btn">View Full Portfolio →</button>
             </div>
         {% endif %}
     </div>
@@ -344,10 +353,11 @@ permalink: "/artist/{{ artist.slug }}/"
 </section>
 
 <!-- ============================================================
-     JAVASCRIPT — BIO TOGGLE
+     JAVASCRIPT — BIO TOGGLE + PORTFOLIO (CLIENT-SIDE)
      ============================================================ -->
 <script>
     (function() {
+        // ===== BIO TOGGLE =====
         const toggle = document.getElementById('bio-toggle');
         if (toggle) {
             const short = document.getElementById('bio-short');
@@ -367,5 +377,200 @@ permalink: "/artist/{{ artist.slug }}/"
                 }
             });
         }
+
+        // ===== PORTFOLIO — CLIENT-SIDE =====
+        {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id %}
+        const allArtworks = {{ artistArtworks | json }};
+        const grid = document.getElementById('portfolio-grid');
+        const loadBtn = document.getElementById('load-more-btn');
+        const showingSpan = document.getElementById('showing-count');
+        const totalSpan = document.getElementById('total-count');
+        const sortSelect = document.getElementById('sort-select');
+        const viewAllBtn = document.getElementById('view-all-btn');
+
+        if (!grid) return;
+
+        let filteredData = [];
+        let currentPage = 1;
+        const perPage = 6;
+
+        if (totalSpan) totalSpan.textContent = allArtworks.length;
+
+        // ===== SORT =====
+        function sortArtworks(items, sortKey) {
+            const [field, direction] = sortKey.split('.');
+            const sorted = [...items];
+            sorted.sort((a, b) => {
+                let valA = a[field] || 0;
+                let valB = b[field] || 0;
+                if (field === 'created_at') {
+                    valA = new Date(valA);
+                    valB = new Date(valB);
+                }
+                if (typeof valA === 'string') {
+                    return direction === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                }
+                return direction === 'asc' ? valA - valB : valB - valA;
+            });
+            return sorted;
+        }
+
+        // ===== RENDER (dengan pagination) =====
+        function renderPage(items, page, append = false) {
+            const start = (page - 1) * perPage;
+            const end = start + perPage;
+            const pageItems = items.slice(start, end);
+
+            if (pageItems.length === 0 && !append) {
+                grid.innerHTML = `<p class="empty-state">Tidak ada artwork.</p>`;
+                if (loadBtn) loadBtn.style.display = 'none';
+                if (showingSpan) showingSpan.textContent = '0';
+                return;
+            }
+
+            const html = pageItems.map(item => `
+                <div class="card" data-slug="${item.slug}">
+                    <a href="/artwork/${item.slug}/" class="card-link-wrapper">
+                        <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;">
+                            <div class="card-overlay">
+                                <h3>${item.title}</h3>
+                                <p>${item.year || ''}</p>
+                                <span class="card-link">View Artwork →</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `).join('');
+
+            if (append) {
+                grid.insertAdjacentHTML('beforeend', html);
+            } else {
+                grid.innerHTML = html;
+            }
+
+            const totalItems = items.length;
+            const loadedCount = Math.min(page * perPage, totalItems);
+            const hasMore = loadedCount < totalItems;
+
+            if (loadBtn) {
+                if (hasMore) {
+                    loadBtn.style.display = 'block';
+                    loadBtn.dataset.nextPage = page + 1;
+                    loadBtn.disabled = false;
+                    loadBtn.textContent = 'Load More';
+                } else {
+                    loadBtn.style.display = 'none';
+                }
+            }
+
+            if (showingSpan) showingSpan.textContent = loadedCount;
+
+            // Tampilkan tombol View All jika belum semua dimuat
+            if (viewAllBtn) {
+                viewAllBtn.style.display = (loadedCount < totalItems) ? 'block' : 'none';
+            }
+        }
+
+        // ===== RENDER ALL (tanpa pagination) =====
+        function renderAll(items) {
+            if (items.length === 0) {
+                grid.innerHTML = `<p class="empty-state">Tidak ada artwork.</p>`;
+                if (showingSpan) showingSpan.textContent = '0';
+                return;
+            }
+
+            const html = items.map(item => `
+                <div class="card" data-slug="${item.slug}">
+                    <a href="/artwork/${item.slug}/" class="card-link-wrapper">
+                        <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;">
+                            <div class="card-overlay">
+                                <h3>${item.title}</h3>
+                                <p>${item.year || ''}</p>
+                                <span class="card-link">View Artwork →</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `).join('');
+
+            grid.innerHTML = html;
+            if (showingSpan) showingSpan.textContent = items.length;
+            if (loadBtn) loadBtn.style.display = 'none';
+            if (viewAllBtn) viewAllBtn.style.display = 'none';
+        }
+
+        // ===== VIEW ALL =====
+        if (viewAllBtn) {
+            viewAllBtn.addEventListener('click', function() {
+                const sort = sortSelect ? sortSelect.value : 'created_at.desc';
+                const allSorted = sortArtworks(allArtworks, sort);
+                filteredData = allSorted;
+                renderAll(allSorted);
+            });
+        }
+
+        // ===== FILTER + SORT =====
+        function applyFilters() {
+            const sort = sortSelect ? sortSelect.value : 'created_at.desc';
+            let filtered = sortArtworks(allArtworks, sort);
+            filteredData = filtered;
+            currentPage = 1;
+            renderPage(filteredData, currentPage, false);
+        }
+
+        // ===== LOAD MORE =====
+        function loadMore() {
+            if (!filteredData.length) return;
+            const nextPage = parseInt(loadBtn.dataset.nextPage) || 2;
+            const totalPages = Math.ceil(filteredData.length / perPage);
+
+            if (nextPage <= totalPages) {
+                currentPage = nextPage;
+                renderPage(filteredData, currentPage, true);
+            } else {
+                loadBtn.style.display = 'none';
+            }
+        }
+
+        // ===== INISIALISASI =====
+        // Cek apakah ini halaman yang kembali dari artwork (ada saved scroll)
+        const savedScroll = sessionStorage.getItem('artist_scroll_position');
+        const isReturning = savedScroll !== null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            filteredData = sortArtworks(allArtworks, 'created_at.desc');
+
+            if (isReturning) {
+                // Jika kembali dari artwork, langsung render semua
+                renderAll(filteredData);
+                // Restore scroll setelah render
+                setTimeout(function() {
+                    window.scrollTo({
+                        top: parseInt(savedScroll, 10),
+                        behavior: 'instant'
+                    });
+                    sessionStorage.removeItem('artist_scroll_position');
+                }, 150);
+            } else {
+                // Normal: render 6 pertama
+                renderPage(filteredData, 1, false);
+            }
+        });
+
+        // ===== EVENT LISTENERS =====
+        if (loadBtn) loadBtn.addEventListener('click', loadMore);
+        if (sortSelect) sortSelect.addEventListener('change', applyFilters);
+
+        window.applyFilters = applyFilters;
+        window.loadMore = loadMore;
+
+        // ===== SAVE SCROLL POSITION SAAT KLIK KARTU =====
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('.card a[href^="/artwork/"]');
+            if (link) {
+                sessionStorage.setItem('artist_scroll_position', window.scrollY);
+            }
+        });
+
     })();
 </script>

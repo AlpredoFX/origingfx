@@ -3,152 +3,187 @@ layout: layout.liquid
 title: Artists — OriginGFX
 ---
 
-<section class="page-hero reveal">
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="page-hero reveal" style="padding: 60px 0 40px;">
     <div class="container center">
         <h1>Meet Our Artists</h1>
-        <p class="lead">Kreator di balik setiap karya</p>
-        <p class="hero-sub" style="font-size: 1rem; max-width: 500px; margin: 8px auto 0; color: var(--muted);">
-            OriginGFX dimulai oleh satu artist, dan tumbuh bersama kreator lain yang ingin berbagi karya mereka.
+        <p class="lead" style="font-size: 1.1rem; color: var(--text-soft); max-width: 560px; margin: 8px auto 0;">
+            The creators behind every artwork in OriginGFX.
         </p>
     </div>
 </section>
 
-<section class="section reveal" style="padding-top: 20px;">
+<!-- ============================================================
+     FOUNDER SPOTLIGHT — Premium Editorial
+     ============================================================ -->
+<section class="section reveal" style="padding-top: 0; padding-bottom: 20px;">
     <div class="container">
-
-        <!-- ====== STATISTIK ====== -->
-        <div class="explore-stats artists-stats">
-            <span class="stat-item">
-                <span class="stat-number">{{ supabase.artists | size }}</span>
-                <span class="stat-label">Artists</span>
-            </span>
-            <span class="stat-divider"></span>
-            <span class="stat-item">
-                <span class="stat-number">{{ supabase.artworks | size }}</span>
-                <span class="stat-label">Artworks</span>
-            </span>
-            <span class="stat-divider"></span>
-            <span class="stat-item">
-                <span class="stat-number">{{ supabase.artworks | map: "category" | uniq | size }}</span>
-                <span class="stat-label">Styles</span>
-            </span>
-        </div>
-
-        <!-- ============================================================
-            1. FOUNDER SPOTLIGHT
-        ============================================================ -->
-        {% assign founder = nil %}
-        {% for a in supabase.artists %}
-            {% if a.badge == "founder" %}
-                {% assign founder = a %}
-            {% endif %}
-        {% endfor %}
-
+        {% assign founder = supabase.artists | where: "badge", "founder" | first %}
         {% if founder %}
-        <div class="founder-spotlight">
-            <span class="section-label">✦ Founder</span>
-            <div class="founder-spotlight-card">
-                <div class="founder-spotlight-avatar" style="background-image: url('{{ founder.avatar }}'); background-size: cover; background-position: center;"></div>
-                <div class="founder-spotlight-info">
-                    <h3>{{ founder.name }}</h3>
-                    <span class="founder-badge">Founder</span>
-                    <p class="founder-role">{{ founder.identity | default: founder.role }}</p>
-                    <div class="founder-spotlight-stats">
-                        {% assign founderArtworks = supabase.artworks | where: "artist_id", founder.id | size %}
-                        <span>{{ founderArtworks }} Artworks</span>
-                        {% if founder.joined %}
-                        <span>· Joined {{ founder.joined }}</span>
-                        {% endif %}
-                    </div>
-                    <a href="/artist/{{ founder.slug }}" class="btn-portfolio" style="opacity:1; transform:none; padding:10px 28px;">
-                        <span>View Profile</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- ============================================================
-            2. COMMUNITY ARTISTS — GRID 4 KOLOM
-        ============================================================ -->
-        <div class="community-section">
-            <span class="section-label">Community Artists</span>
-            <div class="artists-grid" style="padding-top: 20px;">
-                {% for artist in supabase.artists %}
-                    {% if artist.badge != "founder" %}
-                    <article class="artist-card">
-                        {% if artist.badge %}
-                        <span class="artist-badge {{ artist.badge }}">
-                            {% case artist.badge %}
-                                {% when 'founder' %}👑 Founder
-                                {% when 'featured' %}⭐ Featured
-                                {% when 'new' %}🌱 New Artist
-                                {% when 'verified' %}✔ Verified
-                                {% when 'contributor' %}🤝 Contributor
-                                {% when 'curator' %}🏛 Curator
-                                {% when 'editors-pick' %}🏆 Editor's Pick
-                                {% when 'community-favorite' %}❤️ Community Favorite
-                            {% endcase %}
-                        </span>
-                        {% endif %}
-                        <div class="artist-avatar-wrapper" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
-                        <div class="artist-card-content">
-                            <h3>{{ artist.name }}</h3>
-                            <p class="artist-identity">{{ artist.identity | default: artist.role }}</p>
-                            <div class="artist-stats">
-                                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
-                                <span class="artist-stat">
-                                    <span class="stat-number">{{ artistArtworks }}</span>
-                                    <span class="stat-label">Artworks</span>
-                                </span>
-                                {% if artist.joined %}
-                                <span class="artist-stat">
-                                    <span class="stat-label">Joined {{ artist.joined }}</span>
-                                </span>
-                                {% endif %}
+            <div class="founder-premium">
+                <div class="founder-premium-label">✦ Founder</div>
+                <a href="/artist/{{ founder.slug }}" class="founder-premium-card">
+                    <div class="founder-premium-bg"></div>
+                    <div class="founder-premium-content">
+                        <div class="founder-premium-avatar" style="background-image: url('{{ founder.avatar }}'); background-size: cover; background-position: center;"></div>
+                        <div class="founder-premium-info">
+                            <div class="founder-premium-header">
+                                <h2>{{ founder.name }}</h2>
+                                <span class="founder-premium-badge">Founder</span>
                             </div>
-                            {% if artistArtworks > 0 %}
-                            <a href="/artist/{{ artist.slug }}" class="btn-portfolio">
-                                <span>View Profile</span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
-                            {% else %}
-                            <span class="artist-empty">Coming Soon</span>
-                            {% endif %}
+                            <p class="founder-premium-role">{{ founder.role }}</p>
+                            <div class="founder-premium-stats">
+                                {% assign founderArtworks = supabase.artworks | where: "artist_id", founder.id | size %}
+                                <span><strong>{{ founderArtworks }}</strong> Artworks</span>
+                                <span class="meta-dot">·</span>
+                                <span>Joined {{ founder.joined | default: '2026' }}</span>
+                            </div>
+                            <p class="founder-premium-bio">{{ founder.bio | truncate: 110 }}</p>
+                            <span class="founder-premium-cta">View Profile →</span>
                         </div>
-                    </article>
-                    {% endif %}
-                {% endfor %}
+                    </div>
+                </a>
             </div>
-        </div>
-
-        <!-- ============================================================
-            3. FUTURE ARTISTS / JOIN
-        ============================================================ -->
-        <div class="artists-closing">
-            <div class="future-artists">
-                <span class="section-label">✦ Future Artists</span>
-                <p class="future-text">
-                    OriginGFX terus tumbuh. Jika kamu seorang artist dan ingin bergabung, 
-                    <a href="/contact">hubungi kami</a>.
-                </p>
-            </div>
-        </div>
-
+        {% endif %}
     </div>
 </section>
 
-<!-- ====== SIGNATURE ====== -->
-<section class="section reveal section-signature">
+<!-- ============================================================
+     CONTRIBUTORS — Role Card
+     ============================================================ -->
+{% assign allNonFounder = supabase.artists | where_exp: "artist", "artist.badge != 'founder'" %}
+{% assign contributors = allNonFounder | where: "badge", "contributor" %}
+{% assign curators = allNonFounder | where: "badge", "curator" %}
+{% assign communityArtists = allNonFounder | where_exp: "artist", "artist.badge != 'contributor' and artist.badge != 'curator'" %}
+
+{% if contributors.size > 0 %}
+<section class="section reveal" style="padding-top: 0; padding-bottom: 20px;">
+    <div class="container">
+        <div class="role-section-header">
+            <h2 class="role-section-title">✦ Contributors</h2>
+            <p class="role-section-sub">Artists who help build the OriginGFX community.</p>
+        </div>
+        <div class="role-grid">
+            {% for artist in contributors %}
+                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
+                <a href="/artist/{{ artist.slug }}" class="role-card">
+                    <div class="role-card-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
+                    <div class="role-card-info">
+                        <h4>{{ artist.name }}</h4>
+                        <span class="role-label">✦ CONTRIBUTOR</span>
+                        <p class="role-description">{{ artist.role }}</p>
+                        <div class="role-stats">
+                            <span>{{ artistArtworks }} Artworks</span>
+                            <span class="meta-dot">·</span>
+                            <span>Joined {{ artist.joined | default: '2026' }}</span>
+                        </div>
+                        <span class="btn-small btn-outline role-cta">View Profile →</span>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ============================================================
+     CURATORS — Role Card
+     ============================================================ -->
+{% if curators.size > 0 %}
+<section class="section reveal" style="padding-top: 0; padding-bottom: 20px;">
+    <div class="container">
+        <div class="role-section-header">
+            <h2 class="role-section-title">✦ Curators</h2>
+            <p class="role-section-sub">Artists who curate the gallery's featured works.</p>
+        </div>
+        <div class="role-grid">
+            {% for artist in curators %}
+                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
+                <a href="/artist/{{ artist.slug }}" class="role-card">
+                    <div class="role-card-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
+                    <div class="role-card-info">
+                        <h4>{{ artist.name }}</h4>
+                        <span class="role-label">✦ CURATOR</span>
+                        <p class="role-description">{{ artist.role }}</p>
+                        <div class="role-stats">
+                            <span>{{ artistArtworks }} Artworks</span>
+                            <span class="meta-dot">·</span>
+                            <span>Joined {{ artist.joined | default: '2026' }}</span>
+                        </div>
+                        <span class="btn-small btn-outline role-cta">View Profile →</span>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ============================================================
+     COMMUNITY ARTISTS — Standard Card
+     ============================================================ -->
+{% if communityArtists.size > 0 %}
+<section class="section reveal" style="padding-top: 0; padding-bottom: 40px;">
+    <div class="container">
+        <div class="community-artists-header">
+            <h2 class="section-title" style="font-size: 1.4rem; text-align: center;">Community Artists</h2>
+            <p class="community-subtitle">The creators behind the gallery.</p>
+        </div>
+        <div class="community-artists-grid">
+            {% for artist in communityArtists %}
+                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
+                <a href="/artist/{{ artist.slug }}" class="community-artist-card">
+                    <div class="artist-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
+                    <div class="artist-info">
+                        <!-- ===== BADGE DI COMMUNITY ARTISTS ===== -->
+                        <div class="artist-name-wrapper">
+                            <h4>{{ artist.name }}</h4>
+                            {% if artist.badge == "new" %}
+                                <span class="badge-new-subtle">✦ New</span>
+                            {% elsif artist.badge == "verified" %}
+                                <span class="badge-verified">✓ Verified</span>
+                            {% endif %}
+                            <!-- Badge lain (contributor, curator, featured, dll.) TIDAK muncul di sini -->
+                        </div>
+                        <p class="artist-role">{{ artist.role }}</p>
+                        <div class="artist-stats">
+                            <span>{{ artistArtworks }} Artworks</span>
+                            <span class="meta-dot">·</span>
+                            <span>Joined {{ artist.joined | default: '2026' }}</span>
+                        </div>
+                        <span class="btn-small btn-outline">View Profile →</span>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ============================================================
+     FUTURE ARTISTS
+     ============================================================ -->
+<section class="section reveal" style="padding-top: 10px; padding-bottom: 40px;">
+    <div class="container">
+        <div class="future-artists">
+            <span class="future-icon">✦</span>
+            <h2>Future Artists</h2>
+            <p>
+                OriginGFX terus tumbuh bersama para kreator di dalamnya. Jika kamu punya karya yang ingin diperkenalkan, kami terbuka untuk artist baru.
+            </p>
+            <a href="/contact" class="btn btn-outline">Contact Us</a>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SIGNATURE
+     ============================================================ -->
+<section class="section reveal section-signature" style="padding-top: 10px; padding-bottom: 20px;">
     <div class="signature-section">
-         <div class="signature-quote">
+        <div class="signature-quote">
             <span class="quote-mark">✦</span>
             <p>Behind every artwork is a story worth knowing.</p>
         </div>

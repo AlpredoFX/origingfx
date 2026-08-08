@@ -627,3 +627,12 @@ document.addEventListener('DOMContentLoaded', () => {
         incrementViews(slug);
     }
 });
+
+
+document.querySelectorAll('.artwork-placeholder').forEach(el => {
+    el.addEventListener('click', function() {
+        const image = this.dataset.image;
+        const title = this.dataset.title;
+        openLightbox(image, title);
+    });
+});

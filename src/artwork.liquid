@@ -17,9 +17,9 @@ permalink: "/artwork/{{ artwork.slug }}/"
         <!-- ====== ARTWORK DETAIL ====== -->
         <div class="artwork-detail">
 
-            <!-- KIRI: Gambar -->
+            <!-- KIRI: Gambar (dengan contain, max-height 80vh, dan noise background) -->
             <div class="artwork-image">
-                <div class="artwork-placeholder" onclick="openLightbox('{{ artwork.image }}', '{{ artwork.title }}')">
+                <div class="artwork-placeholder" data-image="{{ artwork.image | escape }}" data-title="{{ artwork.title | escape }}">
                     <img src="{{ artwork.image }}" alt="{{ artwork.title }}" loading="lazy">
                     <div class="zoom-hint">🔍 Klik untuk memperbesar</div>
                 </div>
@@ -45,29 +45,55 @@ permalink: "/artwork/{{ artwork.slug }}/"
                     <a href="/artist/{{ artist.slug }}" class="mini-artist-link">View Profile →</a>
                 </div>
 
-                <!-- ====== META ====== -->
+                <!-- ====== META (ringkas) ====== -->
                 <div class="artwork-meta">
                     <span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                         {{ artwork.year }}
                     </span>
                     <span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                        {{ artwork.software | join: ", " }}
-                    </span>
-                    <span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         {{ artwork.category }}
                     </span>
-                    <span>👁️ {{ artwork.views | default: 0 }} views</span>
+                    <span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        {{ artwork.software | first | default: 'No software' }}
+                    </span>
+                    <span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        {{ artwork.views | default: 0 }}
+                    </span>
                 </div>
 
-                <!-- ====== ARTWORK STORY ====== -->
+                <!-- ====== DESKRIPSI ====== -->
                 <div class="artwork-description">
                     <p>{{ artwork.description }}</p>
                 </div>
 
-                <!-- ====== TOOLS ====== -->
+                <!-- ====== ARTWORK INFORMATION (detail) ====== -->
+                <div class="artwork-info-detail">
+                    <span class="info-title">Artwork Information</span>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Year</span>
+                            <span class="info-value">{{ artwork.year | default: '-' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Category</span>
+                            <span class="info-value">{{ artwork.category | default: '-' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Software</span>
+                            <span class="info-value">{{ artwork.software | join: ', ' | default: '-' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Views</span>
+                            <span class="info-value">{{ artwork.views | default: 0 }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====== TOOLS (software) ====== -->
                 {% if artwork.software.size > 1 %}
                 <div class="artwork-tools">
                     <span class="tools-label">Tools</span>
@@ -79,11 +105,33 @@ permalink: "/artwork/{{ artwork.slug }}/"
                 </div>
                 {% endif %}
 
+                <!-- ====== ARTIST'S NOTE ====== -->
+                {% if artwork.artist_note %}
+                <div class="artist-note">
+                    <span class="note-label">✦ Artist's Note</span>
+                    <p>{{ artwork.artist_note }}</p>
+                </div>
+                {% endif %}
+
                 <!-- ====== COMMISSION & ACTION ====== -->
                 <div class="artwork-actions">
                     <div class="action-primary">
                         <span class="action-hint">Interested in a similar style?</span>
-                        <a href="/artist/{{ artist.slug }}" class="btn btn-commission">Commission Artist →</a>
+                        {% assign commissionLink = false %}
+                        {% if artist.social.instagram %}
+                            {% assign commissionLink = artist.social.instagram %}
+                            {% assign commissionLabel = 'Commission via Instagram' %}
+                        {% elsif artist.social.discord %}
+                            {% assign commissionLink = artist.social.discord %}
+                            {% assign commissionLabel = 'Commission via Discord' %}
+                        {% elsif artist.social.fiverr %}
+                            {% assign commissionLink = artist.social.fiverr %}
+                            {% assign commissionLabel = 'Commission via Fiverr' %}
+                        {% else %}
+                            {% assign commissionLink = '/artist/' | append: artist.slug %}
+                            {% assign commissionLabel = 'Commission Artist →' %}
+                        {% endif %}
+                        <a href="{{ commissionLink }}" target="_blank" class="btn btn-commission">{{ commissionLabel }}</a>
                     </div>
                     <div class="action-secondary">
                         <a href="/artist/{{ artist.slug }}" class="btn-outline">Visit Artist Profile</a>
@@ -91,7 +139,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
                     </div>
                 </div>
 
-                <!-- ====== SHARE ====== -->
+                <!-- ====== SHARE (lebih jelas) ====== -->
                 <div class="artwork-share">
                     <span class="share-label">Share this Artwork</span>
                     <div class="share-links">
@@ -103,20 +151,28 @@ permalink: "/artwork/{{ artwork.slug }}/"
             </div>
         </div>
 
-        <!-- ====== MORE FROM THIS ARTIST ====== -->
+        <!-- ====== CONTINUE EXPLORING (More from this Artist) ====== -->
         <div class="more-from-artist">
-            <h3>More from {{ artist.name }}</h3>
+            <div class="more-from-header">
+                <h3>Continue Exploring</h3>
+                <a href="/artist/{{ artist.slug }}" class="section-more">View all →</a>
+            </div>
             <div class="grid grid-3">
                 {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id %}
+                {% assign moreArtworks = "" | split: "" %}
                 {% for a in artistArtworks %}
                     {% if a.slug != artwork.slug %}
-                    <div class="card">
-                        <div class="thumb" style="background-image: url('{{ a.image }}'); background-size: cover; background-position: center;"></div>
-                        <h3>{{ a.title }}</h3>
-                        <p>{{ a.year }}</p>
-                        <a href="/artwork/{{ a.slug }}" class="card-link">View Artwork →</a>
-                    </div>
+                        {% assign moreArtworks = moreArtworks | push: a %}
                     {% endif %}
+                {% endfor %}
+                {% assign limitedArtworks = moreArtworks | slice: 0, 6 %}
+                {% for a in limitedArtworks %}
+                <div class="card">
+                    <div class="thumb" style="background-image: url('{{ a.image }}'); background-size: cover; background-position: center;"></div>
+                    <h3>{{ a.title }}</h3>
+                    <p>{{ a.year }}</p>
+                    <a href="/artwork/{{ a.slug }}" class="card-link">View Artwork →</a>
+                </div>
                 {% endfor %}
             </div>
         </div>
@@ -150,7 +206,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
 </section>
 
 <!-- ====== LIGHTBOX ====== -->
-<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+<div id="lightbox" class="lightbox">
     <div class="lightbox-content" onclick="event.stopPropagation()">
         <button class="lightbox-close" onclick="closeLightbox()">✕</button>
         <div class="lightbox-image-container" id="lightbox-container">
@@ -167,9 +223,104 @@ permalink: "/artwork/{{ artwork.slug }}/"
     </div>
 </div>
 
-<!-- ====== VIEWS COUNTER SCRIPT ====== -->
+<!-- ====== JAVASCRIPT: LIGHTBOX + VIEWS COUNTER ====== -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    (function() {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const placeholder = document.querySelector('.artwork-placeholder');
+
+        // ===== ZOOM STATE =====
+        let currentScale = 1;
+        const container = document.getElementById('lightbox-container');
+
+        // ===== FUNGSI ZOOM =====
+        window.zoomIn = function() {
+            currentScale = Math.min(currentScale + 0.25, 4);
+            applyZoom();
+        };
+        window.zoomOut = function() {
+            currentScale = Math.max(currentScale - 0.25, 0.5);
+            applyZoom();
+        };
+        window.resetZoom = function() {
+            currentScale = 1;
+            applyZoom();
+            if (container) {
+                container.scrollLeft = 0;
+                container.scrollTop = 0;
+            }
+        };
+
+        function applyZoom() {
+            if (lightboxImg) {
+                lightboxImg.style.transform = `scale(${currentScale})`;
+                lightboxImg.style.transformOrigin = 'center center';
+            }
+        }
+
+        // ===== BUKA LIGHTBOX =====
+        window.openLightbox = function(imageUrl, title) {
+            if (!lightbox || !lightboxImg) return;
+            lightboxImg.src = imageUrl;
+            if (lightboxCaption) lightboxCaption.textContent = title || 'Artwork';
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // matikan scroll
+            currentScale = 1;
+            applyZoom();
+            if (container) {
+                container.scrollLeft = 0;
+                container.scrollTop = 0;
+            }
+        };
+
+        // ===== TUTUP LIGHTBOX =====
+        window.closeLightbox = function() {
+            if (!lightbox) return;
+            lightbox.style.display = 'none';
+            document.body.style.overflow = ''; // hidupkan scroll kembali
+            currentScale = 1;
+            applyZoom();
+        };
+
+        // ===== KLIK PADA GAMBAR (placeholder) =====
+        if (placeholder) {
+            placeholder.addEventListener('click', function() {
+                const imageUrl = this.dataset.image;
+                const title = this.dataset.title || 'Artwork';
+                if (imageUrl) {
+                    openLightbox(imageUrl, title);
+                }
+            });
+        }
+
+        // ===== TUTUP DENGAN KLIK DI LUAR GAMBAR =====
+        if (lightbox) {
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeLightbox();
+                }
+            });
+        }
+
+        // ===== TUTUP DENGAN TOMBOL ESC =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // ===== TOMBOL CLOSE (X) =====
+        const closeBtn = document.querySelector('.lightbox-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeLightbox();
+            });
+        }
+
+        // ===== VIEWS COUNTER =====
         const slug = '{{ artwork.slug }}';
         if (slug) {
             fetch(`/.netlify/functions/update-views?slug=${slug}`)
@@ -184,7 +335,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
                 })
                 .catch(err => console.log('Views update skipped:', err));
         }
-    });
+    })();
 </script>
 
 <!-- ====== SIGNATURE ====== -->

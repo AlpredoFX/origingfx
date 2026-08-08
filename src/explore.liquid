@@ -3,20 +3,31 @@ layout: layout.liquid
 title: Explore — OriginGFX
 ---
 
+<!-- ============================================================
+     HERO — dengan "Recently Added"
+     ============================================================ -->
 <section class="page-hero reveal">
     <div class="container center">
         <h1>Discover Artworks</h1>
         <p class="lead">Temukan karya terbaik dari para kreator Minecraft</p>
-        <p class="hero-tagline" style="font-size: 0.9rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 6px;">
+        <p class="hero-tagline" style="font-size: 0.9rem; color: var(--text-soft); letter-spacing: 0.08em; margin-top: 6px;">
             Gallery First. Store Second. Artist Always.
         </p>
+
+        <!-- ===== RECENTLY ADDED (Hero Update) ===== -->
+        {% assign recentCount = supabase.latestArtworks | size %}
+        <div class="hero-update">
+            <span class="update-label">✦ Recently Added</span>
+            <span class="update-count">{{ recentCount }} new artworks this week</span>
+        </div>
     </div>
 </section>
 
-<section class="section reveal" style="padding-top: 20px;">
+<!-- ============================================================
+     STATISTIK
+     ============================================================ -->
+<section class="section reveal" style="padding-top: 0px; padding-bottom: 20px;">
     <div class="container">
-
-        <!-- ====== STATISTIK ====== -->
         <div class="explore-stats">
             <span class="stat-item">
                 <span class="stat-number">{{ supabase.artworks | size }}</span>
@@ -33,24 +44,45 @@ title: Explore — OriginGFX
                 <span class="stat-label">Categories</span>
             </span>
         </div>
+    </div>
+</section>
 
-        <!-- ====== FEATURED TODAY ====== -->
+<!-- ============================================================
+     EDITOR'S PICK — Dengan Editorial Context
+     ============================================================ -->
+<section class="section reveal" style="padding-top: 0px; padding-bottom: 20px;">
+    <div class="container">
         {% assign featuredArtwork = supabase.featuredArtworks | first %}
         {% if featuredArtwork %}
-        <div class="featured-today">
-            <span class="featured-today-label">✦ Featured Today</span>
-            <a href="/artwork/{{ featuredArtwork.slug }}" class="featured-today-link">
-                <div class="featured-today-image" style="background-image: url('{{ featuredArtwork.image }}'); background-size: cover; background-position: center;"></div>
-                <div class="featured-today-content">
+        <div class="editors-pick-section">
+            <!-- Label + Subtitle -->
+            <div class="editors-pick-header">
+                <span class="editors-pick-label">✦ EDITOR'S PICK</span>
+                <span class="editors-pick-sub">Selected by OriginGFX</span>
+            </div>
+
+            <!-- Card -->
+            <a href="/artwork/{{ featuredArtwork.slug }}" class="editors-pick-card">
+                <div class="editors-pick-image" style="background-image: url('{{ featuredArtwork.image }}'); background-size: cover; background-position: center;"></div>
+                <div class="editors-pick-content">
                     <h3>{{ featuredArtwork.title }}</h3>
                     <p>by {{ featuredArtwork.artist }}</p>
-                    <span class="featured-today-cta">View Artwork →</span>
+                    <p class="editors-pick-note">
+                        {{ featuredArtwork.editor_note | default: "Chosen for its cinematic composition and lighting." }}
+                    </p>
+                    <span class="editors-pick-cta">View Artwork →</span>
                 </div>
             </a>
         </div>
         {% endif %}
+    </div>
+</section>
 
-        <!-- ====== SEARCH & FILTER ====== -->
+<!-- ============================================================
+     SEARCH & FILTER — muncul setelah featured
+     ============================================================ -->
+<section class="section reveal" style="padding-top: 0px; padding-bottom: 10px;">
+    <div class="container">
         <div class="search-filter-container">
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="🔍 Cari artwork..." oninput="applyFilters()">
@@ -68,27 +100,53 @@ title: Explore — OriginGFX
                         <option value="{{ name }}">{{ name }}</option>
                     {% endfor %}
                 </select>
+                <select id="sortSelect" onchange="applyFilters()">
+                    <option value="created_at.desc">Newest</option>
+                    <option value="created_at.asc">Oldest</option>
+                    <option value="views.desc">Most Viewed</option>
+                    <option value="featured.desc">Featured</option>
+                </select>
             </div>
         </div>
 
-        <!-- ====== GRID ====== -->
-        <div id="artworkGrid" class="grid grid-4"></div>
-
-        <!-- ====== LOAD MORE ====== -->
-        <div class="load-more-wrapper">
-            <button class="btn load-more-btn" id="loadMoreBtn">Load More</button>
+        <!-- ===== FEEDBACK & CHIPS ===== -->
+        <div id="search-feedback" style="display: none;">
+            <p class="search-result-text" id="searchResultText"></p>
+            <div class="filter-chips" id="filterChips"></div>
         </div>
-        <p class="explore-info" id="resultCount">Menampilkan 0 dari 0 artworks</p>
-
     </div>
 </section>
 
-<!-- ====== STYLE GUIDE MODAL ====== -->
+<!-- ============================================================
+     GRID UTAMA (MASONRY) — diisi JavaScript
+     ============================================================ -->
+<section class="section reveal" style="padding-top: 0px;">
+    <div class="container">
+        <div id="artworkGrid">
+            <!-- Akan diisi oleh JavaScript -->
+        </div>
+
+        <!-- ===== LOAD MORE ===== -->
+        <div class="load-more-wrapper">
+            <button class="btn load-more-btn" id="loadMoreBtn">Load More</button>
+        </div>
+
+        <!-- ===== INFO ===== -->
+        <p class="explore-info" id="resultCount">Menampilkan 0 dari 0 artworks</p>
+
+        <!-- ===== EMPTY SPACE FOOTER: Discover Artists ===== -->
+        <div class="explore-footer">
+            <p class="explore-footer-text">Interested in the artists behind these works?</p>
+            <a href="/artists" class="btn btn-outline">Discover Artists →</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== STYLE GUIDE MODAL ===== -->
 <div id="styleGuideModal" class="style-guide-modal">
     <div class="style-guide-content">
         <h2>Minecraft Artwork Styles</h2>
         <p class="sub">Istilah yang digunakan komunitas render Minecraft Indonesia</p>
-
         <div class="style-guide-item">
             <h3>Manip</h3>
             <p>Photo manipulation dengan compositing dan efek sinematik. Fokus pada lighting, atmosfer, dan penggabungan elemen visual.</p>
@@ -105,57 +163,91 @@ title: Explore — OriginGFX
             <h3>Abstract</h3>
             <p>Eksplorasi warna, shape, dan efek visual tanpa mengikuti komposisi realistis.</p>
         </div>
-
         <button class="modal-close" id="modalClose">Close</button>
     </div>
 </div>
 
-<!-- ====== SIGNATURE ====== -->
+<!-- ============================================================
+     SIGNATURE
+     ============================================================ -->
 <section class="section reveal section-signature">
     <div class="signature-section">
-         <div class="signature-quote">
+        <div class="signature-quote">
             <span class="quote-mark">✦</span>
             <p>Discover the artists behind every masterpiece.</p>
         </div>
     </div>
 </section>
 
-<!-- ====== JAVASCRIPT ====== -->
+<!-- ============================================================
+     JAVASCRIPT — SEARCH, FILTER, SORT, LOAD MORE + MASONRY + BACK RESTORE
+     ============================================================ -->
 <script>
     (function() {
-        // Ambil semua data dari Eleventy
+        // ===== DATA =====
         const allArtworks = {{ supabase.artworks | json }};
 
+        // ===== DOM REFS =====
+        const grid = document.getElementById('artworkGrid');
+        const loadBtn = document.getElementById('loadMoreBtn');
+        const resultCount = document.getElementById('resultCount');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const artistFilter = document.getElementById('artistFilter');
+        const sortSelect = document.getElementById('sortSelect');
+
+        // ===== STATE =====
+        let filteredData = [];
         let currentPage = 1;
         const perPage = 8;
-        let filteredData = []; // akan diisi saat filter
+        let masonryInstance = null;
 
-        // Fungsi untuk render kartu (append mode)
-        function renderArtworks(items, append = false) {
-            const grid = document.getElementById('artworkGrid');
-
-            if (!items || items.length === 0) {
-                if (!append) {
-                    grid.innerHTML = `<p class="empty-state">Tidak ada artwork yang cocok dengan filter.</p>`;
+        // ===== UTILITY: Sort =====
+        function sortArtworks(items, sortKey) {
+            const [field, direction] = sortKey.split('.');
+            const sorted = [...items];
+            sorted.sort((a, b) => {
+                let valA = a[field] || 0;
+                let valB = b[field] || 0;
+                if (field === 'created_at') {
+                    valA = new Date(valA);
+                    valB = new Date(valB);
                 }
-                document.getElementById('loadMoreBtn').style.display = 'none';
-                document.getElementById('resultCount').textContent = `Menampilkan 0 dari ${filteredData.length} artworks`;
+                if (typeof valA === 'string') {
+                    return direction === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                }
+                return direction === 'asc' ? valA - valB : valB - valA;
+            });
+            return sorted;
+        }
+
+        // ===== RENDER (CSS Columns) =====
+        function renderPage(items, page, append = false) {
+            const start = (page - 1) * perPage;
+            const end = start + perPage;
+            const pageItems = items.slice(start, end);
+
+            if (pageItems.length === 0 && !append) {
+                grid.innerHTML = `<p class="empty-state">Tidak ada artwork yang cocok dengan filter.</p>`;
+                loadBtn.style.display = 'none';
+                resultCount.textContent = `Menampilkan 0 dari ${items.length} artworks`;
                 return;
             }
 
-            let html = items.map(item => `
-                <div class="card" data-category="${item.category || ''}" data-artist="${item.artist || ''}">
-                    <a href="/artwork/${item.slug}/" class="card-link-wrapper">
-                        <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;">
+            const html = pageItems.map((item) => {
+                return `
+                    <div class="card" data-category="${item.category || ''}" data-artist="${item.artist || ''}">
+                        <a href="/artwork/${item.slug}/" class="card-link-wrapper">
+                            <img src="${item.image}" alt="${item.title}" loading="lazy" class="thumb-img">
                             <div class="card-overlay">
                                 <h3>${item.title}</h3>
                                 <p>by ${item.artist}</p>
                                 <span class="card-link">View Artwork →</span>
                             </div>
-                        </div>
-                    </a>
-                </div>
-            `).join('');
+                        </a>
+                    </div>
+                `;
+            }).join('');
 
             if (append) {
                 grid.insertAdjacentHTML('beforeend', html);
@@ -163,87 +255,246 @@ title: Explore — OriginGFX
                 grid.innerHTML = html;
             }
 
-            // Update tombol Load More
-            const loadBtn = document.getElementById('loadMoreBtn');
-            const totalDisplayed = currentPage * perPage;
-            if (totalDisplayed >= filteredData.length) {
-                loadBtn.style.display = 'none';
-            } else {
+            const totalItems = items.length;
+            const loadedCount = Math.min(page * perPage, totalItems);
+            const hasMore = loadedCount < totalItems;
+
+            if (hasMore) {
                 loadBtn.style.display = 'block';
+                loadBtn.dataset.nextPage = page + 1;
+                loadBtn.disabled = false;
+                loadBtn.textContent = 'Load More';
+            } else {
+                loadBtn.style.display = 'none';
             }
 
-            document.getElementById('resultCount').textContent = 
-                `Menampilkan ${Math.min(totalDisplayed, filteredData.length)} dari ${filteredData.length} artworks`;
+            resultCount.textContent = `Menampilkan ${loadedCount} dari ${totalItems} artworks`;
         }
 
+        // ===== FILTER + SORT + CHIPS =====
         function applyFilters() {
-            const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
-            const category = document.getElementById('categoryFilter').value;
-            const artist = document.getElementById('artistFilter').value;
+            const keyword = searchInput.value.toLowerCase().trim();
+            const category = categoryFilter.value;
+            const artist = artistFilter.value;
+            const sort = sortSelect ? sortSelect.value : 'created_at.desc';
 
-            filteredData = allArtworks.filter(item => {
+            let filtered = allArtworks.filter(item => {
                 const matchTitle = item.title.toLowerCase().includes(keyword);
                 const matchCategory = category ? item.category === category : true;
                 const matchArtist = artist ? item.artist === artist : true;
                 return matchTitle && matchCategory && matchArtist;
             });
 
-            // Reset ke halaman 1
+            filtered = sortArtworks(filtered, sort);
+            filteredData = filtered;
             currentPage = 1;
-            // Ambil item untuk halaman pertama
-            const start = 0;
-            const end = start + perPage;
-            const pageItems = filteredData.slice(start, end);
+            renderPage(filteredData, currentPage, false);
 
-            // Render ulang (replace)
-            renderArtworks(pageItems, false);
-        }
+            // Feedback & chips...
+            const feedback = document.getElementById('search-feedback');
+            const resultText = document.getElementById('searchResultText');
+            const chipsContainer = document.getElementById('filterChips');
 
-        // Load More: append halaman berikutnya
-        function loadMore() {
-            currentPage++;
-            const start = (currentPage - 1) * perPage;
-            const end = start + perPage;
-            const pageItems = filteredData.slice(start, end);
+            if (!feedback || !resultText || !chipsContainer) return;
 
-            if (pageItems.length === 0) {
-                document.getElementById('loadMoreBtn').style.display = 'none';
-                return;
+            const hasKeyword = keyword.length > 0;
+            const hasCategory = category !== '';
+            const hasArtist = artist !== '';
+
+            if (hasKeyword || hasCategory || hasArtist) {
+                feedback.style.display = 'flex';
+                let msg = '';
+                if (hasKeyword) {
+                    msg = `Search results for "${keyword}"`;
+                } else {
+                    msg = 'Filtered gallery';
+                }
+                msg += ` — ${filtered.length} artwork${filtered.length !== 1 ? 's' : ''} found`;
+                resultText.textContent = msg;
+
+                let chipsHtml = '';
+                if (hasCategory) {
+                    const label = categoryFilter.options[categoryFilter.selectedIndex].text;
+                    chipsHtml += `<span class="chip">${label} <button class="chip-remove" data-filter="category" aria-label="Remove category filter">×</button></span>`;
+                }
+                if (hasArtist) {
+                    const label = artistFilter.options[artistFilter.selectedIndex].text;
+                    chipsHtml += `<span class="chip">${label} <button class="chip-remove" data-filter="artist" aria-label="Remove artist filter">×</button></span>`;
+                }
+                if (hasKeyword) {
+                    chipsHtml += `<span class="chip">"${keyword}" <button class="chip-remove" data-filter="keyword" aria-label="Remove search">×</button></span>`;
+                }
+                chipsContainer.innerHTML = chipsHtml;
+
+                chipsContainer.querySelectorAll('.chip-remove').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const filter = this.dataset.filter;
+                        if (filter === 'category') {
+                            categoryFilter.value = '';
+                        } else if (filter === 'artist') {
+                            artistFilter.value = '';
+                        } else if (filter === 'keyword') {
+                            searchInput.value = '';
+                        }
+                        applyFilters();
+                    });
+                });
+            } else {
+                feedback.style.display = 'none';
             }
-
-            renderArtworks(pageItems, true);
         }
 
-        // Inisialisasi
-        document.addEventListener('DOMContentLoaded', function() {
-            filteredData = allArtworks;
-            const start = 0;
-            const end = start + perPage;
-            const initialItems = filteredData.slice(start, end);
-            renderArtworks(initialItems, false);
+        // ===== LOAD MORE =====
+        function loadMore() {
+            if (!filteredData.length) return;
+
+            const nextPage = parseInt(loadBtn.dataset.nextPage) || 2;
+            const totalPages = Math.ceil(filteredData.length / perPage);
+
+            if (nextPage <= totalPages) {
+                currentPage = nextPage;
+                renderPage(filteredData, currentPage, true);
+            } else {
+                loadBtn.style.display = 'none';
+            }
+        }
+
+        // ============================================================
+        // ===== SAVE & RESTORE SCROLL POSITION (BACK BUTTON) =====
+        // ============================================================
+
+        // Simpan posisi scroll dan jumlah yang sudah dimuat saat klik artwork
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('.card a[href^="/artwork/"]');
+            if (link) {
+                const currentCards = grid.querySelectorAll('.card').length;
+                sessionStorage.setItem('explore_scroll_position', window.scrollY);
+                sessionStorage.setItem('explore_loaded_count', currentCards);
+                sessionStorage.setItem('explore_current_page', currentPage);
+                sessionStorage.setItem('explore_filtered_length', filteredData.length);
+            }
         });
 
-        // Event listener untuk tombol Load More
-        document.getElementById('loadMoreBtn').addEventListener('click', loadMore);
+        // ============================================================
+        // ===== INISIALISASI + RESTORE =====
+        // ============================================================
 
-        // Ekspos fungsi ke global agar bisa dipanggil dari HTML (oninput, onchange)
-        window.applyFilters = applyFilters;
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Inisialisasi data
+            filteredData = sortArtworks(allArtworks, 'created_at.desc');
 
-        // Style Guide Modal
+            // 2. Cek apakah ada session restore
+            const savedScroll = sessionStorage.getItem('explore_scroll_position');
+            const savedLoadedCount = parseInt(sessionStorage.getItem('explore_loaded_count')) || 0;
+            const savedPage = parseInt(sessionStorage.getItem('explore_current_page')) || 1;
+            const savedFilteredLength = parseInt(sessionStorage.getItem('explore_filtered_length')) || 0;
+
+            const currentFilteredLength = filteredData.length;
+            const isDataValid = (currentFilteredLength === savedFilteredLength) && savedFilteredLength > 0;
+
+            if (savedScroll !== null && isDataValid && savedLoadedCount > 0 && savedLoadedCount <= filteredData.length) {
+                // Restore: load sampai halaman yang disimpan
+                const targetPage = Math.ceil(savedLoadedCount / perPage);
+                if (targetPage > 1) {
+                    let page = 2;
+                    const totalPages = Math.ceil(filteredData.length / perPage);
+
+                    function loadUntilTarget() {
+                        if (page <= targetPage && page <= totalPages) {
+                            currentPage = page;
+                            renderPage(filteredData, page, true);
+                            page++;
+                            requestAnimationFrame(loadUntilTarget);
+                        } else {
+                            // Selesai loading, scroll ke posisi
+                            setTimeout(function() {
+                                window.scrollTo({
+                                    top: parseInt(savedScroll, 10),
+                                    behavior: 'instant'
+                                });
+                                // Bersihkan session
+                                sessionStorage.removeItem('explore_scroll_position');
+                                sessionStorage.removeItem('explore_loaded_count');
+                                sessionStorage.removeItem('explore_current_page');
+                                sessionStorage.removeItem('explore_filtered_length');
+                            }, 50);
+                        }
+                    }
+                    loadUntilTarget();
+                } else {
+                    // Sudah di halaman 1, langsung scroll
+                    setTimeout(function() {
+                        window.scrollTo({
+                            top: parseInt(savedScroll, 10),
+                            behavior: 'instant'
+                        });
+                        sessionStorage.removeItem('explore_scroll_position');
+                        sessionStorage.removeItem('explore_loaded_count');
+                        sessionStorage.removeItem('explore_current_page');
+                        sessionStorage.removeItem('explore_filtered_length');
+                    }, 100);
+                }
+            } else {
+                // Tidak ada restore atau data tidak valid: render normal halaman 1
+                renderPage(filteredData, 1, false);
+                // Bersihkan session jika ada sisa
+                sessionStorage.removeItem('explore_scroll_position');
+                sessionStorage.removeItem('explore_loaded_count');
+                sessionStorage.removeItem('explore_current_page');
+                sessionStorage.removeItem('explore_filtered_length');
+            }
+
+            // 3. Set currentPage sesuai dengan jumlah yang sudah dimuat (untuk load more selanjutnya)
+            const loadedCards = grid.querySelectorAll('.card').length;
+            const calculatedPage = Math.ceil(loadedCards / perPage) || 1;
+            currentPage = calculatedPage;
+            const hasMore = loadedCards < filteredData.length;
+            if (hasMore) {
+                loadBtn.dataset.nextPage = currentPage + 1;
+            }
+        });
+
+        // ===== EVENT LISTENERS =====
+        loadBtn.addEventListener('click', loadMore);
+        searchInput.addEventListener('input', applyFilters);
+        categoryFilter.addEventListener('change', applyFilters);
+        artistFilter.addEventListener('change', applyFilters);
+        if (sortSelect) {
+            sortSelect.addEventListener('change', applyFilters);
+        }
+
+        // ===== RESIZE =====
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                if (masonryInstance) {
+                    masonryInstance.layout();
+                }
+            }, 200);
+        });
+
+        // ===== STYLE GUIDE MODAL =====
         const modal = document.getElementById('styleGuideModal');
         const styleBtn = document.getElementById('styleGuideBtn');
+        const closeModal = document.getElementById('modalClose');
+
         if (styleBtn) {
             styleBtn.addEventListener('click', function() {
                 modal.style.display = 'flex';
             });
         }
-        document.getElementById('modalClose').addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-        window.addEventListener('click', function(e) {
-            if (e.target === modal) {
+        if (closeModal) {
+            closeModal.addEventListener('click', function() {
                 modal.style.display = 'none';
-            }
+            });
+        }
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) modal.style.display = 'none';
         });
+
+        window.applyFilters = applyFilters;
+        window.loadMore = loadMore;
     })();
 </script>

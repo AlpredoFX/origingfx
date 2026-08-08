@@ -162,7 +162,7 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
 <section class="section reveal" style="padding-top: 20px;">
     <div class="container">
         <div class="section-head">
-            <span>🔥</span>
+             <span>03</span>
             <h2>Trending Now</h2>
             <a href="/explore" class="section-more">View all →</a>
         </div>
@@ -196,6 +196,111 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
 </section>
 
 <!-- ============================================================
+     FEATURED ARTIST — Editorial Spotlight
+     ============================================================ -->
+{% assign featuredArtist = supabase.featuredArtists | first %}
+{% if featuredArtist %}
+<section class="section reveal" style="padding-top: 20px; padding-bottom: 10px;">
+    <div class="container">
+        <div class="featured-artist-editorial">
+            <div class="featured-artist-editorial-header">
+                <span class="featured-artist-editorial-label">✦ Artist Spotlight</span>
+                <span class="featured-artist-editorial-sub">A curated highlight from the gallery</span>
+            </div>
+            <div class="featured-artist-editorial-card">
+                <div class="featured-artist-editorial-avatar" style="background-image: url('{{ featuredArtist.avatar }}'); background-size: cover; background-position: center;"></div>
+                <div class="featured-artist-editorial-info">
+                    <h3>{{ featuredArtist.name }}</h3>
+                    <p class="featured-artist-editorial-role">{{ featuredArtist.role }}</p>
+                    <div class="featured-artist-editorial-stats">
+                        {% assign artistArtworks = supabase.artworks | where: "artist_id", featuredArtist.id | size %}
+                        <span><strong>{{ artistArtworks }}</strong> Artworks</span>
+                        <span class="meta-dot">·</span>
+                        <span>Joined {{ featuredArtist.joined | default: '2026' }}</span>
+                    </div>
+                    <p class="featured-artist-editorial-bio">{{ featuredArtist.bio | truncate: 130 }}</p>
+                    <a href="/artist/{{ featuredArtist.slug }}" class="btn btn-primary">View Profile →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ============================================================
+     MEET OUR ARTISTS — Preview Komunitas (4 artist)
+     ============================================================ -->
+<section class="section reveal visible section-short">
+    <div class="container">
+        <div class="section-head">
+            <span>04</span>
+            <h2>Meet Our Artists</h2>
+            <a href="/artists" class="section-more">View all →</a>
+        </div>
+        <p class="section-subtitle">Talenta di balik setiap karya yang kamu lihat.</p>
+
+        <div class="artists-grid-home">
+            {% assign featuredArtist = supabase.featuredArtists | first %}
+            {% assign featuredArtistId = featuredArtist.id | default: '' %}
+
+            {% comment %}
+                Ambil 4 artist dengan prioritas:
+                1. Jangan ambil featured artist (jika ada)
+                2. Prioritaskan non-founder
+                3. Jika kurang, tambahkan founder
+            {% endcomment %}
+            {% assign nonFounder = supabase.artists | where_exp: "artist", "artist.badge != 'founder'" %}
+            {% assign excludeId = featuredArtistId %}
+            {% assign candidateArtists = "" | split: "" %}
+
+            {% comment %} Ambil non-founder yang bukan featured {% endcomment %}
+            {% for artist in nonFounder %}
+                {% if artist.id != excludeId %}
+                    {% assign candidateArtists = candidateArtists | push: artist %}
+                {% endif %}
+            {% endfor %}
+
+            {% assign targetCount = 4 %}
+            {% assign resultArtists = "" | split: "" %}
+
+            {% comment %} Ambil dari candidate (non-founder) sampai 4 atau habis {% endcomment %}
+            {% for artist in candidateArtists limit: targetCount %}
+                {% assign resultArtists = resultArtists | push: artist %}
+            {% endfor %}
+
+            {% comment %} Jika masih kurang, ambil founder (kecuali founder = featured) {% endcomment %}
+            {% if resultArtists.size < targetCount %}
+                {% assign founder = supabase.artists | where: "badge", "founder" | first %}
+                {% if founder and founder.id != excludeId %}
+                    {% assign resultArtists = resultArtists | push: founder %}
+                {% endif %}
+            {% endif %}
+
+            {% comment %} Jika masih kurang, ambil siapapun (termasuk featured) untuk memenuhi 4 {% endcomment %}
+            {% if resultArtists.size < targetCount %}
+                {% assign remaining = targetCount | minus: resultArtists.size %}
+                {% assign fallback = supabase.artists | where_exp: "artist", "artist.id != resultArtists[0].id and artist.id != resultArtists[1].id and artist.id != resultArtists[2].id" | slice: 0, remaining %}
+                {% for artist in fallback %}
+                    {% assign resultArtists = resultArtists | push: artist %}
+                {% endfor %}
+            {% endif %}
+
+            {% for artist in resultArtists limit: 4 %}
+                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
+                <a href="/artist/{{ artist.slug }}" class="artist-card-home">
+                    <div class="artist-avatar-home" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
+                    <div class="artist-info-home">
+                        <h4>{{ artist.name }}</h4>
+                        <span class="artist-role-home">{{ artist.role }}</span>
+                        <span class="artist-count-home">{{ artistArtworks }} Artworks</span>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      WHAT IS ORIGINGFX? — cerita & jiwa
      ============================================================ -->
 <section class="section reveal" style="padding-top: 40px;">
@@ -223,65 +328,6 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
                     </blockquote>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================================
-     FEATURED ARTIST
-     ============================================================ -->
-{% assign featuredArtist = supabase.featuredArtists | first %}
-{% if featuredArtist %}
-<section class="section reveal" style="padding-top: 20px;">
-    <div class="container">
-        <div class="section-head">
-            <span>✦</span>
-            <h2>Featured Artist</h2>
-        </div>
-        <p class="section-subtitle">Talenta di balik karya yang kamu lihat.</p>
-
-        <div class="featured-artist-card">
-            <div class="featured-artist-avatar" style="background-image: url('{{ featuredArtist.avatar }}'); background-size: cover; background-position: center;"></div>
-            <div class="featured-artist-info">
-                <h3>{{ featuredArtist.name }}</h3>
-                <p class="featured-artist-role">{{ featuredArtist.role }}</p>
-                <p class="featured-artist-bio">{{ featuredArtist.bio | truncate: 120 }}</p>
-                <a href="/artist/{{ featuredArtist.slug }}" class="btn">View Profile →</a>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- ============================================================
-     MEET OUR ARTISTS — dengan avatar & metadata
-     ============================================================ -->
-<section class="section reveal visible section-short">
-    <div class="container">
-        <div class="section-head">
-            <span>03</span>
-            <h2>Meet Our Artists</h2>
-            <a href="/artists" class="section-more">View all →</a>
-        </div>
-        <p class="section-subtitle">Talenta di balik setiap karya yang kamu lihat.</p>
-
-        <div class="artists-grid-home">
-            {% assign featuredArtists = supabase.featuredArtists %}
-            {% if featuredArtists.size == 0 %}
-                {% assign featuredArtists = supabase.artists | slice: 0, 4 %}
-            {% endif %}
-
-            {% for artist in featuredArtists %}
-                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
-                <a href="/artist/{{ artist.slug }}" class="artist-card-home">
-                    <div class="artist-avatar-home" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
-                    <div class="artist-info-home">
-                        <h4>{{ artist.name }}</h4>
-                        <span class="artist-role-home">{{ artist.role }}</span>
-                        <span class="artist-count-home">{{ artistArtworks }} Artworks</span>
-                    </div>
-                </a>
-            {% endfor %}
         </div>
     </div>
 </section>
