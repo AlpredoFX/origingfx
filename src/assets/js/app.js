@@ -599,21 +599,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
-// INCREMENT VIEWS (artwork detail page)
+// INCREMENT VIEWS (artwork detail page) — GET request
 // ============================================================
 
 async function incrementViews(slug) {
     try {
-        const response = await fetch('/.netlify/functions/update-views', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ slug })
-        });
+        const response = await fetch(`/.netlify/functions/update-views?slug=${slug}`);
         const data = await response.json();
-        if (data.views) {
-            // Update tampilan views di halaman (opsional)
-            const viewsEl = document.querySelector('.artwork-views');
-            if (viewsEl) viewsEl.textContent = `${data.views} views`;
+        if (data.success && data.views !== undefined) {
+            // Update tampilan views di halaman
+            const viewElement = document.querySelector('.artwork-meta span:last-child');
+            if (viewElement) {
+                viewElement.textContent = `👁️ ${data.views} views`;
+            }
+            const infoViewElement = document.querySelector('.info-item .info-value#info-view-number');
+            if (infoViewElement) {
+                infoViewElement.textContent = data.views;
+                const label = document.querySelector('.info-item .info-value#info-view-label');
+                if (label) label.textContent = data.views === 1 ? 'view' : 'views';
+            }
         }
     } catch (err) {
         console.warn('Failed to increment views:', err);
@@ -626,13 +630,4 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slug) {
         incrementViews(slug);
     }
-});
-
-
-document.querySelectorAll('.artwork-placeholder').forEach(el => {
-    el.addEventListener('click', function() {
-        const image = this.dataset.image;
-        const title = this.dataset.title;
-        openLightbox(image, title);
-    });
 });

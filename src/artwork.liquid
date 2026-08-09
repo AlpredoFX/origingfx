@@ -17,7 +17,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
         <!-- ====== ARTWORK DETAIL ====== -->
         <div class="artwork-detail">
 
-            <!-- KIRI: Gambar (dengan contain, max-height 80vh, dan noise background) -->
+            <!-- KIRI: Gambar -->
             <div class="artwork-image">
                 <div class="artwork-placeholder" data-image="{{ artwork.image | escape }}" data-title="{{ artwork.title | escape }}">
                     <img src="{{ artwork.image }}" alt="{{ artwork.title }}" loading="lazy">
@@ -44,8 +44,6 @@ permalink: "/artwork/{{ artwork.slug }}/"
                     </div>
                     <a href="/artist/{{ artist.slug }}" class="mini-artist-link">View Profile →</a>
                 </div>
-
-                
 
                 <!-- ====== DESKRIPSI ====== -->
                 <div class="artwork-description">
@@ -136,7 +134,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
                     </div>
                 </div>
 
-                <!-- ====== SHARE (lebih jelas) ====== -->
+                <!-- ====== SHARE ====== -->
                 <div class="artwork-share">
                     <span class="share-label">Share this Artwork</span>
                     <div class="share-links">
@@ -220,7 +218,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
     </div>
 </div>
 
-<!-- ====== JAVASCRIPT: LIGHTBOX + VIEWS COUNTER ====== -->
+<!-- ====== JAVASCRIPT: LIGHTBOX ====== -->
 <script>
     (function() {
         const lightbox = document.getElementById('lightbox');
@@ -263,7 +261,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
             lightboxImg.src = imageUrl;
             if (lightboxCaption) lightboxCaption.textContent = title || 'Artwork';
             lightbox.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // matikan scroll
+            document.body.style.overflow = 'hidden';
             currentScale = 1;
             applyZoom();
             if (container) {
@@ -276,12 +274,12 @@ permalink: "/artwork/{{ artwork.slug }}/"
         window.closeLightbox = function() {
             if (!lightbox) return;
             lightbox.style.display = 'none';
-            document.body.style.overflow = ''; // hidupkan scroll kembali
+            document.body.style.overflow = '';
             currentScale = 1;
             applyZoom();
         };
 
-        // ===== KLIK PADA GAMBAR (placeholder) =====
+        // ===== KLIK PADA GAMBAR =====
         if (placeholder) {
             placeholder.addEventListener('click', function() {
                 const imageUrl = this.dataset.image;
@@ -292,7 +290,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
             });
         }
 
-        // ===== TUTUP DENGAN KLIK DI LUAR GAMBAR =====
+        // ===== TUTUP DENGAN KLIK DI LUAR =====
         if (lightbox) {
             lightbox.addEventListener('click', function(e) {
                 if (e.target === this) {
@@ -301,36 +299,20 @@ permalink: "/artwork/{{ artwork.slug }}/"
             });
         }
 
-        // ===== TUTUP DENGAN TOMBOL ESC =====
+        // ===== TUTUP DENGAN ESC =====
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeLightbox();
             }
         });
 
-        // ===== TOMBOL CLOSE (X) =====
+        // ===== TOMBOL CLOSE =====
         const closeBtn = document.querySelector('.lightbox-close');
         if (closeBtn) {
             closeBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 closeLightbox();
             });
-        }
-
-        // ===== VIEWS COUNTER =====
-        const slug = '{{ artwork.slug }}';
-        if (slug) {
-            fetch(`/.netlify/functions/update-views?slug=${slug}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        const viewElement = document.querySelector('.artwork-meta span:last-child');
-                        if (viewElement && data.views !== undefined) {
-                            viewElement.textContent = `👁️ ${data.views} views`;
-                        }
-                    }
-                })
-                .catch(err => console.log('Views update skipped:', err));
         }
     })();
 </script>
