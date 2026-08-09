@@ -3,16 +3,29 @@ const { Resvg } = require('@resvg/resvg-js');
 const satori = require('satori');
 const { createClient } = require('@supabase/supabase-js');
 
+// ===== POLYFILL WEBSOCKET UNTUK NODE.js < 22 =====
+if (typeof WebSocket === 'undefined') {
+    try {
+        const WebSocket = require('ws');
+        global.WebSocket = WebSocket;
+    } catch (e) {
+        console.warn('⚠️ WebSocket polyfill not available, Realtime will be disabled');
+    }
+}
+
 // ===== KONFIGURASI =====
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     console.error('❌ Missing Supabase environment variables');
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+// ===== Supabase Client dengan Realtime DISABLED =====
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    realtime: { enable: false },
+    auth: { persistSession: false },
+});
 // ===== FONT =====
 // Kita akan pakai font system atau Google Fonts
 // Untuk production, download font dan load dari file
