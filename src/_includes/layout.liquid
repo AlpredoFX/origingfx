@@ -16,7 +16,42 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
-</head>
+
+    <!-- Favicon — Karakter ✦ -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%23141414'/><text x='32' y='48' text-anchor='middle' font-size='40' fill='%23F4F4F2'>✦</text></svg>">
+
+    <!-- ===== OPEN GRAPH ===== -->
+    {% if artwork %}
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="{{ artwork.title }} — OriginGFX">
+        <meta property="og:description" content="{{ artwork.description | truncate: 160 | default: 'Gallery First. Store Second. Artist Always.' }}">
+        <meta property="og:image" content="https://origingfx.netlify.app/.netlify/functions/og-image?type=artwork&id={{ artwork.id }}">
+        <meta property="og:url" content="https://origingfx.netlify.app/artwork/{{ artwork.slug }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ artwork.title }} — OriginGFX">
+        <meta name="twitter:description" content="{{ artwork.description | truncate: 160 | default: 'Gallery First. Store Second. Artist Always.' }}">
+        <meta name="twitter:image" content="https://origingfx.netlify.app/.netlify/functions/og-image?type=artwork&id={{ artwork.id }}">
+    {% elsif artist %}
+        <meta property="og:type" content="profile">
+        <meta property="og:title" content="{{ artist.name }} — OriginGFX">
+        <meta property="og:description" content="{{ artist.role }} · {{ artist.bio | truncate: 160 | default: 'Gallery First. Store Second. Artist Always.' }}">
+        <meta property="og:image" content="https://origingfx.netlify.app/.netlify/functions/og-image?type=artist&slug={{ artist.slug }}">
+        <meta property="og:url" content="https://origingfx.netlify.app/artist/{{ artist.slug }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ artist.name }} — OriginGFX">
+        <meta name="twitter:description" content="{{ artist.role }} · {{ artist.bio | truncate: 160 | default: 'Gallery First. Store Second. Artist Always.' }}">
+        <meta name="twitter:image" content="https://origingfx.netlify.app/.netlify/functions/og-image?type=artist&slug={{ artist.slug }}">
+    {% else %}
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="OriginGFX — Digital Gallery for Minecraft Artists">
+        <meta property="og:description" content="Gallery First. Store Second. Artist Always.">
+        <meta property="og:image" content="https://origingfx.netlify.app/.netlify/functions/og-image?type=home">
+        <meta property="og:url" content="https://origingfx.netlify.app/">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="OriginGFX — Digital Gallery for Minecraft Artists">
+        <meta name="twitter:description" content="Gallery First. Store Second. Artist Always.">
+        <meta name="twitter:image" content="https://origingfx.netlify.app/.netlify/functions/og-image?type=home">
+    {% endif %}
 <body>
 
     {% include "header.liquid" %}

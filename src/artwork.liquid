@@ -45,35 +45,28 @@ permalink: "/artwork/{{ artwork.slug }}/"
                     <a href="/artist/{{ artist.slug }}" class="mini-artist-link">View Profile →</a>
                 </div>
 
-                <!-- ====== META (ringkas) ====== -->
-                <div class="artwork-meta">
-                    <span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        {{ artwork.year }}
-                    </span>
-                    <span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                        {{ artwork.category }}
-                    </span>
-                    <span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                        {{ artwork.software | first | default: 'No software' }}
-                    </span>
-                    <span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        {{ artwork.views | default: 0 }}
-                    </span>
-                </div>
+                
 
                 <!-- ====== DESKRIPSI ====== -->
                 <div class="artwork-description">
-                    <p>{{ artwork.description }}</p>
+                    {% assign desc = artwork.description %}
+                    {% if desc contains "currently part of my personal archive" or desc contains "title and detailed story will be added" %}
+                        <p class="artwork-description-placeholder">From the artist's personal archive. More details will be added as the collection develops.</p>
+                    {% else %}
+                        <p>{{ desc }}</p>
+                    {% endif %}
                 </div>
 
                 <!-- ====== ARTWORK INFORMATION (detail) ====== -->
                 <div class="artwork-info-detail">
                     <span class="info-title">Artwork Information</span>
                     <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Artist</span>
+                            <span class="info-value">
+                                <a href="/artist/{{ artist.slug }}" class="info-artist-link">{{ artist.name }}</a>
+                            </span>
+                        </div>
                         <div class="info-item">
                             <span class="info-label">Year</span>
                             <span class="info-value">{{ artwork.year | default: '-' }}</span>
@@ -84,26 +77,30 @@ permalink: "/artwork/{{ artwork.slug }}/"
                         </div>
                         <div class="info-item">
                             <span class="info-label">Software</span>
-                            <span class="info-value">{{ artwork.software | join: ', ' | default: '-' }}</span>
+                            <span class="info-value">
+                                {% assign softwareList = artwork.software %}
+                                {% if softwareList %}
+                                    {% if softwareList.first %}
+                                        {{ softwareList | join: ', ' }}
+                                    {% elsif softwareList != '' %}
+                                        {{ softwareList }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Views</span>
-                            <span class="info-value">{{ artwork.views | default: 0 }}</span>
+                            <span class="info-value" id="info-view-count">
+                                <span id="info-view-number">{{ artwork.views | default: 0 }}</span>
+                                <span id="info-view-label">{% if artwork.views == 1 %}view{% else %}views{% endif %}</span>
+                            </span>
                         </div>
                     </div>
                 </div>
-
-                <!-- ====== TOOLS (software) ====== -->
-                {% if artwork.software.size > 1 %}
-                <div class="artwork-tools">
-                    <span class="tools-label">Tools</span>
-                    <div class="tools-list">
-                        {% for tool in artwork.software %}
-                        <span class="tool-badge">{{ tool }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
 
                 <!-- ====== ARTIST'S NOTE ====== -->
                 {% if artwork.artist_note %}

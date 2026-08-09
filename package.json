@@ -17,10 +17,12 @@
   },
   "keywords": [],
   "dependencies": {
-    "@supabase/supabase-js": "^2.110.3",
+    "@resvg/resvg-js": "^2.6.2",
+    "@supabase/supabase-js": "^2.112.2",
     "dotenv": "^17.4.2",
     "form-data": "^4.0.6",
     "node-fetch": "^2.7.0",
+    "satori": "^0.29.0",
     "ws": "^8.21.0"
   }
 }
