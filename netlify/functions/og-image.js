@@ -1,6 +1,4 @@
 // netlify/functions/og-image.js
-
-// ===== POLYFILL WEBSOCKET =====
 const WebSocket = require('ws');
 global.WebSocket = WebSocket;
 
@@ -11,77 +9,96 @@ const { createClient } = require('@supabase/supabase-js');
 // ===== KONFIGURASI =====
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+// Prioritas: Service Key (bypass RLS) > Anon Key
+const SUPABASE_KEY = SUPABASE_SERVICE_KEY || SUPABASE_ANON_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_KEY) {
     console.error('❌ Missing Supabase environment variables');
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+console.log(`🔧 Supabase URL: ${SUPABASE_URL ? '✅ set' : '❌ missing'}`);
+console.log(`🔧 Supabase Key: ${SUPABASE_KEY ? '✅ set' : '❌ missing'}`);
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
     realtime: { enable: false },
     auth: { persistSession: false },
 });
 
-// ===== FONT LOADER =====
+// ===== FONT =====
 async function loadFont(url) {
-    try {
-        const response = await fetch(url, {
-            headers: { 'User-Agent': 'Mozilla/5.0' }
-        });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.arrayBuffer();
-    } catch (e) {
-        console.warn(`⚠️ Font load failed: ${e.message}`);
-        return null;
-    }
+    const response = await fetch(url);
+    return await response.arrayBuffer();
 }
 
 async function getFonts() {
-    const fonts = [];
-
-    // 1️⃣ Coba load dari folder lokal (jika ada di Netlify)
-    try {
-        const fs = require('fs');
-        const path = require('path');
-        const regularPath = path.join(__dirname, 'fonts/Inter-Regular.ttf');
-        const regularData = fs.readFileSync(regularPath);
-        if (regularData) {
-            fonts.push({ name: 'Inter', data: regularData, weight: 400, style: 'normal' });
-            try {
-                const boldPath = path.join(__dirname, 'fonts/Inter-Bold.ttf');
-                const boldData = fs.readFileSync(boldPath);
-                fonts.push({ name: 'Inter', data: boldData, weight: 700, style: 'normal' });
-            } catch (_) {
-                fonts.push({ name: 'Inter', data: regularData, weight: 700, style: 'normal' });
-            }
-            console.log('✅ Local font loaded');
-            return fonts;
-        }
-    } catch (_) {}
-
-    // 2️⃣ Download Roboto TTF dari Google Fonts (stabil)
     const regularUrl = 'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxP.ttf';
     const boldUrl = 'https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf';
-
-    const regularData = await loadFont(regularUrl);
-    if (regularData) {
-        fonts.push({ name: 'Roboto', data: regularData, weight: 400, style: 'normal' });
-        const boldData = await loadFont(boldUrl);
-        if (boldData) {
-            fonts.push({ name: 'Roboto', data: boldData, weight: 700, style: 'normal' });
-        } else {
-            fonts.push({ name: 'Roboto', data: regularData, weight: 700, style: 'normal' });
-        }
-        console.log('✅ Font loaded (Roboto TTF)');
-        return fonts;
-    }
-
-    console.error('❌ No fonts loaded.');
-    return fonts;
+    const regular = await loadFont(regularUrl);
+    const bold = await loadFont(boldUrl);
+    return [
+        { name: 'Roboto', data: regular, weight: 400, style: 'normal' },
+        { name: 'Roboto', data: bold, weight: 700, style: 'normal' },
+    ];
 }
 
 // ============================================================
-// TEMPLATE FUNCTIONS
+// TEMPLATES
 // ============================================================
+
+function createHomeTemplate() {
+    return {
+        type: 'div',
+        props: {
+            style: {
+                display: 'flex',
+                flexDirection: 'column',
+                width: 1200,
+                height: 630,
+                backgroundColor: '#141414',
+                padding: '48px 56px',
+                fontFamily: '"Roboto", sans-serif',
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+                position: 'relative',
+            },
+            children: [
+                {
+                    type: 'div',
+                    props: {
+                        style: {
+                            position: 'absolute',
+                            inset: 0,
+                            opacity: 0.04,
+                            backgroundImage: 'radial-gradient(circle at 30% 50%, #F4F4F2 0%, transparent 60%), radial-gradient(circle at 70% 50%, #F4F4F2 0%, transparent 60%)',
+                        },
+                    },
+                },
+                {
+                    type: 'div',
+                    props: {
+                        style: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: 16,
+                            textAlign: 'center',
+                        },
+                        children: [
+                            { type: 'span', props: { style: { fontSize: 72, color: '#F4F4F2', fontWeight: 700 }, children: '✦ OriginGFX' } },
+                            { type: 'span', props: { style: { fontSize: 28, color: '#A3A3A3' }, children: 'Digital Gallery for Minecraft Artists' } },
+                            { type: 'span', props: { style: { fontSize: 18, color: '#6B6B6B', letterSpacing: '0.02em', lineHeight: 1.6 }, children: 'Gallery First. · Store Second. · Artist Always.' } },
+                            { type: 'div', props: { style: { width: 80, height: 2, backgroundColor: '#303030', marginTop: 20 } } },
+                            { type: 'span', props: { style: { fontSize: 14, color: '#6B6B6B', opacity: 0.5, marginTop: 8 }, children: '✦ Curated by OriginGFX' } },
+                        ],
+                    },
+                },
+            ],
+        },
+    };
+}
 
 function createArtworkTemplate(data) {
     return {
@@ -94,7 +111,7 @@ function createArtworkTemplate(data) {
                 height: 630,
                 backgroundColor: '#141414',
                 padding: '48px 56px',
-                fontFamily: 'sans-serif',
+                fontFamily: '"Roboto", sans-serif',
                 overflow: 'hidden',
             },
             children: [
@@ -131,7 +148,7 @@ function createArtworkTemplate(data) {
                                 },
                             },
                         ] : [
-                            { type: 'span', props: { style: { color: '#6B6B6B', fontSize: 24 }, children: '✦' } },
+                            { type: 'span', props: { style: { color: '#6B6B6B', fontSize: 24 }, children: '✦ No image' } },
                         ],
                     },
                 },
@@ -197,7 +214,7 @@ function createArtistTemplate(data) {
                 height: 630,
                 backgroundColor: '#141414',
                 padding: '48px 56px',
-                fontFamily: 'sans-serif',
+                fontFamily: '"Roboto", sans-serif',
                 overflow: 'hidden',
             },
             children: [
@@ -214,7 +231,14 @@ function createArtistTemplate(data) {
                 {
                     type: 'div',
                     props: {
-                        style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 12 },
+                        style: {
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: 12,
+                        },
                         children: [
                             data.avatar ? {
                                 type: 'img',
@@ -257,118 +281,110 @@ function createArtistTemplate(data) {
     };
 }
 
-function createHomeTemplate() {
-    return {
-        type: 'div',
-        props: {
-            style: {
-                display: 'flex',
-                flexDirection: 'column',
-                width: 1200,
-                height: 630,
-                backgroundColor: '#141414',
-                padding: '48px 56px',
-                fontFamily: 'sans-serif',
-                justifyContent: 'center',
-                alignItems: 'center',
-                overflow: 'hidden',
-                position: 'relative',
-            },
-            children: [
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            position: 'absolute',
-                            inset: 0,
-                            opacity: 0.04,
-                            backgroundImage: 'radial-gradient(circle at 30% 50%, #F4F4F2 0%, transparent 60%), radial-gradient(circle at 70% 50%, #F4F4F2 0%, transparent 60%)',
-                        },
-                    },
-                },
-                {
-                    type: 'div',
-                    props: {
-                        style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, zIndex: 10, textAlign: 'center' },
-                        children: [
-                            { type: 'span', props: { style: { fontSize: 72, color: '#F4F4F2', fontWeight: 700 }, children: '✦ OriginGFX' } },
-                            { type: 'span', props: { style: { fontSize: 28, color: '#A3A3A3' }, children: 'Digital Gallery for Minecraft Artists' } },
-                            { type: 'span', props: { style: { fontSize: 18, color: '#6B6B6B', letterSpacing: '0.02em', lineHeight: 1.6 }, children: 'Gallery First. · Store Second. · Artist Always.' } },
-                            { type: 'div', props: { style: { width: 80, height: 2, backgroundColor: '#303030', marginTop: 20 } } },
-                            { type: 'span', props: { style: { fontSize: 14, color: '#6B6B6B', opacity: 0.5, marginTop: 8 }, children: '✦ Curated by OriginGFX' } },
-                        ],
-                    },
-                },
-            ],
-        },
-    };
-}
+// ============================================================
+// RENDER
+// ============================================================
 
-// ===== RENDER =====
 async function renderOGImage(template, fonts) {
     const svg = await satori(template, { width: 1200, height: 630, fonts });
     const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
-    const pngData = resvg.render();
-    return pngData.asPng();
+    return resvg.render().asPng();
 }
 
-// ===== HANDLER =====
-exports.handler = async function(event, context) {
+// ============================================================
+// HANDLER
+// ============================================================
+
+exports.handler = async function(event) {
     try {
         const params = new URLSearchParams(event.queryStringParameters || {});
         const type = params.get('type') || 'home';
         const id = params.get('id');
         const slug = params.get('slug');
 
+        console.log(`📡 Request: type=${type}, id=${id}, slug=${slug}`);
+
         const fonts = await getFonts();
         let template;
 
+        // ===== ARTWORK =====
         if (type === 'artwork' && id) {
-            const { data, error } = await supabase
+            console.log('📡 Fetching artwork with ID:', id);
+            // Query tanpa join (untuk menghindari error relasi)
+            const { data: artwork, error } = await supabase
                 .from('artworks')
-                .select('*, artists:artist_id(name)')
+                .select('*')
                 .eq('id', id)
                 .single();
 
-            if (error || !data) {
-                return { statusCode: 404, body: 'Artwork not found' };
+            if (error) {
+                console.error('❌ Artwork fetch error:', error);
+                template = createHomeTemplate();
+            } else if (artwork) {
+                console.log('✅ Artwork found:', artwork.title);
+                // Ambil artist name secara terpisah
+                let artistName = 'Unknown Artist';
+                if (artwork.artist_id) {
+                    const { data: artist, error: artistErr } = await supabase
+                        .from('artists')
+                        .select('name')
+                        .eq('id', artwork.artist_id)
+                        .single();
+                    if (!artistErr && artist) {
+                        artistName = artist.name;
+                    }
+                }
+                template = createArtworkTemplate({
+                    title: artwork.title || 'Untitled',
+                    artist: artistName,
+                    category: artwork.category || '',
+                    image: artwork.image || '',
+                    year: artwork.year || '2026',
+                });
+            } else {
+                console.log('❌ Artwork not found');
+                template = createHomeTemplate();
             }
 
-            template = createArtworkTemplate({
-                title: data.title || 'Untitled',
-                artist: data.artists?.name || data.artist || 'Unknown Artist',
-                category: data.category || '',
-                image: data.image || '',
-                year: data.year || '2026',
-            });
+        // ===== ARTIST =====
         } else if (type === 'artist' && slug) {
-            const { data, error } = await supabase
+            console.log('📡 Fetching artist with slug:', slug);
+            const { data: artist, error } = await supabase
                 .from('artists')
                 .select('*')
                 .eq('slug', slug)
                 .single();
 
-            if (error || !data) {
-                return { statusCode: 404, body: 'Artist not found' };
+            if (error) {
+                console.error('❌ Artist fetch error:', error);
+                template = createHomeTemplate();
+            } else if (artist) {
+                console.log('✅ Artist found:', artist.name);
+                const { count } = await supabase
+                    .from('artworks')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('artist_id', artist.id);
+
+                template = createArtistTemplate({
+                    name: artist.name || 'Unknown Artist',
+                    role: artist.role || '',
+                    badge: artist.badge || '',
+                    avatar: artist.avatar || '',
+                    artworks: count || 0,
+                    joined: artist.joined || '2026',
+                });
+            } else {
+                console.log('❌ Artist not found');
+                template = createHomeTemplate();
             }
 
-            const { count } = await supabase
-                .from('artworks')
-                .select('id', { count: 'exact', head: true })
-                .eq('artist_id', data.id);
-
-            template = createArtistTemplate({
-                name: data.name || 'Unknown Artist',
-                role: data.role || '',
-                badge: data.badge || '',
-                avatar: data.avatar || '',
-                artworks: count || 0,
-                joined: data.joined || '2026',
-            });
+        // ===== HOME =====
         } else {
+            console.log('🏠 Generating home OG');
             template = createHomeTemplate();
         }
 
+        console.log('🎨 Rendering...');
         const pngBuffer = await renderOGImage(template, fonts);
 
         return {
@@ -382,10 +398,23 @@ exports.handler = async function(event, context) {
         };
 
     } catch (error) {
-        console.error('❌ Error:', error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: 'Failed to generate OG image', details: error.message }),
-        };
+        console.error('❌ Fatal error:', error);
+        // Fallback: generate home template
+        try {
+            const fonts = await getFonts();
+            const template = createHomeTemplate();
+            const pngBuffer = await renderOGImage(template, fonts);
+            return {
+                statusCode: 200,
+                headers: { 'Content-Type': 'image/png' },
+                body: pngBuffer.toString('base64'),
+                isBase64Encoded: true,
+            };
+        } catch (_) {
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ error: error.message }),
+            };
+        }
     }
 };
