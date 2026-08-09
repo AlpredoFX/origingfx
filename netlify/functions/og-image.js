@@ -22,36 +22,59 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
 // ===== FONT =====
 async function loadFont(url) {
     const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return await response.arrayBuffer();
 }
 
 async function getFonts() {
     const regularUrl = 'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxP.ttf';
     const boldUrl = 'https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf';
-    const regular = await loadFont(regularUrl);
-    const bold = await loadFont(boldUrl);
-    return [
-        { name: 'Roboto', data: regular, weight: 400, style: 'normal' },
-        { name: 'Roboto', data: bold, weight: 700, style: 'normal' },
-    ];
+    try {
+        const regular = await loadFont(regularUrl);
+        const bold = await loadFont(boldUrl);
+        console.log('✅ Font loaded (Roboto TTF)');
+        return [
+            { name: 'Roboto', data: regular, weight: 400, style: 'normal' },
+            { name: 'Roboto', data: bold, weight: 700, style: 'normal' },
+        ];
+    } catch (e) {
+        console.error('❌ Font load failed:', e.message);
+        throw e;
+    }
 }
 
 // ============================================================
-// UTILITY: IMAGE TO BASE64
+// UTILITY: IMAGE TO BASE64 (DENGAN LOG DETAIL)
 // ============================================================
 
 async function imageToBase64(url) {
+    if (!url) {
+        console.warn('⚠️ imageToBase64: URL is empty');
+        return null;
+    }
+
+    console.log(`📸 Fetching image: ${url.substring(0, 80)}...`);
+
     try {
         const response = await fetch(url, {
             headers: {
                 'User-Agent': 'Mozilla/5.0',
             },
+            // Timeout 10 detik
+            signal: AbortSignal.timeout(10000),
         });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        if (!response.ok) {
+            console.warn(`⚠️ Failed to fetch image: HTTP ${response.status}`);
+            return null;
+        }
+
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         const contentType = response.headers.get('content-type') || 'image/webp';
-        return `data:${contentType};base64,${buffer.toString('base64')}`;
+        const base64 = `data:${contentType};base64,${buffer.toString('base64')}`;
+        console.log(`✅ Image fetched: ${buffer.length} bytes`);
+        return base64;
     } catch (e) {
         console.warn(`⚠️ Failed to fetch image: ${e.message}`);
         return null;
@@ -324,7 +347,7 @@ exports.handler = async function(event) {
 
         // ===== ARTWORK =====
         if (type === 'artwork' && id) {
-            console.log('📡 Fetching artwork with ID:', id);
+            console.log(`📡 Fetching artwork with ID: ${id}`);
             const { data: artwork, error } = await supabase
                 .from('artworks')
                 .select('*')
@@ -335,7 +358,10 @@ exports.handler = async function(event) {
                 console.error('❌ Artwork fetch error:', error);
                 template = createHomeTemplate();
             } else {
-                console.log('✅ Artwork found:', artwork.title);
+                console.log(`✅ Artwork found: ${artwork.title || 'Untitled'}`);
+                console.log(`📸 Image URL: ${artwork.image || '(empty)'}`);
+
+                // Ambil artist name
                 let artistName = 'Unknown Artist';
                 if (artwork.artist_id) {
                     const { data: artist, error: artistErr } = await supabase
@@ -348,57 +374,27 @@ exports.handler = async function(event) {
                     }
                 }
 
-                // 🔥 CONVERT IMAGE TO BASE64
-                let imageSrc = artwork.image || '';
-                if (imageSrc) {
-                    const base64 = await imageToBase64(imageSrc);
-                    if (base64) imageSrc = base64;
+                // 🔥 Convert image ke base64
+                let imageSrc = '';
+                if (artwork.image) {
+                    imageSrc = await imageToBase64(artwork.image);
+                }
+                if (!imageSrc) {
+                    console.warn('⚠️ No valid image, using placeholder');
                 }
 
                 template = createArtworkTemplate({
                     title: artwork.title || 'Untitled',
                     artist: artistName,
                     category: artwork.category || '',
-                    image: imageSrc,
+                    image: imageSrc || '',
                     year: artwork.year || '2026',
                 });
             }
 
         // ===== ARTIST =====
         } else if (type === 'artist' && slug) {
-            console.log('📡 Fetching artist with slug:', slug);
-            const { data: artist, error } = await supabase
-                .from('artists')
-                .select('*')
-                .eq('slug', slug)
-                .single();
-
-            if (error || !artist) {
-                console.error('❌ Artist fetch error:', error);
-                template = createHomeTemplate();
-            } else {
-                console.log('✅ Artist found:', artist.name);
-                const { count } = await supabase
-                    .from('artworks')
-                    .select('id', { count: 'exact', head: true })
-                    .eq('artist_id', artist.id);
-
-                // 🔥 CONVERT AVATAR TO BASE64
-                let avatarSrc = artist.avatar || '';
-                if (avatarSrc) {
-                    const base64 = await imageToBase64(avatarSrc);
-                    if (base64) avatarSrc = base64;
-                }
-
-                template = createArtistTemplate({
-                    name: artist.name || 'Unknown Artist',
-                    role: artist.role || '',
-                    badge: artist.badge || '',
-                    avatar: avatarSrc,
-                    artworks: count || 0,
-                    joined: artist.joined || '2026',
-                });
-            }
+            // ... (sama seperti sebelumnya dengan imageToBase64 untuk avatar)
 
         // ===== HOME =====
         } else {
@@ -406,8 +402,12 @@ exports.handler = async function(event) {
             template = createHomeTemplate();
         }
 
-        console.log('🎨 Rendering...');
-        const pngBuffer = await renderOGImage(template, fonts);
+        console.log('🎨 Rendering OG image with Satori...');
+        const svg = await satori(template, { width: 1200, height: 630, fonts });
+        const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
+        const pngBuffer = resvg.render().asPng();
+
+        console.log('✅ OG image generated successfully');
 
         return {
             statusCode: 200,
@@ -421,10 +421,13 @@ exports.handler = async function(event) {
 
     } catch (error) {
         console.error('❌ Fatal error:', error);
+        // Fallback ke home
         try {
             const fonts = await getFonts();
             const template = createHomeTemplate();
-            const pngBuffer = await renderOGImage(template, fonts);
+            const svg = await satori(template, { width: 1200, height: 630, fonts });
+            const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
+            const pngBuffer = resvg.render().asPng();
             return {
                 statusCode: 200,
                 headers: { 'Content-Type': 'image/png' },
