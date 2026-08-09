@@ -1,23 +1,5 @@
 // netlify/functions/update-views.js
-// ===== POLYFILL WEBSOCKET =====
-const WebSocket = require('ws');
-global.WebSocket = WebSocket;
-
-const { createClient } = require('@supabase/supabase-js');
-
-const SUPABASE_URL = process.env.SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
-
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    console.error('❌ Missing Supabase environment variables');
-}
-
-// ===== Supabase client dengan Realtime disabled =====
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY || SUPABASE_SERVICE_KEY, {
-    realtime: { enable: false },
-    auth: { persistSession: false },
-});
+const fetch = require('node-fetch');
 
 exports.handler = async function(event) {
     try {
@@ -31,51 +13,64 @@ exports.handler = async function(event) {
             };
         }
 
-        console.log(`📡 Updating view for artwork: ${slug}`);
+        const SUPABASE_URL = process.env.SUPABASE_URL;
+        const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_KEY;
 
-        // Ambil data artwork saat ini
-        const { data: artwork, error: fetchError } = await supabase
-            .from('artworks')
-            .select('views')
-            .eq('slug', slug)
-            .single();
+        if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+            console.error('❌ Missing Supabase env');
+            return { statusCode: 500, body: 'Missing Supabase config' };
+        }
 
-        if (fetchError || !artwork) {
-            console.error('❌ Artwork not found:', fetchError);
+        // 1. Ambil views saat ini
+        const getRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/artworks?slug=eq.${slug}&select=views`,
+            {
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                },
+            }
+        );
+
+        const data = await getRes.json();
+        if (!data || data.length === 0) {
             return {
                 statusCode: 404,
                 body: JSON.stringify({ error: 'Artwork not found' }),
             };
         }
 
-        const currentViews = artwork.views || 0;
+        const currentViews = data[0].views || 0;
         const newViews = currentViews + 1;
 
-        const { error: updateError } = await supabase
-            .from('artworks')
-            .update({ views: newViews })
-            .eq('slug', slug);
+        // 2. Update views
+        const patchRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/artworks?slug=eq.${slug}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json',
+                    Prefer: 'return=minimal',
+                },
+                body: JSON.stringify({ views: newViews }),
+            }
+        );
 
-        if (updateError) {
-            console.error('❌ Update failed:', updateError);
-            return {
-                statusCode: 500,
-                body: JSON.stringify({ error: 'Failed to update views' }),
-            };
+        if (!patchRes.ok) {
+            throw new Error(`HTTP ${patchRes.status}`);
         }
 
-        console.log(`✅ Views updated: ${newViews}`);
+        console.log(`✅ Views updated for ${slug}: ${newViews}`);
 
         return {
             statusCode: 200,
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ success: true, views: newViews }),
         };
     } catch (error) {
-        console.error('❌ Fatal error:', error);
+        console.error('❌ Error:', error);
         return {
             statusCode: 500,
             body: JSON.stringify({ error: error.message }),

@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function incrementViews(slug) {
     try {
-        const response = await fetch('/.netlify/functions/increment-views', {
+        const response = await fetch('/.netlify/functions/update-views', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ slug })
