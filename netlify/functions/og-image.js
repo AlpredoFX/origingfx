@@ -8,18 +8,11 @@ const { createClient } = require('@supabase/supabase-js');
 
 // ===== KONFIGURASI =====
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
-
-// Prioritas: Service Key (bypass RLS) > Anon Key
-const SUPABASE_KEY = SUPABASE_SERVICE_KEY || SUPABASE_ANON_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY || '';
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
     console.error('❌ Missing Supabase environment variables');
 }
-
-console.log(`🔧 Supabase URL: ${SUPABASE_URL ? '✅ set' : '❌ missing'}`);
-console.log(`🔧 Supabase Key: ${SUPABASE_KEY ? '✅ set' : '❌ missing'}`);
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
     realtime: { enable: false },
@@ -41,6 +34,28 @@ async function getFonts() {
         { name: 'Roboto', data: regular, weight: 400, style: 'normal' },
         { name: 'Roboto', data: bold, weight: 700, style: 'normal' },
     ];
+}
+
+// ============================================================
+// UTILITY: IMAGE TO BASE64
+// ============================================================
+
+async function imageToBase64(url) {
+    try {
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0',
+            },
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        const contentType = response.headers.get('content-type') || 'image/webp';
+        return `data:${contentType};base64,${buffer.toString('base64')}`;
+    } catch (e) {
+        console.warn(`⚠️ Failed to fetch image: ${e.message}`);
+        return null;
+    }
 }
 
 // ============================================================
@@ -310,19 +325,17 @@ exports.handler = async function(event) {
         // ===== ARTWORK =====
         if (type === 'artwork' && id) {
             console.log('📡 Fetching artwork with ID:', id);
-            // Query tanpa join (untuk menghindari error relasi)
             const { data: artwork, error } = await supabase
                 .from('artworks')
                 .select('*')
                 .eq('id', id)
                 .single();
 
-            if (error) {
+            if (error || !artwork) {
                 console.error('❌ Artwork fetch error:', error);
                 template = createHomeTemplate();
-            } else if (artwork) {
+            } else {
                 console.log('✅ Artwork found:', artwork.title);
-                // Ambil artist name secara terpisah
                 let artistName = 'Unknown Artist';
                 if (artwork.artist_id) {
                     const { data: artist, error: artistErr } = await supabase
@@ -334,16 +347,21 @@ exports.handler = async function(event) {
                         artistName = artist.name;
                     }
                 }
+
+                // 🔥 CONVERT IMAGE TO BASE64
+                let imageSrc = artwork.image || '';
+                if (imageSrc) {
+                    const base64 = await imageToBase64(imageSrc);
+                    if (base64) imageSrc = base64;
+                }
+
                 template = createArtworkTemplate({
                     title: artwork.title || 'Untitled',
                     artist: artistName,
                     category: artwork.category || '',
-                    image: artwork.image || '',
+                    image: imageSrc,
                     year: artwork.year || '2026',
                 });
-            } else {
-                console.log('❌ Artwork not found');
-                template = createHomeTemplate();
             }
 
         // ===== ARTIST =====
@@ -355,27 +373,31 @@ exports.handler = async function(event) {
                 .eq('slug', slug)
                 .single();
 
-            if (error) {
+            if (error || !artist) {
                 console.error('❌ Artist fetch error:', error);
                 template = createHomeTemplate();
-            } else if (artist) {
+            } else {
                 console.log('✅ Artist found:', artist.name);
                 const { count } = await supabase
                     .from('artworks')
                     .select('id', { count: 'exact', head: true })
                     .eq('artist_id', artist.id);
 
+                // 🔥 CONVERT AVATAR TO BASE64
+                let avatarSrc = artist.avatar || '';
+                if (avatarSrc) {
+                    const base64 = await imageToBase64(avatarSrc);
+                    if (base64) avatarSrc = base64;
+                }
+
                 template = createArtistTemplate({
                     name: artist.name || 'Unknown Artist',
                     role: artist.role || '',
                     badge: artist.badge || '',
-                    avatar: artist.avatar || '',
+                    avatar: avatarSrc,
                     artworks: count || 0,
                     joined: artist.joined || '2026',
                 });
-            } else {
-                console.log('❌ Artist not found');
-                template = createHomeTemplate();
             }
 
         // ===== HOME =====
@@ -399,7 +421,6 @@ exports.handler = async function(event) {
 
     } catch (error) {
         console.error('❌ Fatal error:', error);
-        // Fallback: generate home template
         try {
             const fonts = await getFonts();
             const template = createHomeTemplate();
