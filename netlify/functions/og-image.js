@@ -44,7 +44,7 @@ async function getFonts() {
 }
 
 // ============================================================
-// UTILITY: IMAGE TO BASE64 (DENGAN LOG DETAIL)
+// UTILITY: IMAGE TO BASE64
 // ============================================================
 
 async function imageToBase64(url) {
@@ -60,7 +60,6 @@ async function imageToBase64(url) {
             headers: {
                 'User-Agent': 'Mozilla/5.0',
             },
-            // Timeout 10 detik
             signal: AbortSignal.timeout(10000),
         });
 
@@ -324,9 +323,14 @@ function createArtistTemplate(data) {
 // ============================================================
 
 async function renderOGImage(template, fonts) {
-    const svg = await satori(template, { width: 1200, height: 630, fonts });
-    const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
-    return resvg.render().asPng();
+    try {
+        const svg = await satori(template, { width: 1200, height: 630, fonts });
+        const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
+        return resvg.render().asPng();
+    } catch (e) {
+        console.error('❌ Satori render error:', e);
+        throw e;
+    }
 }
 
 // ============================================================
@@ -361,7 +365,6 @@ exports.handler = async function(event) {
                 console.log(`✅ Artwork found: ${artwork.title || 'Untitled'}`);
                 console.log(`📸 Image URL: ${artwork.image || '(empty)'}`);
 
-                // Ambil artist name
                 let artistName = 'Unknown Artist';
                 if (artwork.artist_id) {
                     const { data: artist, error: artistErr } = await supabase
@@ -374,7 +377,6 @@ exports.handler = async function(event) {
                     }
                 }
 
-                // 🔥 Convert image ke base64
                 let imageSrc = '';
                 if (artwork.image) {
                     imageSrc = await imageToBase64(artwork.image);
@@ -394,7 +396,40 @@ exports.handler = async function(event) {
 
         // ===== ARTIST =====
         } else if (type === 'artist' && slug) {
-            // ... (sama seperti sebelumnya dengan imageToBase64 untuk avatar)
+            console.log(`📡 Fetching artist with slug: ${slug}`);
+            const { data: artist, error } = await supabase
+                .from('artists')
+                .select('*')
+                .eq('slug', slug)
+                .single();
+
+            if (error || !artist) {
+                console.error('❌ Artist fetch error:', error);
+                template = createHomeTemplate();
+            } else {
+                console.log(`✅ Artist found: ${artist.name}`);
+                const { count } = await supabase
+                    .from('artworks')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('artist_id', artist.id);
+
+                let avatarSrc = '';
+                if (artist.avatar) {
+                    avatarSrc = await imageToBase64(artist.avatar);
+                }
+                if (!avatarSrc) {
+                    console.warn('⚠️ No valid avatar, using placeholder');
+                }
+
+                template = createArtistTemplate({
+                    name: artist.name || 'Unknown Artist',
+                    role: artist.role || '',
+                    badge: artist.badge || '',
+                    avatar: avatarSrc || '',
+                    artworks: count || 0,
+                    joined: artist.joined || '2026',
+                });
+            }
 
         // ===== HOME =====
         } else {
@@ -403,9 +438,7 @@ exports.handler = async function(event) {
         }
 
         console.log('🎨 Rendering OG image with Satori...');
-        const svg = await satori(template, { width: 1200, height: 630, fonts });
-        const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
-        const pngBuffer = resvg.render().asPng();
+        const pngBuffer = await renderOGImage(template, fonts);
 
         console.log('✅ OG image generated successfully');
 
@@ -421,13 +454,10 @@ exports.handler = async function(event) {
 
     } catch (error) {
         console.error('❌ Fatal error:', error);
-        // Fallback ke home
         try {
             const fonts = await getFonts();
             const template = createHomeTemplate();
-            const svg = await satori(template, { width: 1200, height: 630, fonts });
-            const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
-            const pngBuffer = resvg.render().asPng();
+            const pngBuffer = await renderOGImage(template, fonts);
             return {
                 statusCode: 200,
                 headers: { 'Content-Type': 'image/png' },
