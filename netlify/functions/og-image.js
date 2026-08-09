@@ -314,8 +314,8 @@ exports.handler = async function(event) {
                 template = createHomeTemplate();
             } else {
                 console.log(`✅ Artwork found: ${artwork.title || 'Untitled'}`);
-                console.log(`📸 Image URL: ${artwork.image || '(empty)'}`);
-
+                
+                // Ambil artist name
                 let artistName = 'Unknown Artist';
                 if (artwork.artist_id) {
                     const { data: artist, error: artistErr } = await supabase
@@ -328,25 +328,26 @@ exports.handler = async function(event) {
                     }
                 }
 
-                let imageSrc = '';
-                if (artwork.image) {
-                    imageSrc = await imageToBase64(artwork.image);
-                }
-                if (!imageSrc) {
-                    console.warn('⚠️ No valid image, using placeholder');
+                // 🔥 Gunakan URL langsung dengan transformasi (lebih ringan)
+                let imageUrl = artwork.image || '';
+                if (imageUrl) {
+                    // Tambahkan parameter width untuk memperkecil ukuran gambar
+                    // Supabase Storage mendukung transformasi: ?width=800
+                    imageUrl = imageUrl + '?width=800';
                 }
 
                 template = createArtworkTemplate({
                     title: artwork.title || 'Untitled',
                     artist: artistName,
                     category: artwork.category || '',
-                    image: imageSrc || '',
+                    image: imageUrl, // ← langsung URL (bukan base64)
                     year: artwork.year || '2026',
                 });
             }
+        }
 
         // ===== ARTIST =====
-        } else if (type === 'artist' && slug) {
+        else if (type === 'artist' && slug) {
             console.log(`📡 Fetching artist with slug: ${slug}`);
             const { data: artist, error } = await supabase
                 .from('artists')
@@ -364,19 +365,17 @@ exports.handler = async function(event) {
                     .select('id', { count: 'exact', head: true })
                     .eq('artist_id', artist.id);
 
-                let avatarSrc = '';
-                if (artist.avatar) {
-                    avatarSrc = await imageToBase64(artist.avatar);
-                }
-                if (!avatarSrc) {
-                    console.warn('⚠️ No valid avatar, using placeholder');
+                // 🔥 Gunakan URL langsung dengan transformasi
+                let avatarUrl = artist.avatar || '';
+                if (avatarUrl) {
+                    avatarUrl = avatarUrl + '?width=200';
                 }
 
                 template = createArtistTemplate({
                     name: artist.name || 'Unknown Artist',
                     role: artist.role || '',
                     badge: artist.badge || '',
-                    avatar: avatarSrc || '',
+                    avatar: avatarUrl, // ← langsung URL (bukan base64)
                     artworks: count || 0,
                     joined: artist.joined || '2026',
                 });
