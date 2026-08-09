@@ -84,59 +84,6 @@ async function imageToBase64(url) {
 // TEMPLATES
 // ============================================================
 
-function createHomeTemplate() {
-    return {
-        type: 'div',
-        props: {
-            style: {
-                display: 'flex',
-                flexDirection: 'column',
-                width: 1200,
-                height: 630,
-                backgroundColor: '#141414',
-                padding: '48px 56px',
-                fontFamily: '"Roboto", sans-serif',
-                justifyContent: 'center',
-                alignItems: 'center',
-                overflow: 'hidden',
-                position: 'relative',
-            },
-            children: [
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            position: 'absolute',
-                            inset: 0,
-                            opacity: 0.04,
-                            backgroundImage: 'radial-gradient(circle at 30% 50%, #F4F4F2 0%, transparent 60%), radial-gradient(circle at 70% 50%, #F4F4F2 0%, transparent 60%)',
-                        },
-                    },
-                },
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: 16,
-                            textAlign: 'center',
-                        },
-                        children: [
-                            { type: 'span', props: { style: { fontSize: 72, color: '#F4F4F2', fontWeight: 700 }, children: '✦ OriginGFX' } },
-                            { type: 'span', props: { style: { fontSize: 28, color: '#A3A3A3' }, children: 'Digital Gallery for Minecraft Artists' } },
-                            { type: 'span', props: { style: { fontSize: 18, color: '#6B6B6B', letterSpacing: '0.02em', lineHeight: 1.6 }, children: 'Gallery First. · Store Second. · Artist Always.' } },
-                            { type: 'div', props: { style: { width: 80, height: 2, backgroundColor: '#303030', marginTop: 20 } } },
-                            { type: 'span', props: { style: { fontSize: 14, color: '#6B6B6B', opacity: 0.5, marginTop: 8 }, children: '✦ Curated by OriginGFX' } },
-                        ],
-                    },
-                },
-            ],
-        },
-    };
-}
-
 function createArtworkTemplate(data) {
     return {
         type: 'div',
@@ -152,6 +99,7 @@ function createArtworkTemplate(data) {
                 overflow: 'hidden',
             },
             children: [
+                // Header
                 {
                     type: 'div',
                     props: {
@@ -162,33 +110,24 @@ function createArtworkTemplate(data) {
                         ],
                     },
                 },
+                // Image (backgroundImage)
                 {
                     type: 'div',
                     props: {
                         style: {
                             flex: 1,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
                             marginBottom: 16,
                             borderRadius: 12,
                             overflow: 'hidden',
                             backgroundColor: '#1C1C1C',
                             minHeight: 280,
+                            backgroundImage: data.image ? `url(${data.image})` : 'none',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
                         },
-                        children: data.image ? [
-                            {
-                                type: 'img',
-                                props: {
-                                    src: data.image,
-                                    style: { width: '100%', height: '100%', objectFit: 'cover' },
-                                },
-                            },
-                        ] : [
-                            { type: 'span', props: { style: { color: '#6B6B6B', fontSize: 24 }, children: '✦ No image' } },
-                        ],
                     },
                 },
+                // Footer
                 {
                     type: 'div',
                     props: {
@@ -277,15 +216,27 @@ function createArtistTemplate(data) {
                             gap: 12,
                         },
                         children: [
-                            data.avatar ? {
-                                type: 'img',
-                                props: {
-                                    src: data.avatar,
-                                    style: { width: 120, height: 120, borderRadius: '50%', objectFit: 'cover', border: '3px solid #303030' },
-                                },
-                            } : {
+                            // Avatar (backgroundImage)
+                            {
                                 type: 'div',
-                                props: { style: { width: 120, height: 120, borderRadius: '50%', backgroundColor: '#242424', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 40, color: '#6B6B6B' }, children: '✦' },
+                                props: {
+                                    style: {
+                                        width: 120,
+                                        height: 120,
+                                        borderRadius: '50%',
+                                        border: '3px solid #303030',
+                                        backgroundImage: data.avatar ? `url(${data.avatar})` : 'none',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        backgroundColor: data.avatar ? 'transparent' : '#242424',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        fontSize: 40,
+                                        color: '#6B6B6B',
+                                    },
+                                    children: data.avatar ? [] : ['✦'],
+                                },
                             },
                             { type: 'span', props: { style: { fontSize: 38, fontWeight: 700, color: '#F4F4F2', textAlign: 'center' }, children: data.name || 'Unknown Artist' } },
                             { type: 'span', props: { style: { fontSize: 18, color: '#A3A3A3', textAlign: 'center', opacity: 0.8 }, children: badgeText } },
