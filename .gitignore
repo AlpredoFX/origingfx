@@ -3,3 +3,6 @@ _site/
 .DS_Store
 *.log
 .env
+# Gambar lokal (sudah di Supabase)
+src/assets/images/artworks/
+src/assets/images/artists/
