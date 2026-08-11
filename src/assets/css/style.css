@@ -565,7 +565,6 @@ h1 {
     margin-top: -12px;
     margin-bottom: 24px;
     opacity: 0.7;
-    max-width: 560px;
 }
 .featured-meta {
     display: flex;
@@ -4532,6 +4531,254 @@ h1 {
     .closing-card h3 { font-size: 1.2rem; }
     .services-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
     .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto 40px; }
+}
+
+/* ============================================================
+   ABOUT — Story, Philosophy, Closing, Founder
+   ============================================================ */
+
+/* Story */
+.about-story {
+    max-width: 720px;
+    margin: 0 auto;
+}
+.about-story p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 16px;
+    opacity: 0.85;
+}
+.about-story p strong {
+    opacity: 1;
+    color: var(--text);
+}
+
+/* Behind Every Artwork */
+.behind-every-artwork {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+.behind-label {
+    display: block;
+    font-size: 1.4rem;
+    opacity: 0.3;
+    margin-bottom: 8px;
+}
+.behind-every-artwork h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+}
+.behind-every-artwork p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text);
+    opacity: 0.85;
+    margin-bottom: 12px;
+}
+.behind-tagline {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 12px;
+    opacity: 0.7 !important;
+    font-style: italic;
+}
+
+/* Growing Together */
+.growing-together {
+    max-width: 720px;
+    margin: 0 auto;
+}
+.growing-label {
+    display: block;
+    font-size: 1.4rem;
+    opacity: 0.3;
+    margin-bottom: 8px;
+}
+.growing-together h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+}
+.growing-together p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text);
+    opacity: 0.85;
+    margin-bottom: 12px;
+}
+
+/* Closing Manifesto */
+.about-closing {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 16px 0;
+}
+.about-closing p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text);
+    opacity: 0.85;
+    margin-bottom: 12px;
+}
+.about-closing p:last-of-type {
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* CTA Grid */
+.about-cta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.about-cta-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.about-cta-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--text-soft);
+    box-shadow: var(--shadow);
+}
+.about-cta-icon {
+    font-size: 1.4rem;
+    opacity: 0.3;
+    margin-bottom: 8px;
+}
+.about-cta-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.about-cta-card p {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    margin-bottom: 12px;
+}
+.about-cta-arrow {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+.about-cta-card:hover .about-cta-arrow {
+    border-color: var(--text);
+}
+
+/* Founder */
+.about-founder {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.about-founder:hover {
+    border-color: var(--text-soft);
+    box-shadow: var(--shadow);
+}
+.about-founder-content {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+.about-founder-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+}
+.about-founder-info {
+    flex: 1;
+}
+.about-founder-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-soft);
+    opacity: 0.5;
+}
+.about-founder-info h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+.about-founder-role {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    margin: 2px 0 6px;
+}
+.about-founder-bio {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.7;
+    margin: 0;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-cta-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+    .about-founder-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+    .about-founder {
+        padding: 20px;
+    }
+    .about-founder-avatar {
+        width: 64px;
+        height: 64px;
+    }
+    .about-founder-info h3 {
+        font-size: 1.2rem;
+    }
+    .behind-every-artwork h2,
+    .growing-together h2 {
+        font-size: 1.3rem;
+    }
+    .about-closing p:last-of-type {
+        font-size: 1.1rem;
+    }
+}
+@media (max-width: 480px) {
+    .about-cta-card {
+        padding: 24px 16px;
+    }
+    .about-cta-card h3 {
+        font-size: 1rem;
+    }
 }
 
 /* ============================================================
