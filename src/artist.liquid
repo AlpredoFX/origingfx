@@ -45,7 +45,7 @@ permalink: "/artist/{{ artist.slug }}/"
                         {% endcase %}
                     </span>
                 {% endif %}
-                <span class="profile-role">{{ artist.role }}</span>
+                <span class="profile-role">{{ supabase.artistDynamicRole[artist.id] | default: artist.role }}</span>
             </div>
 
             <!-- ===== ROLE DESCRIPTION (Founder, Contributor, Curator) ===== -->
@@ -160,6 +160,21 @@ permalink: "/artist/{{ artist.slug }}/"
                 <span class="overview-label">Artworks</span>
             </div>
             <div class="overview-divider"></div>
+
+            <!-- ===== STATISTIK PER TYPE (hanya jika bukan 'artwork') ===== -->
+            {% assign artistTypes = supabase.artistTypeStats[artist.id] %}
+            {% if artistTypes %}
+                {% for stat in artistTypes %}
+                    {% if stat.count > 0 and stat.type != 'artwork' %}
+                        <div class="overview-item">
+                            <span class="overview-number">{{ stat.count }}</span>
+                            <span class="overview-label">{{ stat.type | capitalize }}</span>
+                        </div>
+                        <div class="overview-divider"></div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
             <div class="overview-item">
                 <span class="overview-number">{{ totalServices }}</span>
                 <span class="overview-label">Services</span>

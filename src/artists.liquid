@@ -33,12 +33,19 @@ title: Artists — OriginGFX
                                 <h2>{{ founder.name }}</h2>
                                 <span class="founder-premium-badge">Founder</span>
                             </div>
-                            <p class="founder-premium-role">{{ founder.role }}</p>
+                            <p class="founder-premium-role">
+                                {{ supabase.artistDynamicRole[founder.id] | default: founder.role }}
+                            </p>
                             <div class="founder-premium-stats">
                                 {% assign founderArtworks = supabase.artworks | where: "artist_id", founder.id | size %}
                                 <span><strong>{{ founderArtworks }}</strong> Artworks</span>
                                 <span class="meta-dot">·</span>
                                 <span>Joined {{ founder.joined | default: '2026' }}</span>
+                                {% assign founderType = supabase.artistDominantType[founder.id] %}
+                                {% if founderType and founderType != 'artwork' %}
+                                    <span class="meta-dot">·</span>
+                                    <span class="founder-type-badge">{{ founderType | capitalize }}</span>
+                                {% endif %}
                             </div>
                             <p class="founder-premium-bio">{{ founder.bio | truncate: 110 }}</p>
                             <span class="founder-premium-cta">View Profile →</span>
@@ -73,11 +80,18 @@ title: Artists — OriginGFX
                     <div class="role-card-info">
                         <h4>{{ artist.name }}</h4>
                         <span class="role-label">✦ CONTRIBUTOR</span>
-                        <p class="role-description">{{ artist.role }}</p>
+                        <p class="role-description">
+                            {{ supabase.artistDynamicRole[artist.id] | default: artist.role }}
+                        </p>
                         <div class="role-stats">
                             <span>{{ artistArtworks }} Artworks</span>
                             <span class="meta-dot">·</span>
                             <span>Joined {{ artist.joined | default: '2026' }}</span>
+                            {% assign artistType = supabase.artistDominantType[artist.id] %}
+                            {% if artistType and artistType != 'artwork' %}
+                                <span class="meta-dot">·</span>
+                                <span class="role-type-badge">{{ artistType | capitalize }}</span>
+                            {% endif %}
                         </div>
                         <span class="btn-small btn-outline role-cta">View Profile →</span>
                     </div>
@@ -106,11 +120,18 @@ title: Artists — OriginGFX
                     <div class="role-card-info">
                         <h4>{{ artist.name }}</h4>
                         <span class="role-label">✦ CURATOR</span>
-                        <p class="role-description">{{ artist.role }}</p>
+                        <p class="role-description">
+                            {{ supabase.artistDynamicRole[artist.id] | default: artist.role }}
+                        </p>
                         <div class="role-stats">
                             <span>{{ artistArtworks }} Artworks</span>
                             <span class="meta-dot">·</span>
                             <span>Joined {{ artist.joined | default: '2026' }}</span>
+                            {% assign artistType = supabase.artistDominantType[artist.id] %}
+                            {% if artistType and artistType != 'artwork' %}
+                                <span class="meta-dot">·</span>
+                                <span class="role-type-badge">{{ artistType | capitalize }}</span>
+                            {% endif %}
                         </div>
                         <span class="btn-small btn-outline role-cta">View Profile →</span>
                     </div>
@@ -147,11 +168,18 @@ title: Artists — OriginGFX
                             {% endif %}
                             <!-- Badge lain (contributor, curator, featured, dll.) TIDAK muncul di sini -->
                         </div>
-                        <p class="artist-role">{{ artist.role }}</p>
+                        <p class="artist-role">
+                            {{ supabase.artistDynamicRole[artist.id] | default: artist.role }}
+                        </p>
                         <div class="artist-stats">
                             <span>{{ artistArtworks }} Artworks</span>
                             <span class="meta-dot">·</span>
                             <span>Joined {{ artist.joined | default: '2026' }}</span>
+                            {% assign artistType = supabase.artistDominantType[artist.id] %}
+                            {% if artistType and artistType != 'artwork' %}
+                                <span class="meta-dot">·</span>
+                                <span class="artist-type-badge">{{ artistType | capitalize }}</span>
+                            {% endif %}
                         </div>
                         <span class="btn-small btn-outline">View Profile →</span>
                     </div>

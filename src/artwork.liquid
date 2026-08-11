@@ -36,7 +36,7 @@ permalink: "/artwork/{{ artwork.slug }}/"
                     <div class="mini-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
                     <div class="mini-artist-info">
                         <a href="/artist/{{ artist.slug }}" class="mini-artist-name">{{ artist.name }}</a>
-                        <span class="mini-artist-role">{{ artist.role }}</span>
+                        <span class="mini-artist-role">{{ supabase.artistDynamicRole[artist.id] | default: artist.role }}</span>
                         <span class="mini-artist-stats">
                             {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
                             {{ artistArtworks }} Artworks

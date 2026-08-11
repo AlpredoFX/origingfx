@@ -79,7 +79,7 @@ title: Explore — OriginGFX
 </section>
 
 <!-- ============================================================
-     SEARCH & FILTER — muncul setelah featured
+     SEARCH & FILTER — Satu Baris Desktop + TYPE FILTER
      ============================================================ -->
 <section class="section reveal" style="padding-top: 0px; padding-bottom: 10px;">
     <div class="container">
@@ -88,6 +88,13 @@ title: Explore — OriginGFX
                 <input type="text" id="searchInput" placeholder="🔍 Cari artwork..." oninput="applyFilters()">
             </div>
             <div class="filter-group">
+                <!-- ===== TYPE FILTER ===== -->
+                <select id="typeFilter" onchange="applyFilters()">
+                    <option value="">All Types</option>
+                    {% for type in supabase.typeList %}
+                        <option value="{{ type }}">{{ type | capitalize }}</option>
+                    {% endfor %}
+                </select>
                 <select id="categoryFilter" onchange="applyFilters()">
                     <option value="">All Categories</option>
                     {% for cat in supabase.categories %}
@@ -235,8 +242,10 @@ title: Explore — OriginGFX
             }
 
             const html = pageItems.map((item) => {
+                const typeLabel = item.type || 'artwork';
+                const typeDisplay = typeLabel !== 'artwork' ? typeLabel : '';
                 return `
-                    <div class="card" data-category="${item.category || ''}" data-artist="${item.artist || ''}">
+                    <div class="card" data-category="${item.category || ''}" data-artist="${item.artist || ''}" data-type="${typeLabel}">
                         <a href="/artwork/${item.slug}/" class="card-link-wrapper">
                             <img src="${item.image}" alt="${item.title}" loading="lazy" class="thumb-img">
                             <div class="card-overlay">
@@ -245,9 +254,10 @@ title: Explore — OriginGFX
                                 <span class="card-link">View Artwork →</span>
                             </div>
                         </a>
+                        ${typeDisplay ? `<span class="type-badge">✦ ${typeDisplay}</span>` : ''}
                     </div>
                 `;
-            }).join('');
+            }).join(''); // ← Hapus ; ganda
 
             if (append) {
                 grid.insertAdjacentHTML('beforeend', html);
@@ -274,15 +284,17 @@ title: Explore — OriginGFX
         // ===== FILTER + SORT + CHIPS =====
         function applyFilters() {
             const keyword = searchInput.value.toLowerCase().trim();
+            const type = document.getElementById('typeFilter')?.value || '';
             const category = categoryFilter.value;
             const artist = artistFilter.value;
             const sort = sortSelect ? sortSelect.value : 'created_at.desc';
 
             let filtered = allArtworks.filter(item => {
                 const matchTitle = item.title.toLowerCase().includes(keyword);
+                const matchType = type ? (item.type || 'artwork') === type : true;
                 const matchCategory = category ? item.category === category : true;
                 const matchArtist = artist ? item.artist === artist : true;
-                return matchTitle && matchCategory && matchArtist;
+                return matchTitle && matchType && matchCategory && matchArtist;
             });
 
             filtered = sortArtworks(filtered, sort);

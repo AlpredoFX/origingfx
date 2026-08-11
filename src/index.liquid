@@ -140,6 +140,11 @@ title: OriginGFX — Digital Gallery for Minecraft Artists
                 </div>
                 <h3>{{ item.title }}</h3>
                 <p>by {{ item.artist }}</p>
+                <!-- ===== BADGE TYPE ===== -->
+                {% assign typeLabel = item.type | default: 'artwork' %}
+                {% if typeLabel != 'artwork' %}
+                    <span class="type-badge type-badge-home">✦ {{ typeLabel | capitalize }}</span>
+                {% endif %}
                 <!-- Metadata tambahan -->
                 <div class="card-meta">
                     {% if item.category %}
