@@ -1433,8 +1433,9 @@ h1 {
 }
 
 /* ============================================================
-   15. EXPLORE
+   15. EXPLORE — STATS, FEATURED, FOOTER
    ============================================================ */
+
 .explore-stats {
     display: flex;
     align-items: center;
@@ -1467,7 +1468,9 @@ h1 {
     background: var(--border);
 }
 
-.featured-today { margin-bottom: 40px; }
+.featured-today {
+    margin-bottom: 40px;
+}
 .featured-today-label {
     display: block;
     font-size: 0.75rem;
@@ -1515,7 +1518,9 @@ h1 {
     border-bottom: 1px solid transparent;
     transition: border-color 0.3s;
 }
-.featured-today-link:hover .featured-today-cta { border-color: var(--text); }
+.featured-today-link:hover .featured-today-cta {
+    border-color: var(--text);
+}
 .explore-end {
     text-align: center;
     color: var(--text-soft);
@@ -1537,12 +1542,16 @@ h1 {
     color: var(--text-soft);
     transition: border-color 0.3s;
 }
-.hero-update:hover { border-color: var(--text); }
+.hero-update:hover {
+    border-color: var(--text);
+}
 .update-label {
     font-weight: 500;
     color: var(--text);
 }
-.update-count { opacity: 0.7; }
+.update-count {
+    opacity: 0.7;
+}
 
 /* Featured Note */
 .featured-note {
@@ -1582,28 +1591,58 @@ h1 {
 }
 
 @media (max-width: 768px) {
-    .featured-today-image { height: 160px; }
-    .featured-today-content h3 { font-size: 1.1rem; }
-    .explore-stats { gap: 12px; padding: 8px 16px; }
-    .stat-number { font-size: 1rem; }
-    .hero-update { font-size: 0.75rem; padding: 8px 16px; flex-wrap: wrap; justify-content: center; }
-    .featured-note { font-size: 0.8rem; }
-    .explore-footer { margin-top: 32px; padding: 24px 16px; }
-    .explore-footer .btn-outline { padding: 10px 24px; font-size: 0.85rem; }
+    .featured-today-image {
+        height: 160px;
+    }
+    .featured-today-content h3 {
+        font-size: 1.1rem;
+    }
+    .explore-stats {
+        gap: 12px;
+        padding: 8px 16px;
+    }
+    .stat-number {
+        font-size: 1rem;
+    }
+    .hero-update {
+        font-size: 0.75rem;
+        padding: 8px 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .featured-note {
+        font-size: 0.8rem;
+    }
+    .explore-footer {
+        margin-top: 32px;
+        padding: 24px 16px;
+    }
+    .explore-footer .btn-outline {
+        padding: 10px 24px;
+        font-size: 0.85rem;
+    }
 }
 @media (max-width: 480px) {
-    .hero-update { font-size: 0.7rem; padding: 6px 12px; }
+    .hero-update {
+        font-size: 0.7rem;
+        padding: 6px 12px;
+    }
 }
 
+
+
 /* ============================================================
-   16. EXPLORE — MASONRY (CSS COLUMNS)
+   16. EXPLORE — MASONRY (CSS COLUMNS) + HOVER EDITORIAL
    ============================================================ */
+
 #artworkGrid {
     column-count: 4;
     column-gap: 20px;
     max-width: 1120px;
     margin: 0 auto;
 }
+
+/* ===== CARD WRAPPER ===== */
 #artworkGrid .card {
     break-inside: avoid;
     margin-bottom: 20px;
@@ -1615,68 +1654,164 @@ h1 {
     width: 100%;
     position: relative;
 }
+
 #artworkGrid .card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow);
 }
+
+/* ===== IMAGE ===== */
 #artworkGrid .card-link-wrapper {
     display: block;
     text-decoration: none;
     color: inherit;
     width: 100%;
+    position: relative;
+    overflow: hidden;
 }
+
 #artworkGrid .thumb-img {
     display: block;
     width: 100%;
     height: auto;
     background: var(--surface-2);
-    transition: transform 0.4s ease;
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-#artworkGrid .card:hover .thumb-img { transform: scale(1.02); }
+
+#artworkGrid .card:hover .thumb-img {
+    transform: scale(1.02);
+}
+
+/* ===== OVERLAY — GRADIENT DARI BAWAH ===== */
 #artworkGrid .card-overlay {
     position: absolute;
     inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 70%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.82) 0%,
+        rgba(0, 0, 0, 0.48) 35%,
+        rgba(0, 0, 0, 0) 70%
+    );
     opacity: 0;
-    transition: opacity 0.3s ease;
-    color: #fff;
-    text-align: center;
+    transition: opacity 0.35s ease;
+}
+
+#artworkGrid .card:hover .card-overlay {
+    opacity: 1;
+}
+
+/* ===== OVERLAY CONTENT — MUNCUL DARI BAWAH ===== */
+#artworkGrid .card-overlay-content {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    z-index: 3;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
     pointer-events: none;
 }
-#artworkGrid .card:hover .card-overlay { opacity: 1; }
-#artworkGrid .card-overlay h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0 0 2px;
-    color: #fff;
-}
-#artworkGrid .card-overlay p {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.8);
-    margin: 0 0 8px;
-}
-#artworkGrid .card-overlay .card-link {
-    font-weight: 500;
-    border-bottom: 1px solid rgba(255,255,255,0.3);
-    transition: border-color 0.3s;
-    color: #fff;
-}
-#artworkGrid .card:hover .card-overlay .card-link { border-color: #fff; }
-#artworkGrid .thumb-img { max-height: 600px; object-fit: cover; }
 
-@media (max-width: 992px) { #artworkGrid { column-count: 3; column-gap: 16px; } }
-@media (max-width: 768px) {
-    #artworkGrid { column-count: 2; column-gap: 12px; }
-    #artworkGrid .card-overlay h3 { font-size: 0.95rem; }
-    #artworkGrid .card-overlay p { font-size: 0.8rem; }
+#artworkGrid .card:hover .card-overlay-content {
+    opacity: 1;
+    transform: translateY(0);
 }
+
+/* ===== TYPOGRAPHY ===== */
+#artworkGrid .card-overlay-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 2px;
+    letter-spacing: -0.01em;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+#artworkGrid .card-overlay-artist {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 10px;
+    font-weight: 400;
+}
+
+/* ===== CTA ===== */
+#artworkGrid .card-overlay-cta {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 2px;
+    transition: border-color 0.3s ease;
+    pointer-events: auto;
+}
+
+#artworkGrid .card:hover .card-overlay-cta {
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===== TYPE BADGE (tetap di kanan atas) ===== */
+#artworkGrid .type-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 5;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: rgba(20, 20, 20, 0.75);
+    backdrop-filter: blur(4px);
+    color: #F4F4F2;
+    padding: 2px 10px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+}
+
+/* ===== BATASI UKURAN GAMBAR ===== */
+#artworkGrid .thumb-img {
+    max-height: 600px;
+    object-fit: cover;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 992px) {
+    #artworkGrid {
+        column-count: 3;
+        column-gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    #artworkGrid {
+        column-count: 2;
+        column-gap: 12px;
+    }
+    #artworkGrid .card-overlay-title {
+        font-size: 1rem;
+    }
+    #artworkGrid .card-overlay-artist {
+        font-size: 0.75rem;
+        margin-bottom: 6px;
+    }
+    #artworkGrid .card-overlay-cta {
+        font-size: 0.7rem;
+    }
+}
+
 @media (max-width: 480px) {
-    #artworkGrid { column-count: 1; max-width: 400px; margin: 0 auto; }
+    #artworkGrid {
+        column-count: 1;
+        max-width: 400px;
+        margin: 0 auto;
+    }
 }
 
 /* ============================================================
@@ -2395,6 +2530,136 @@ h1 {
         max-width: 280px;
         padding: 12px 20px;
         font-size: 0.9rem;
+    }
+}
+
+/* ============================================================
+   PORTFOLIO — HOVER EDITORIAL (Sama seperti Explore)
+   ============================================================ */
+
+.portfolio-grid .card,
+.grid-3 .portfolio-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--surface);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-grid .card:hover,
+.grid-3 .portfolio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.portfolio-grid .card .thumb,
+.grid-3 .portfolio-card .thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: var(--surface-2);
+    border-radius: 12px 12px 0 0;
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.portfolio-grid .card:hover .thumb,
+.grid-3 .portfolio-card:hover .thumb {
+    transform: scale(1.02);
+}
+
+/* ===== OVERLAY — GRADIENT DARI BAWAH ===== */
+.portfolio-grid .card .card-overlay,
+.grid-3 .portfolio-card .card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.82) 0%,
+        rgba(0, 0, 0, 0.48) 35%,
+        rgba(0, 0, 0, 0) 70%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 24px 20px 20px;
+}
+
+.portfolio-grid .card:hover .card-overlay,
+.grid-3 .portfolio-card:hover .card-overlay {
+    opacity: 1;
+}
+
+/* ===== OVERLAY CONTENT — MUNCUL DARI BAWAH ===== */
+.portfolio-grid .card .card-overlay-content,
+.grid-3 .portfolio-card .card-overlay-content {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+    width: 100%;
+}
+
+.portfolio-grid .card:hover .card-overlay-content,
+.grid-3 .portfolio-card:hover .card-overlay-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== TYPOGRAPHY ===== */
+.portfolio-grid .card .card-overlay-title,
+.grid-3 .portfolio-card .card-overlay-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 2px;
+    letter-spacing: -0.01em;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.portfolio-grid .card .card-overlay-artist,
+.grid-3 .portfolio-card .card-overlay-artist {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 10px;
+    font-weight: 400;
+}
+
+.portfolio-grid .card .card-overlay-cta,
+.grid-3 .portfolio-card .card-overlay-cta {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 2px;
+    transition: border-color 0.3s ease;
+    pointer-events: auto;
+}
+
+.portfolio-grid .card:hover .card-overlay-cta,
+.grid-3 .portfolio-card:hover .card-overlay-cta {
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .portfolio-grid .card .card-overlay-title,
+    .grid-3 .portfolio-card .card-overlay-title {
+        font-size: 0.95rem;
+    }
+    .portfolio-grid .card .card-overlay-artist,
+    .grid-3 .portfolio-card .card-overlay-artist {
+        font-size: 0.75rem;
+        margin-bottom: 6px;
+    }
+    .portfolio-grid .card .card-overlay-cta,
+    .grid-3 .portfolio-card .card-overlay-cta {
+        font-size: 0.7rem;
     }
 }
 
@@ -4601,6 +4866,85 @@ h1 {
     .closing-card h3 { font-size: 1.2rem; }
     .services-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
     .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto 40px; }
+}
+
+/* ============================================================
+   CONTACT — Dropdown Style
+   ============================================================ */
+
+.contact-form select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%236B6B6B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 14px;
+    cursor: pointer;
+}
+.contact-form select:focus {
+    outline: none;
+    border-color: var(--text);
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+}
+.contact-form select option {
+    background: var(--surface);
+    color: var(--text);
+}
+
+/* ============================================================
+   COMMISSION NOTE — Contact Page
+   ============================================================ */
+
+.commission-note {
+    margin-top: 20px;
+    padding: 20px 24px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.commission-note-icon {
+    display: block;
+    font-size: 1.2rem;
+    opacity: 0.4;
+    margin-bottom: 4px;
+}
+
+.commission-note-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.commission-note-text {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.commission-note-text strong {
+    color: var(--text);
+}
+
+@media (max-width: 768px) {
+    .commission-note {
+        padding: 16px 18px;
+    }
+    .commission-note-text {
+        font-size: 0.85rem;
+    }
 }
 
 /* ============================================================

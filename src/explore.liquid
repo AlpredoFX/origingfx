@@ -245,19 +245,22 @@ title: Explore — OriginGFX
                 const typeLabel = item.type || 'artwork';
                 const typeDisplay = typeLabel !== 'artwork' ? typeLabel : '';
                 return `
-                    <div class="card" data-category="${item.category || ''}" data-artist="${item.artist || ''}" data-type="${typeLabel}">
+                    <div class="card explore-card" data-category="${item.category || ''}" data-artist="${item.artist || ''}" data-type="${typeLabel}">
                         <a href="/artwork/${item.slug}/" class="card-link-wrapper">
                             <img src="${item.image}" alt="${item.title}" loading="lazy" class="thumb-img">
+                            <!-- ===== OVERLAY GRADIENT + INFO ===== -->
                             <div class="card-overlay">
-                                <h3>${item.title}</h3>
-                                <p>by ${item.artist}</p>
-                                <span class="card-link">View Artwork →</span>
+                                <div class="card-overlay-content">
+                                    <h3 class="card-overlay-title">✦ ${item.title}</h3>
+                                    <p class="card-overlay-artist">by ${item.artist}</p>
+                                    <span class="card-overlay-cta">View Artwork →</span>
+                                </div>
                             </div>
                         </a>
                         ${typeDisplay ? `<span class="type-badge">✦ ${typeDisplay}</span>` : ''}
                     </div>
                 `;
-            }).join(''); // ← Hapus ; ganda
+            }).join('');
 
             if (append) {
                 grid.insertAdjacentHTML('beforeend', html);

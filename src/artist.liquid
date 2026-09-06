@@ -19,72 +19,72 @@ permalink: "/artist/{{ artist.slug }}/"
             <!-- ===== AVATAR ===== -->
             <div class="profile-hero-avatar" style="background-image: url('{{ artist.avatar }}'); background-size: cover; background-position: center;"></div>
 
-        <!-- ===== IDENTITAS ===== -->
-        <div class="profile-hero-info">
-            <!-- Nama + Badge Founder di sini -->
-            <div class="profile-name-wrapper">
-                <h1>{{ artist.name }}</h1>
-                {% if artist.badge == "founder" %}
-                    <span class="founder-badge">✦ Founder</span>
-                {% endif %}
-            </div>
+            <!-- ===== IDENTITAS ===== -->
+            <div class="profile-hero-info">
+                <!-- Nama + Badge Founder -->
+                <div class="profile-name-wrapper">
+                    <h1>{{ artist.name }}</h1>
+                    {% if artist.badge == "founder" %}
+                        <span class="founder-badge">✦ Founder</span>
+                    {% endif %}
+                </div>
 
-            <!-- Role + Badge lainnya -->
-            <div class="profile-role-wrapper">
-                {% if artist.badge and artist.badge != "founder" %}
-                    <span class="artist-badge {{ artist.badge }}">
-                        {% case artist.badge %}
-                            {% when 'founder' %}👑 Founder
-                            {% when 'featured' %}⭐ Featured
-                            {% when 'new' %}🌱 New Artist
-                            {% when 'verified' %}✔ Verified
-                            {% when 'contributor' %}🤝 Contributor
-                            {% when 'curator' %}🏛 Curator
-                            {% when 'editors-pick' %}🏆 Editor's Pick
-                            {% when 'community-favorite' %}❤️ Community Favorite
-                        {% endcase %}
-                    </span>
-                {% endif %}
-                <span class="profile-role">{{ supabase.artistDynamicRole[artist.id] | default: artist.role }}</span>
-            </div>
+                <!-- Role + Badge lainnya -->
+                <div class="profile-role-wrapper">
+                    {% if artist.badge and artist.badge != "founder" %}
+                        <span class="artist-badge {{ artist.badge }}">
+                            {% case artist.badge %}
+                                {% when 'founder' %}👑 Founder
+                                {% when 'featured' %}⭐ Featured
+                                {% when 'new' %}🌱 New Artist
+                                {% when 'verified' %}✔ Verified
+                                {% when 'contributor' %}🤝 Contributor
+                                {% when 'curator' %}🏛 Curator
+                                {% when 'editors-pick' %}🏆 Editor's Pick
+                                {% when 'community-favorite' %}❤️ Community Favorite
+                            {% endcase %}
+                        </span>
+                    {% endif %}
+                    <span class="profile-role">{{ supabase.artistDynamicRole[artist.id] | default: artist.role }}</span>
+                </div>
 
-            <!-- ===== ROLE DESCRIPTION (Founder, Contributor, Curator) ===== -->
-            <div class="role-description-block">
-                {% if artist.badge == "founder" %}
-                    <div class="role-desc-item">
-                        <span class="role-desc-label">✦ Founder of OriginGFX</span>
-                        <p class="role-desc-text">OriginGFX dimulai sebagai portfolio pribadi dan kini menjadi rumah bagi artist lain.</p>
-                    </div>
-                {% elsif artist.badge == "contributor" %}
-                    <div class="role-desc-item">
-                        <span class="role-desc-label">✦ Contributor to OriginGFX</span>
-                        <p class="role-desc-text">Berkontribusi dalam membangun komunitas, proyek, dan ruang kreatif di OriginGFX.</p>
-                    </div>
-                {% elsif artist.badge == "curator" %}
-                    <div class="role-desc-item">
-                        <span class="role-desc-label">✦ Curator at OriginGFX</span>
-                        <p class="role-desc-text">Membantu memilih dan menyoroti karya yang menjadi bagian dari gallery OriginGFX.</p>
-                    </div>
-                {% endif %}
-            </div>
+                <!-- ===== ROLE DESCRIPTION (Founder, Contributor, Curator) ===== -->
+                <div class="role-description-block">
+                    {% if artist.badge == "founder" %}
+                        <div class="role-desc-item">
+                            <span class="role-desc-label">✦ Founder of OriginGFX</span>
+                            <p class="role-desc-text">OriginGFX dimulai sebagai portfolio pribadi dan kini menjadi rumah bagi artist lain.</p>
+                        </div>
+                    {% elsif artist.badge == "contributor" %}
+                        <div class="role-desc-item">
+                            <span class="role-desc-label">✦ Contributor to OriginGFX</span>
+                            <p class="role-desc-text">Berkontribusi dalam membangun komunitas, proyek, dan ruang kreatif di OriginGFX.</p>
+                        </div>
+                    {% elsif artist.badge == "curator" %}
+                        <div class="role-desc-item">
+                            <span class="role-desc-label">✦ Curator at OriginGFX</span>
+                            <p class="role-desc-text">Membantu memilih dan menyoroti karya yang menjadi bagian dari gallery OriginGFX.</p>
+                        </div>
+                    {% endif %}
+                </div>
 
-            <!-- ===== METADATA SINGKAT ===== -->
-            <div class="profile-meta">
-                {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
-                <span><strong>{{ artistArtworks }}</strong> Artworks</span>
-                <span class="meta-dot">•</span>
-                {% if artist.location %}
-                    <span>{{ artist.location }}</span>
+                <!-- ===== METADATA SINGKAT ===== -->
+                <div class="profile-meta">
+                    {% assign artistArtworks = supabase.artworks | where: "artist_id", artist.id | size %}
+                    <span><strong>{{ artistArtworks }}</strong> Artworks</span>
                     <span class="meta-dot">•</span>
-                {% endif %}
-                {% if artist.joined %}
-                    <span>Since {{ artist.joined }}</span>
-                    <span class="meta-dot">•</span>
-                {% endif %}
-                {% if artist.badge %}
-                    <span class="badge-label">{{ artist.badge | capitalize }}</span>
-                {% endif %}
-            </div>
+                    {% if artist.location %}
+                        <span>{{ artist.location }}</span>
+                        <span class="meta-dot">•</span>
+                    {% endif %}
+                    {% if artist.joined %}
+                        <span>Since {{ artist.joined }}</span>
+                        <span class="meta-dot">•</span>
+                    {% endif %}
+                    {% if artist.badge %}
+                        <span class="badge-label">{{ artist.badge | capitalize }}</span>
+                    {% endif %}
+                </div>
 
                 <!-- ===== BADGE COMMISSION STATUS ===== -->
                 {% assign hasContact = false %}
@@ -118,7 +118,7 @@ permalink: "/artist/{{ artist.slug }}/"
                     <p class="profile-hero-bio">{{ artist.bio }}</p>
                 {% endif %}
 
-                <!-- ===== SOCIAL LINKS (dengan icon) ===== -->
+                <!-- ===== SOCIAL LINKS ===== -->
                 <div class="profile-hero-social">
                     {% if artist.social.instagram %}
                         <a href="{{ artist.social.instagram }}" target="_blank" class="social-link instagram">Instagram</a>
@@ -148,7 +148,7 @@ permalink: "/artist/{{ artist.slug }}/"
 </section>
 
 <!-- ============================================================
-     PROFILE OVERVIEW — 4 ANGKA SEBELUM PORTFOLIO
+     PROFILE OVERVIEW — STATISTIK
      ============================================================ -->
 <section class="section" style="padding-top: 20px; padding-bottom: 20px;">
     <div class="container">
@@ -305,7 +305,7 @@ permalink: "/artist/{{ artist.slug }}/"
                 <a href="{{ artist.social.fiverr }}" target="_blank" class="btn btn-primary btn-commission">Commission via Fiverr</a>
             {% endif %}
 
-            <!-- Secondary: Discord / Fiverr / lainnya (jika tidak sama dengan primary) -->
+            <!-- Secondary: Discord / Fiverr / lainnya -->
             <div class="commission-secondary">
                 {% if artist.social.instagram and artist.social.discord %}
                     <a href="{{ artist.social.discord }}" target="_blank" class="btn btn-secondary">Discord</a>
@@ -338,7 +338,7 @@ permalink: "/artist/{{ artist.slug }}/"
 {% endif %}
 
 <!-- ============================================================
-     ABOUT — DENGAN JARAK LEBIH BESAR DARI SERVICES
+     ABOUT
      ============================================================ -->
 <section class="section reveal" style="padding-top: 40px; padding-bottom: 60px;">
     <div class="container">
@@ -430,7 +430,7 @@ permalink: "/artist/{{ artist.slug }}/"
             return sorted;
         }
 
-        // ===== RENDER (dengan pagination) =====
+        // ===== RENDER (dengan pagination) — EDITORIAL HOVER =====
         function renderPage(items, page, append = false) {
             const start = (page - 1) * perPage;
             const end = start + perPage;
@@ -444,13 +444,14 @@ permalink: "/artist/{{ artist.slug }}/"
             }
 
             const html = pageItems.map(item => `
-                <div class="card" data-slug="${item.slug}">
+                <div class="card portfolio-card" data-slug="${item.slug}">
                     <a href="/artwork/${item.slug}/" class="card-link-wrapper">
-                        <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;">
-                            <div class="card-overlay">
-                                <h3>${item.title}</h3>
-                                <p>${item.year || ''}</p>
-                                <span class="card-link">View Artwork →</span>
+                        <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;"></div>
+                        <div class="card-overlay">
+                            <div class="card-overlay-content">
+                                <h3 class="card-overlay-title">✦ ${item.title}</h3>
+                                <p class="card-overlay-artist">${item.artist}</p>
+                                <span class="card-overlay-cta">View Artwork →</span>
                             </div>
                         </div>
                     </a>
@@ -480,13 +481,12 @@ permalink: "/artist/{{ artist.slug }}/"
 
             if (showingSpan) showingSpan.textContent = loadedCount;
 
-            // Tampilkan tombol View All jika belum semua dimuat
             if (viewAllBtn) {
                 viewAllBtn.style.display = (loadedCount < totalItems) ? 'block' : 'none';
             }
         }
 
-        // ===== RENDER ALL (tanpa pagination) =====
+        // ===== RENDER ALL (tanpa pagination) — EDITORIAL HOVER =====
         function renderAll(items) {
             if (items.length === 0) {
                 grid.innerHTML = `<p class="empty-state">Tidak ada artwork.</p>`;
@@ -495,13 +495,14 @@ permalink: "/artist/{{ artist.slug }}/"
             }
 
             const html = items.map(item => `
-                <div class="card" data-slug="${item.slug}">
+                <div class="card portfolio-card" data-slug="${item.slug}">
                     <a href="/artwork/${item.slug}/" class="card-link-wrapper">
-                        <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;">
-                            <div class="card-overlay">
-                                <h3>${item.title}</h3>
-                                <p>${item.year || ''}</p>
-                                <span class="card-link">View Artwork →</span>
+                        <div class="thumb" style="background-image: url('${item.image}'); background-size: cover; background-position: center;"></div>
+                        <div class="card-overlay">
+                            <div class="card-overlay-content">
+                                <h3 class="card-overlay-title">✦ ${item.title}</h3>
+                                <p class="card-overlay-artist">${item.artist}</p>
+                                <span class="card-overlay-cta">View Artwork →</span>
                             </div>
                         </div>
                     </a>
@@ -547,8 +548,7 @@ permalink: "/artist/{{ artist.slug }}/"
             }
         }
 
-        // ===== INISIALISASI =====
-        // Cek apakah ini halaman yang kembali dari artwork (ada saved scroll)
+        // ===== SAVE & RESTORE SCROLL =====
         const savedScroll = sessionStorage.getItem('artist_scroll_position');
         const isReturning = savedScroll !== null;
 
@@ -556,9 +556,7 @@ permalink: "/artist/{{ artist.slug }}/"
             filteredData = sortArtworks(allArtworks, 'created_at.desc');
 
             if (isReturning) {
-                // Jika kembali dari artwork, langsung render semua
                 renderAll(filteredData);
-                // Restore scroll setelah render
                 setTimeout(function() {
                     window.scrollTo({
                         top: parseInt(savedScroll, 10),
@@ -567,7 +565,6 @@ permalink: "/artist/{{ artist.slug }}/"
                     sessionStorage.removeItem('artist_scroll_position');
                 }, 150);
             } else {
-                // Normal: render 6 pertama
                 renderPage(filteredData, 1, false);
             }
         });
@@ -579,7 +576,7 @@ permalink: "/artist/{{ artist.slug }}/"
         window.applyFilters = applyFilters;
         window.loadMore = loadMore;
 
-        // ===== SAVE SCROLL POSITION SAAT KLIK KARTU =====
+        // ===== SAVE SCROLL POSITION =====
         document.addEventListener('click', function(e) {
             const link = e.target.closest('.card a[href^="/artwork/"]');
             if (link) {
